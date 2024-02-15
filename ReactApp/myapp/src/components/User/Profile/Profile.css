@@ -1,0 +1,57 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.center {
+    text-align: center;
+    width: 100%;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.information {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.avatar {
+    width: 25%;
+    border-radius: 5%;
+}
+
+.text-info {
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.text-info input {
+    display: block;
+    width: 500px;
+    height: 40px;
+    margin: 20px;
+    border: none;
+    background-color: rgba(29, 199, 255, 0.901);
+    color: aliceblue;
+    padding-left: 10px;
+}
+
+.profile-option {
+    margin-left: 15%;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin-top: 10px;
+}
+
+button {
+    border-color: rgba(29, 199, 255, 0.901);
+    height: 40px;
+    width: 100px;
+    margin-left: 2px;
+    background-color: rgba(29, 199, 255, 0.901);
+    color: white;
+    margin-left: 50px;
+}

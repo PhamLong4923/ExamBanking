@@ -1,0 +1,128 @@
+@media screen and (max-width: 968px) {
+    .header-logo {
+        width: 50%;
+    }
+
+
+}
+
+.header {
+    /* background: linear-gradient(, #98c0f0 1%, rgb(56, 121, 213) 99%); */
+    background-color: rgb(30, 181, 251);
+    height: 57px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.margin-header {
+    height: 57px;
+    width: 100%;
+
+
+}
+
+.header-logo {
+    height: 100%;
+    width: 21%;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+    /* justify-content: center; */
+
+}
+
+.head-logo {
+    height: 40px;
+    width: 52px;
+}
+
+.head-name {
+    margin-left: 15px;
+}
+
+.head-name>h2 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 800;
+    color: white;
+    width: 300px;
+    text-shadow: 1px 1px 2px #000;
+
+}
+
+.account {
+    width: 5%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.avata {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.account-dropdown {
+    width: 250px;
+    height: 150px;
+    border: 1px solid black;
+    border-radius: 20px;
+    right: 0;
+    margin: 6px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(250, 250, 250);
+    position: absolute;
+
+
+}
+
+.menu-account,
+.menu-setting,
+.menu-logout {
+    display: flex;
+    width: 90%;
+    height: 34%;
+    align-items: center;
+
+
+}
+
+.account-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-choice {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 550;
+    margin-left: 4px;
+
+}
+
+.account-email {
+    color: rgb(172, 174, 175);
+    font-weight: 500;
+    margin-left: 4px;
+}
+
+.menu-item:hover {
+    background-color: #c1cacc;
+    cursor: pointer;
+}
+
+.active {
+    display: flex;
+    /* hoặc sử dụng các phương pháp hiệu ứng như trước */
+}

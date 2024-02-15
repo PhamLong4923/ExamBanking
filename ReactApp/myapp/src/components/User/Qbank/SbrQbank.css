@@ -1,0 +1,60 @@
+.item-containers{
+    width: 100%;
+    height: 97%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.pathlink{
+    width: 100%;
+    height: 3%;
+    display: flex;
+    align-items: center;
+    
+    
+}
+
+.link{
+    font-size: 14px;
+}
+
+.item{
+    width: 24%;
+    height: 70%;
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    background-color: rgb(79, 161, 228);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    text-decoration: none;
+    color: black;
+    opacity: 0;
+    animation: fadeInAnimation 1s ease-in-out forwards;
+
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.item:hover{
+    background-color: rgb(102, 166, 223);
+    
+    cursor: pointer;
+    transform: scale(1.05);
+}
+
+.item-title{
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    
+}

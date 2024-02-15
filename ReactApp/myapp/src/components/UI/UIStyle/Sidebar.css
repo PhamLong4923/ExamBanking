@@ -1,0 +1,93 @@
+.sidebar {
+    
+    position: fixed;
+    width: 65px;
+    height: 100%;
+    background-color: rgb(30, 181, 251);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 57px;
+}
+
+.margin-sidebar{
+    width: 66px;
+    height: 100%;
+   
+}
+
+.sidebar-item {
+    width: 45px;
+    height: 45px;
+    border: 2px solid azure;
+    border-radius: 50%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-item-noround {
+    width: 45px;
+    height: 45px;
+
+
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar i {
+    color: azure;
+}
+
+/* YourComponent.css */
+
+.tooltip {
+    visibility: hidden;
+    width: 400px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0s;
+}
+
+.sidebar-item:hover .tooltip,
+.sidebar-item-noround:hover .tooltip,
+.sidebar-item2:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.picked{
+    background-color: rgb(131, 150, 167);
+    width: 6px;
+    height: 50px;
+    border-radius: 5px;
+    position: absolute;
+    margin-top: 25px;
+    left: 5;
+    transform: translate(-50%, -50%); /* Dịch chuyển để giữ giữa */
+    animation: appearAnimation 1s ease-out;
+}
+
+@keyframes appearAnimation {
+    0% {
+        height: 0;
+    }
+    50% {
+        height: 50px; /* Kéo dài xuống dưới */
+    }
+    100% {
+        height: 50px; /* Kéo dài lên trên */
+    }
+}
