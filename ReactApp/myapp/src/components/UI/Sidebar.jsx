@@ -27,7 +27,7 @@ export default function Sidebar({picker}) {
                     </div>
                 </NavLink>
 
-                <NavLink to='/home'>
+                <NavLink to='/exam'>
                     <div className='sidebar-item-noround'>
                         <i className="fa-solid fa-file-pen fa-2xl"></i>
                         <span className='tooltip'>Tạo đề kiểm tra</span>

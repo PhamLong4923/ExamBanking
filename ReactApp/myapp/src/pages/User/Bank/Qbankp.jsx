@@ -1,5 +1,5 @@
-import SbrQbank from "../../components/User/Qbank/SbrQbank.jsx";
-import Body from "../../components/UI/Body.jsx";
+import SbrQbank from "../../../components/User/Qbank/SbrQbank.jsx";
+import Body from "../../../components/UI/Body.jsx";
 
 
 const Qbanks = () => {

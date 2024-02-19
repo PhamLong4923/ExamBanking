@@ -1,5 +1,5 @@
-import Body from "../../components/UI/Body.jsx";
-import PBank from "../../components/User/PersonalBank/PBank.jsx"
+import Body from "../../../components/UI/Body.jsx";
+import PBank from "../../../components/User/PersonalBank/PBank.jsx"
 
 
 
