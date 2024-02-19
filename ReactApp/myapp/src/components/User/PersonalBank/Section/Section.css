@@ -1,4 +1,4 @@
-.section-container{
+.section-container {
   width: 100%;
   height: fit-content;
   display: flex;
@@ -57,21 +57,19 @@
   font-family: Tahoma;
 }
 
-.searcher {
-  
-}
+.searcher {}
 
 .qshow {
   width: 100%;
   height: fit-content;
- 
+
   display: flex;
 
-  
-  gap:  7px;
+
+  gap: 7px;
 }
 
-.section-rightside{
+.section-rightside {
   width: 70%;
   height: fit-content;
   padding: 5px;
@@ -79,7 +77,7 @@
   flex-direction: column;
 }
 
-.section-leftside{
+.section-leftside {
   width: 30%;
   height: fit-content;
   padding: 5px;
@@ -87,7 +85,7 @@
   flex-direction: column;
 }
 
-.section-list{
+.section-list {
   width: 100%;
   height: 555px;
   background-color: rgb(196, 233, 249);
@@ -96,7 +94,7 @@
   margin-top: 2px;
 }
 
-.sectionitem{
+.sectionitem {
   width: 98%;
   height: 30px;
   background-color: aliceblue;
@@ -108,12 +106,12 @@
   padding-left: 20px;
 }
 
-.qlistdetail{
+.qlistdetail {
   width: 75%;
   height: 100%;
   background-color: rgb(196, 233, 249);
   overflow-y: scroll;
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -129,7 +127,7 @@
   overflow-y: scroll;
 }
 
-.addSection{
+.addSection {
   width: 30px;
   height: 30px;
   border: 1px solid black;
@@ -141,7 +139,7 @@
   font-weight: 3900;
 }
 
-.question-tool{
+.question-tool {
   width: 99%;
   height: 32px;
   background-color: rgb(232, 235, 239);
@@ -152,7 +150,7 @@
   align-items: center;
 }
 
-.section-tool{
+.section-tool {
   width: 99%;
   height: 32px;
   background-color: rgb(232, 235, 239);
@@ -163,7 +161,7 @@
   align-items: center;
 }
 
-.tool-item{
+.tool-item {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -173,11 +171,11 @@
   align-items: center;
 }
 
-.tool-item:hover{
+.tool-item:hover {
   background-color: aliceblue;
 }
 
-.selectedq{
+.selectedq {
   font-size: 14px;
   height: 30px;
   display: flex;
@@ -185,12 +183,116 @@
   justify-content: center;
 }
 
-.qcontainer{
+.qcontainer {
   width: 100%;
   height: fit-content;
   border-radius: 15px;
 }
 
-.selected{
+.selected {
   background-color: aqua;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+}
+
+.header-icon {
+  font-size: 20px;
+  margin-right: 5px;
+  margin-top: 17px;
+}
+
+.modal-subtitle {
+  position: absolute;
+  margin-top: -10px;
+  font-size: 10px;
+}
+
+.row-head {
+  margin-left: -0.35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button i {
+  border-color: rgba(29, 199, 255, 0.901);
+  border-radius: 10%;
+  margin-left: 2px;
+  background-color: rgba(29, 199, 255, 0.901);
+  color: white;
+}
+
+.text-over-border {
+  position: absolute;
+  margin-top: -6px;
+  background-color: white;
+  font-size: 8px;
+  left: 300px;
+  padding: 0 5px;
+  height: auto;
+}
+
+table {
+  width: 800px;
+  word-wrap: break-word;
+  border: 1px solid black;
+}
+
+.addquestion-table {
+  border-collapse: collapse;
+  /* This ensures that borders are collapsed into a single border. */
+}
+
+.addquestion-table td {
+  border: 1px solid #000;
+  /* You can adjust the color and width as needed. */
+  border-bottom: none;
+  border-width: 1px;
+}
+
+td.row-head {
+  border-top: none;
+  border-right: none;
+}
+
+.edit-question {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 800px;
+}
+
+.edit-answers {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.edit-answers th,
+.edit-answers td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.edit-answers th {
+  background-color: #f2f2f2;
+}
+
+.edit-answers input {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.addquestion-table button {
+  width: auto;
+  height: auto;
+  min-width: 25px;
+  min-height: 25px;
+  margin-left: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }

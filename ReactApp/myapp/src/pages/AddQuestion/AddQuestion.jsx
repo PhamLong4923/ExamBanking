@@ -1,25 +1,43 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React from "react";
+import React from 'react';
 import { Modal } from 'react-bootstrap';
+import MyEditor from '../../components/MyEditor';
 import Footer from '../../components/UI/Footer';
 import Header from '../../components/UI/Header';
 import Sidebar from '../../components/UI/Sidebar';
 import './AddQuestion.css';
-
 class AddQuestion extends React.Component {
+
+    // componentDidMount() {
+    //     ckeditorConfig(); // Gọi hàm cấu hình CKEditor khi modal được mount
+    // }
+
     constructor(props) {
         super(props);
         this.state = {
             questions: [
                 {
-                    id: '1', title: 'Đề ở đây', answer1: 'Đáp án ở đây', answer2: 'Đáp án ở đây',
-                    answer3: 'đáp án ở đây', answer4: 'đáp án ở đây', checkbox: ''
+                    id: '1', title: ' Đề ở đây', answer1: ' đáp án ở đây', answer2: ' đáp án ở đây',
+                    answer3: ' đáp án ở đây', answer4: ' đáp án ở đây', checkbox: ''
                 },
             ],
-            showModal1: false,
-            showModal2: false,
+
+            editingQuestionId: null,
+
         };
     }
+
+    // handleDocxFileSelection = () => {
+    //     const ckfinder = new CKFinder();
+    //     ckfinder.selectFile().then(file => {
+    //         console.log('Selected file:', file);
+    //         // Xử lý file đã chọn ở đây
+    //         this.setState({ docxFile: file });
+    //     }).catch(error => {
+    //         console.error('Error selecting file:', error);
+    //     });
+    // }
+
     close1 = () => {
         this.setState({ showModal1: false });
     }
@@ -50,39 +68,55 @@ class AddQuestion extends React.Component {
         });
     }
 
-    // handleFileChange = (event) => {
-    //     const selectedFile = event.target.files[0];
+    handleEditQuestion = (questionId) => {
+        this.setState({ editingQuestionId: questionId });
+        // Thực hiện các xử lý khác nếu cần
+    }
 
-    //     if (selectedFile) {
-    //         // Xử lý tệp tin ở đây, ví dụ: đọc nội dung tệp tin
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             const fileContent = e.target.result;
-    //             console.log("Nội dung tệp tin:", fileContent);
-    //         };
+    handleEditAnswer = (questionId, answerIndex, newAnswer) => {
+        // Cập nhật đáp án của câu hỏi đang được chỉnh sửa
+        this.setState((prevState) => ({
+            questions: prevState.questions.map((question) =>
+                question.id === questionId
+                    ? {
+                        ...question,
+                        [`answer${answerIndex + 1}`]: newAnswer,
+                    }
+                    : question
+            ),
+        }));
+    };
 
-    //         reader.readAsText(selectedFile); // Đọc nội dung tệp tin với định dạng văn bản
-    //     }
-    // };
-    // handleDrop = (event) => {
-    //     event.preventDefault();
+    handleSaveEdit = (questionId) => {
+        // Thực hiện lưu chỉnh sửa cho câu hỏi
+        console.log('Lưu chỉnh sửa cho câu hỏi có ID:', questionId);
 
-    //     const droppedFile = event.dataTransfer.files[0];
+        // Đặt trạng thái chỉnh sửa về mặc định
+        this.setState({ editingQuestionId: null });
+    };
 
-    //     if (droppedFile) {
-    //         this.setState({ draggedFileName: droppedFile.name });
+    handleEditTitle = (questionId, newTitle) => {
+        // Cập nhật tiêu đề của câu hỏi đang được chỉnh sửa
+        this.setState((prevState) => ({
+            questions: prevState.questions.map((question) =>
+                question.id === questionId
+                    ? { ...question, title: newTitle }
+                    : question
+            ),
+        }));
+    };
 
-    //         // Xử lý tệp tin ở đây, ví dụ: đọc nội dung tệp tin
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             const fileContent = e.target.result;
-    //             console.log("Nội dung tệp tin:", fileContent);
-    //         };
+    handleDeleteQuestion = (questionId) => {
+        const updatedQuestions = this.state.questions.filter((question) => question.id !== questionId);
 
-    //         reader.readAsText(droppedFile); // Đọc nội dung tệp tin với định dạng văn bản
-    //     }
-    // };
+        this.setState({
+            questions: updatedQuestions,
+            editingQuestionId: null, // Đặt editingQuestionId về null nếu câu hỏi đang được chỉnh sửa bị xóa
+        });
+    };
+
     render() {
+        console.log(MyEditor);
         return (
             <>
                 <Header></Header>
@@ -99,51 +133,95 @@ class AddQuestion extends React.Component {
 
                     {/* Render tables dynamically */}
                     {this.state.questions.map((question, index) => (
-                        <>
-                            <table className="question" key={index}>
-                                <thead>
-                                    <td className="row-head">
-                                        <span className="left-row"> <i class="fa-solid fa-circle-question"></i> Câu hỏi {index + 1}</span>
-                                        <span className="right-row">
-                                            <button title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
-                                            <button title="Nhân đôi câu hỏi này"><i class="fa-solid fa-copy"></i></button>
-                                            <button title="Xóa câu hỏi này"><i class="fa-solid fa-trash-can"></i></button>
-                                        </span>
-                                    </td>
-                                </thead>
-                                <tr>
-                                    <td>
-                                        Đề:...............................................
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span className="text-over-border">lựa chọn trả lời</span>
-                                        <div>
-                                            <input type="checkbox" id="answer1" title="đánh dấu đáp án đúng" />
-                                            <label htmlFor="answer1">Đáp án 1: </label>
-                                            <label htmlFor="answer1">Đáp án ở đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây đây </label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="answer2" title="đánh dấu đáp án đúng" />
-                                            <label htmlFor="answer2">Đáp án 2: </label>
-                                            <label htmlFor="answer2">Đáp án ở đây </label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="answer3" title="đánh dấu đáp án đúng" />
-                                            <label htmlFor="answer3">Đáp án 3: </label>
-                                            <label htmlFor="answer3">Đáp án ở đây </label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="answer4" title="đánh dấu đáp án đúng" />
-                                            <label htmlFor="answer4">Đáp án 4: </label>
-                                            <label htmlFor="answer4">Đáp án ở đây </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                        <React.Fragment key={index}>
+                            {this.state.editingQuestionId === question.id ? (
+                                /* Hiển thị nội dung chỉnh sửa */
+                                <div className="edit-question" key={index}>
+                                    <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
+                                    <input
+                                        type="text"
+                                        id={`editTitle_${question.id}`}
+                                        value={question.title}
+                                        onChange={(e) => this.handleEditTitle(question.id, e.target.value)}
+                                    />
+
+                                    <table className="edit-answers">
+                                        <thead>
+                                            <tr>
+                                                <th>Đáp án</th>
+                                                <th>Nội dung đáp án</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {['answer1', 'answer2', 'answer3', 'answer4'].map((answerKey, answerIndex) => (
+                                                <tr key={answerIndex}>
+                                                    <td>Đáp án {answerIndex + 1}:</td>
+                                                    <td>
+                                                        <input
+                                                            type="text"
+                                                            id={`editAnswer_${question.id}_${answerIndex + 1}`}
+                                                            value={question[answerKey]}
+                                                            onChange={(e) => this.handleEditAnswer(question.id, answerIndex, e.target.value)}
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    {/* Thêm các trường chỉnh sửa khác cho câu hỏi ở đây */}
+
+                                    <button onClick={() => this.handleSaveEdit(question.id)}>
+                                        Lưu chỉnh sửa
+                                    </button>
+                                </div>
+                            ) : (
+
+                                <table className="addquestion-table">
+                                    <thead>
+                                        <td className="row-head">
+                                            <span className="left-row"> <i class="fa-solid fa-circle-question"></i> Câu hỏi {index + 1}</span>
+                                            <span className="right-row">
+                                                <button title="Chỉnh sửa" onClick={() => this.handleEditQuestion(question.id)}><i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
+                                                <button title="Nhân đôi câu hỏi này"><i class="fa-solid fa-copy"></i></button>
+                                                <button title="Xóa câu hỏi này" onClick={() => this.handleDeleteQuestion(question.id)}><i class="fa-solid fa-trash-can"></i></button>
+                                            </span>
+                                        </td>
+                                    </thead>
+                                    <tr>
+                                        <td>
+                                            Đề: {this.state.questions[index].title}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span className="text-over-border">lựa chọn trả lời</span>
+                                            <div>
+                                                <input type="checkbox" id="answer1" title="đánh dấu đáp án đúng" />
+                                                <label htmlFor="answer1">Đáp án 1: </label>
+                                                <label htmlFor="answer1">{this.state.questions[index].answer1}</label>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" id="answer2" title="đánh dấu đáp án đúng" />
+                                                <label htmlFor="answer2">Đáp án 2: </label>
+                                                <label htmlFor="answer2">{this.state.questions[index].answer2}</label>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" id="answer3" title="đánh dấu đáp án đúng" />
+                                                <label htmlFor="answer3">Đáp án 3: </label>
+                                                <label htmlFor="answer3">{this.state.questions[index].answer3}</label>
+                                            </div>
+                                            <div>
+                                                <input type="checkbox" id="answer4" title="đánh dấu đáp án đúng" />
+                                                <label htmlFor="answer4">Đáp án 4: </label>
+                                                <label htmlFor="answer4">{this.state.questions[index].answer4}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            )}
                             <br /><br />
-                        </>
+                        </React.Fragment>
                     ))}
 
                     <div className="center-addquestion">
@@ -163,11 +241,9 @@ class AddQuestion extends React.Component {
                                 </div>
                             </Modal.Header>
                             <Modal.Body>
-                                <input
-                                    type="file"
-                                    // onChange={this.handleFileChange}
-                                    accept=".xlsx, .xlsm" // (Optional) Chỉ chấp nhận các loại file nhất định
-                                />
+
+                                <MyEditor />
+
                             </Modal.Body>
                             <Modal.Footer>
                                 <button>Tải về mẫu</button>
@@ -185,10 +261,9 @@ class AddQuestion extends React.Component {
                                 </div>
                             </Modal.Header>
                             <Modal.Body>
-                                <input
-                                    type="file"
-                                    accept=".docx" // (Optional) Chỉ chấp nhận các loại file nhất định
-                                />
+
+                                <MyEditor />
+
                             </Modal.Body>
                             <Modal.Footer>
                                 <button>Tải về mẫu</button>
@@ -207,4 +282,4 @@ class AddQuestion extends React.Component {
     }
 }
 
-export default AddQuestion;
+export default AddQuestion; 
