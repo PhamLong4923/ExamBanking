@@ -160,6 +160,9 @@ const Section = () => {
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
               <span className='tool-item'><i className="fa-solid fa-pen-to-square"></i></span>
               <span className='tool-item' onClick={deleteQuestions}><i className="fa-solid fa-trash-can"></i></span>
+              <span className='tool-item'><i class="fa-solid fa-plus"></i></span>
+              <span className='tool-item'><i class="fa-regular fa-file-word"></i></span>
+              <span className='tool-item'><i class="fa-regular fa-file-excel"></i></span>
             </div>
 
             <div className='qlistitem'>
