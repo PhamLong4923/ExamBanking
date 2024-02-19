@@ -1,27 +1,36 @@
-// src/screens/Root.jsx
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'; // Thay thế 'Switch' bằng 'Routes'
-import Footer from '../components/UI/Footer';
-import Header from '../components/UI/Header';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomeScreen from './User/Home';
-import PBanks from './User/PBank';
-import Profile from './User/Profile';
-import Qbanks from './User/Qbanks';
-import Repository from './User/Repository';
-import Sections from './User/Sections';
+import PBanks from './User/Bank/PBank';
+import Profile from './User/Setting/Profile';
+import Sections from './User/Bank/Sectionp';
+import Qbanks from './User/Bank/Qbankp'
+import Header from '../components/UI/Header';
+import Footer from '../components/UI/Footer';
+import Repository from './User/Bank/Repositoryp';
+import BankSelectp from './User/Exam/BankSelectp';
+import RepoSelectp from './User/Exam/RepoSelectp';
 
 const Root = () => (
   <BrowserRouter>
     <Header></Header>
     <Routes>
 
-      {/* User Routes */}
       <Route path="/" element={<HomeScreen />} />
-      <Route path="/qbank" element={< Qbanks />} />
+
+      {/*Question Bank*/}
+      
+      <Route path="/qbank" element={< Qbanks/>} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/pbank" element={<PBanks />} />
-      <Route path="/repo" element={<Repository />} />
-      <Route path="/sec/:bid" element={<Sections />} />
+      <Route path="/pbank" element={<PBanks />}/>
+      <Route path="/repo" element={<Repository />}/>
+      <Route path="/sec/:bid" element={<Sections />}/>
+
+      {/*Exam Create*/}
+
+      <Route path="/exam" element={<BankSelectp />}/>
+      <Route path="/expersonalbank" element={<RepoSelectp/>}/>
+
       {/* <Route path="/qbank/pbank/:bid" element={<YourNestedComponent/>}/> */}
 
 
