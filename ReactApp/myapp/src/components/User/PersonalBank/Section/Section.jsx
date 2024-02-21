@@ -1,9 +1,8 @@
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 import { NavLink, useParams } from 'react-router-dom';
 import MyEditor from '../../../MyEditor';
+import Question2 from '../Question/Question2';
 import '../Section/Section.css';
 
 
@@ -25,7 +24,6 @@ const Section = (props) => {
       answer2: 'Đáp án ở đây',
       answer3: 'đáp án ở đây',
       answer4: 'đáp án ở đây',
-      checkbox: ''
     }
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
@@ -41,7 +39,6 @@ const Section = (props) => {
         answer2: 'Đáp án ở đây',
         answer3: 'đáp án ở đây',
         answer4: 'đáp án ở đây',
-        checkbox: ''
       },
     ]);
   };
@@ -248,137 +245,63 @@ const Section = (props) => {
 
             <div className='qlistitem'>
               {questions.map((question, index) => (
-                // <div className={`qcontainer ${selectedQuestions.includes(question.questionId) ? 'selected' : ''}`} key={question.questionId} onClick={() => selectQuestionsHandle(question.questionId)}><Question props={question}></Question></div>
-                <React.Fragment key={index}>
-                  {editingQuestionId === question.id ? (
-                    /* Hiển thị nội dung chỉnh sửa */
-                    <div className="edit-question" key={index}>
-                      <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
-                      <input
-                        type="text"
-                        id={`editTitle_${question.id}`}
-                        value={question.title}
-                        onChange={(e) => handleEditTitle(question.id, e.target.value)}
-                      />
+                <div onClick={() => handleSelectSection(1)}>
+                  <Question2></Question2>
+                </div>
 
-                      <table className="edit-answers">
-                        <thead>
-                          <tr>
-                            <th>Đáp án</th>
-                            <th>Nội dung đáp án</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {['answer1', 'answer2', 'answer3', 'answer4'].map((answerKey, answerIndex) => (
-                            <tr key={answerIndex}>
-                              <td>Đáp án {answerIndex + 1}:</td>
-                              <td>
-                                <input
-                                  type="text"
-                                  id={`editAnswer_${question.id}_${answerIndex + 1}`}
-                                  value={question[answerKey]}
-                                  onChange={(e) => handleEditAnswer(question.id, answerIndex, e.target.value)}
-                                />
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-
-                      {/* Thêm các trường chỉnh sửa khác cho câu hỏi ở đây */}
-
-                      <button onClick={() => handleSaveEdit(question.id)}>
-                        Lưu chỉnh sửa
-                      </button>
-                    </div>
-                  ) : (
-
-                    <table className="addquestion-table">
-                      <thead>
-                        <td className="row-head">
-                          <span className="left-row"> <i class="fa-solid fa-circle-question"></i> Câu hỏi {index + 1}</span>
-                          <span className="right-row">
-                            <button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i class="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
-                            <button title="Nhân đôi câu hỏi này"><i class="fa-solid fa-copy"></i></button>
-                            <button title="Xóa câu hỏi này" onClick={() => handleDeleteQuestion(question.id)}><i class="fa-solid fa-trash-can"></i></button>
-                          </span>
-                        </td>
-                      </thead>
-                      <tr>
-                        <td>
-                          Đề: {questions[index].title}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          {/* <span className="text-over-border">lựa chọn trả lời</span> */}
-                          <div>
-                            <input type="checkbox" id="answer1" title="đánh dấu đáp án đúng" />
-                            <label htmlFor="answer1">Đáp án 1: </label>
-                            <label htmlFor="answer1">{questions[index].answer1}</label>
-                          </div>
-                          <div>
-                            <input type="checkbox" id="answer2" title="đánh dấu đáp án đúng" />
-                            <label htmlFor="answer2">Đáp án 2: </label>
-                            <label htmlFor="answer2">{questions[index].answer2}</label>
-                          </div>
-                          <div>
-                            <input type="checkbox" id="answer3" title="đánh dấu đáp án đúng" />
-                            <label htmlFor="answer3">Đáp án 3: </label>
-                            <label htmlFor="answer3">{questions[index].answer3}</label>
-                          </div>
-                          <div>
-                            <input type="checkbox" id="answer4" title="đánh dấu đáp án đúng" />
-                            <label htmlFor="answer4">Đáp án 4: </label>
-                            <label htmlFor="answer4">{questions[index].answer4}</label>
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-                  )}
-                  <br /><br />
-                </React.Fragment>
               ))}
-              <Modal show={showModal1} onHide={close1} className="excel-modal">
-                <Modal.Header closeButton className="modal-header">
-                  <div className="header-icon">
-                    <i class="fa-solid fa-table fa-2xl"></i>
+              {showModal1 && (
+                <div className="modal-background">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <div className='header-left'>
+                        <div className="header-icon">
+                          <i class="fa-solid fa-table fa-2xl"></i>
+                        </div>
+                        <div>
+                          <h5>Nhập câu hỏi từ excel</h5>
+                          <div className="modal-subtitle">Vui lòng tải lên bảng tính excel theo mẫu</div>
+                        </div>
+                      </div>
+                      <i class="fa-solid fa-xmark fa-2xl" onClick={close1}></i>
+                    </div>
+                    <div className="modal-body">
+                      <MyEditor />
+                    </div>
+                    <div className="modal-footer">
+                      <button>Tải về mẫu</button>
+                      <button onClick={close1}>Close</button>
+                    </div>
                   </div>
-                  <div>
-                    <h5>Nhập câu hỏi từ excel</h5>
-                    <div className="modal-subtitle">Vui lòng tải lên bảng tính excel theo mẫu</div>
+                </div>
+              )}
+
+              {showModal2 && (
+                <div className="modal-background">
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <div className='header-left'>
+                        <div className="header-icon">
+                          <i class="fa-regular fa-file-word fa-2xl"></i>
+                        </div>
+                        <div>
+                          <h5>Nhập câu hỏi từ Word</h5>
+                          <div className="modal-subtitle">Vui lòng tải lên Word theo định dạng mẫu</div>
+                        </div>
+                      </div>
+                      <i class="fa-solid fa-xmark fa-2xl" onClick={close2}></i>
+                    </div>
+                    <div className="modal-body">
+                      <MyEditor />
+                    </div>
+                    <div className="modal-footer">
+                      <button>Tải về mẫu</button>
+                      <button onClick={close2}>Close</button>
+                    </div>
                   </div>
-                </Modal.Header>
-                <Modal.Body>
+                </div>
+              )}
 
-                  <MyEditor />
-
-                </Modal.Body>
-                <Modal.Footer>
-                  <button>Tải về mẫu</button>
-                  <button onClick={close1}>Close</button>
-                </Modal.Footer>
-              </Modal>
-              <Modal show={showModal2} onHide={close2}>
-                <Modal.Header closeButton>
-                  <div className="header-icon">
-                    <i class="fa-regular fa-file-word fa-2xl"></i>
-                  </div>
-                  <div>
-                    <h5>Nhập câu hỏi từ Word</h5>
-                    <div className="modal-subtitle">Vui lòng tải lên Word theo định dạng mẫu</div>
-                  </div>
-                </Modal.Header>
-                <Modal.Body>
-
-                  <MyEditor />
-
-                </Modal.Body>
-                <Modal.Footer>
-                  <button>Tải về mẫu</button>
-                  <button onClick={close2}>Close</button>
-                </Modal.Footer>
-              </Modal>
             </div>
 
           </div>

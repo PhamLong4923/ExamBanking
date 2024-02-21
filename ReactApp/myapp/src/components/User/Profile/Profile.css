@@ -1,7 +1,7 @@
 .profile {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+
 }
 
 .center {
@@ -49,9 +49,25 @@
 button {
     border-color: rgba(29, 199, 255, 0.901);
     height: 40px;
-    width: 100px;
     margin-left: 2px;
     background-color: rgba(29, 199, 255, 0.901);
     color: white;
-    margin-left: 50px;
+    margin-left: 10px;
+    min-width: auto;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: -1.5%;
+    margin-right: 10%;
+}
+
+.profile-row i {
+    margin-left: 10px;
 }

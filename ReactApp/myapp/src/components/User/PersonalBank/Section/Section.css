@@ -206,7 +206,7 @@
 
 .modal-subtitle {
   position: absolute;
-  margin-top: -10px;
+  margin-top: -5px;
   font-size: 10px;
 }
 
@@ -235,7 +235,7 @@ button i {
 }
 
 table {
-  width: 800px;
+  width: 100%;
   word-wrap: break-word;
   border: 1px solid black;
 }
@@ -261,7 +261,7 @@ td.row-head {
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  width: 800px;
+  width: 100%;
 }
 
 .edit-answers {
@@ -290,9 +290,81 @@ td.row-head {
 .addquestion-table button {
   width: auto;
   height: auto;
-  min-width: 25px;
-  min-height: 25px;
+  min-width: 90px;
+  min-height: 23px;
   margin-left: 5px;
   padding-left: 5px;
   padding-right: 5px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-left {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-icon {
+  margin-right: 10px;
+}
+
+.modal-body {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: #333;
+}
+
+.addquestion-savebutton button {
+  border-radius: 10px;
+  height: 30px;
+  min-width: auto;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.addquestion-savebutton {
+  display: flex;
+  justify-content: right;
+}
+
+.edit-answers tbody div {
+  display: flex;
+  justify-content: space-between;
 }
