@@ -1,7 +1,7 @@
 .profile {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+
 }
 
 .center {
@@ -49,9 +49,74 @@
 button {
     border-color: rgba(29, 199, 255, 0.901);
     height: 40px;
-    width: 100px;
     margin-left: 2px;
     background-color: rgba(29, 199, 255, 0.901);
     color: white;
-    margin-left: 50px;
+    margin-left: 10px;
+    min-width: auto;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+
+.profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: -1.5%;
+    margin-right: 10%;
+}
+
+.profile-row i {
+    margin-left: 10px;
+}
+
+/* CSS cho modal */
+.modal {
+    display: flex;
+    justify-content: center;
+    /* Hiển thị modal ở giữa trang */
+    align-items: center;
+    /* Hiển thị modal ở giữa trang */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Một lớp mờ để tạo hiệu ứng nền xám */
+    z-index: 9999;
+    /* Đảm bảo modal hiển thị trên tất cả các phần khác */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Hiệu ứng bóng đổ */
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.modal button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+/* CSS để ẩn modal khi không cần thiết */
+.modal-hidden {
+    display: none;
 }

@@ -1,13 +1,32 @@
 import React from 'react';
 import '../Profile/Profile.css';
+import RectangleComponent from './RectangleComponent';
 
 class Profile extends React.Component {
-    state = {
-        name: 'Nguyễn Văn A',
-        gmail: 'nva123@gmail.com',
-        subject: 'Toán',
-        phone: '0912345678',
-        avatar: 'https://i.pinimg.com/564x/ca/fe/b2/cafeb2e288f830b582092fdcceea5dee.jpg'
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: 'Nguyễn Văn A',
+            gmail: 'nva123@gmail.com',
+            subject: 'Toán',
+            phone: '0912345678',
+            avatar: 'https://i.pinimg.com/564x/ca/fe/b2/cafeb2e288f830b582092fdcceea5dee.jpg',
+            showModal1: false,
+        };
+    }
+
+    toggleModal = () => {
+        this.setState((prevState) => ({ showModal1: !prevState.showModal1 }));
+    };
+
+    // Thêm hàm để xử lý các tác vụ khi người dùng chọn một mục trong menu
+    handleChangePassword = () => {
+        // Xử lý đổi mật khẩu
+    };
+
+    handleLogout = () => {
+        // Xử lý đăng xuất
     };
 
     // handleEditClick = () => {
@@ -17,23 +36,33 @@ class Profile extends React.Component {
     render() {
         return (
             <div className='profile'>
-                <div className='back-link'>Home/profile</div>
-                <div className='center'>Profile</div>
-                <form className='information'>
-                    <input type='image' className='avatar' src={this.state.avatar} alt='Ảnh đại diện' />
-                    <div className='text-info'>
-                        <input type='text' id='name' value={this.state.name}></input>
-                        <input type='text' id='gmail' value={this.state.gmail} ></input>
-                        <input type='text' id='subject' value={this.state.subject} ></input>
-                        <input type='text' id='phone' value={this.state.phone} ></input>
+                <RectangleComponent avatarSrc={this.state.avatar}>
+                    <div className="profile-row">
+                        <div className>{this.state.gmail}</div>
+                        <div className="button-container">
+                            <button className="button">Chỉnh sửa thông tin</button>
+                            <button className="button">Ngân hàng câu hỏi</button>
+                            <i className="fa-solid fa-gear" onClick={this.toggleModal}></i>
+                        </div>
                     </div>
-                </form>
-                <div className='profile-option'>
-                    <button id='edit-avatar'><i class="fa-solid fa-upload"></i> Đổi avatar</button>
-                    <button id='edit-information'><i class="fa-solid fa-user-pen"></i> Chỉnh sửa</button>
-                    {/* <button id='cancel'><i class="fa-solid fa-xmark"></i> Hủy</button>
-                    <button id='save-profile' type='submit'><i class="fa-solid fa-floppy-disk"></i> Lưu</button> */}
-                </div>
+                    <div className="row">{this.state.name}</div>
+                    <div className="row">giáo viên môn {this.state.subject}</div>
+                    {this.state.showMenu && (
+                        <div className="menu">
+                            <button onClick={this.handleChangePassword}>Đổi mật khẩu</button>
+                            <button onClick={this.handleLogout}>Đăng xuất</button>
+                        </div>
+                    )}
+                </RectangleComponent>
+                {this.state.showModal1 && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <button onClick={this.handleChangePassword}>Đổi mật khẩu</button>
+                            <button onClick={this.handleLogout}>Đăng xuất</button>
+                            <button onClick={this.toggleModal}>Đóng</button>
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
