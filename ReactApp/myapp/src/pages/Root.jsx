@@ -9,7 +9,9 @@ import Header from '../components/UI/Header';
 import Footer from '../components/UI/Footer';
 import Repository from './User/Bank/Repositoryp';
 import BankSelectp from './User/Exam/BankSelectp';
+import BankTypeSelectp from './User/Exam/BankTypeSelectp';
 import RepoSelectp from './User/Exam/RepoSelectp';
+import ExamConfigp from './User/Exam/ExamConfigp';
 
 const Root = () => (
   <BrowserRouter>
@@ -28,8 +30,10 @@ const Root = () => (
 
       {/*Exam Create*/}
 
-      <Route path="/exam" element={<BankSelectp />}/>
-      <Route path="/expersonalbank" element={<RepoSelectp/>}/>
+      <Route path="/exam" element={<BankTypeSelectp />}/>
+      <Route path="/exbank" element={<BankSelectp/>}/>
+      <Route path="/exrepo" element={<RepoSelectp></RepoSelectp>}></Route>
+      <Route path="/exconfig" element={<ExamConfigp></ExamConfigp>}></Route>
       {/* <Route path="/qbank/pbank/:bid" element={<YourNestedComponent/>}/> */}
         
       

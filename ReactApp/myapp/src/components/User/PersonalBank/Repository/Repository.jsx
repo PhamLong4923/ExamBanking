@@ -2,8 +2,8 @@ import React from "react";
 import '../Repository/Repository.css'
 import { NavLink } from "react-router-dom";
 export default function Repository() {
-    
-    return(
+
+    return (
 
         <>
             <div className="pathlink">
@@ -14,8 +14,8 @@ export default function Repository() {
                 <NavLink className="link" to='/repo'>ToanCD</NavLink>
             </div>
             <div className="pitem-containers">
-                
-            <div className="pitem">
+
+                <div className="pitem">
                     <span className="thead">Tên</span>
                     <span className="thead">Ngày tạo</span>
                     <span className="thead">Tác giả</span>
@@ -59,7 +59,7 @@ export default function Repository() {
                     </NavLink>
 
                 </NavLink>
-                
+
             </div>
         </>
     )

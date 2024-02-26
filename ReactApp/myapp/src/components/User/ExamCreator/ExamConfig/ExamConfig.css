@@ -1,0 +1,103 @@
+.matrix-containers{
+    width: 98%;
+    height: 550px; /* Đặt chiều cao tối đa cho phần nội dung của bảng */
+    overflow-y: scroll; /* Tạo thanh cuộn dọc khi cần thiết */
+    border-bottom: 2px solid black;
+    border-top: 2px solid black;
+}
+
+.matrix{
+    width: 95%;
+    height: 400px;
+    margin: auto;
+    padding: auto;
+}
+
+.matrix,td,th{
+    border: 2px solid black;
+    height: 25px;
+}
+
+.matrix input{
+    width: 100%;
+}
+
+.mt-tb-total{
+    background-color: rgb(129, 190, 247);
+}
+
+.mt-tb-config td{
+    background-color: rgb(222, 235, 249);
+}
+
+.mt-tb-header1{
+    background-color: rgb(173, 212, 246);
+    position: sticky;
+    top: 0;
+}
+
+.mt-tb-header2{
+    background-color: rgb(215, 235, 251);
+    position: sticky;
+    top: 24px;
+}
+
+.matrix-containers thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2; /* Đảm bảo phần th luôn nằm trên cùng */
+}
+
+/* Thêm border cho header */
+.mt-tb-header1::after,
+.mt-tb-header2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; /* Để border đụng vào đáy của header */
+    left: 0;
+    width: 100%;
+    border-bottom: 2px solid black;
+    z-index: 1; /* Đảm bảo border nằm trên header */
+}
+
+/* Tạo vị trí cố định cho border */
+.mt-tb-header1::after {
+    top: 12px; /* Chiều cao của header */
+}
+
+.mt-tb-header2::after {
+    top: 24px; /* Tổng chiều cao của hai header */
+}
+
+ .finishconfig{
+    width: 100%;
+    height: 55px;
+    border: 1px solid black;
+    margin-top: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: aliceblue;
+ } 
+
+ .number input{
+    border: 1px solid black;
+ }
+  
+.export{
+    width: 150px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(180, 206, 228);
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.export:hover{
+    background-color: rgb(151, 193, 230);
+}
+

@@ -1,0 +1,43 @@
+.reposelect{
+    width: 99%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.reposelect-tool{
+    width: 60%;
+    border-radius: 10px;
+    background-color: rgb(241, 244, 248);
+    padding: 5px;
+    height: 600px;
+}
+
+.repolist{
+    margin-top: 5px;
+    overflow-y: scroll;
+    height: 95%;
+}
+
+.next{
+    width: 140px;
+    height: 80%;
+    border: 1px solid rgb(126, 169, 235);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.next:hover{
+    background-color: rgb(188, 214, 238);
+}
+
+.fake-space{
+    width: 65%;
+}
+
+.next>p{
+    font-size: 10px;
+    font-weight: 700;
+}

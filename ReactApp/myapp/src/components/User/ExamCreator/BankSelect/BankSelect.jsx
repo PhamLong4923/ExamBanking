@@ -1,18 +1,41 @@
 import React from "react";
-import "../BankSelect/BankSelect.css";
 import { NavLink } from "react-router-dom";
 
-export default function BankSelect() {
-    return (
+
+export default function BankSelect(){
+    return(
         <>
             <div className="pathlink">
-                <NavLink className="link" to='/qbank'>Tạo đề kiểm tra</NavLink>
+                <NavLink className="link" to='/exsystembank'>Tạo đề kiểm tra</NavLink>
+                <i class="fa-solid fa-caret-right"></i>
+                <NavLink className="link" to='/expersonalbank'>Ngân hàng câu hỏi cá nhân</NavLink>
             </div>
-            <div className="item-containers">
-                <NavLink to='/exsystembank' className="item"><img src="/database.png" alt="" width={300} height={350} /><p className="item-title">Ngân hàng câu hỏi chung</p></NavLink>
-                <NavLink to='/expersonalbank' className="item"><img src="/servers.png" alt="" width={250} height={350} /><p className="item-title">Ngân hàng câu hỏi cá nhân</p></NavLink>
+
+            <div className="pitem-containers">
+                <div className="pitem">
+                    <span className="thead">Tên</span>
+                    <span className="thead">Ngày tạo</span>
+                    <span className="thead">Tác giả</span>
+                </div>
+                <NavLink to={'/exrepo'} className="pitem titem">
+                    <span className="td">Toán cánh diều</span>
+                    <span className="td">23:00 2/1/2024</span>
+                    <span className="td">Phạm Thanh Hương</span>
+                    <NavLink as="span" className="ta">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </NavLink>
+
+                </NavLink>
+
+                {/* <NavLink to='/repo' className="pitem">
+                    <div className="bank-thumnail"></div> 
+                    <div className="bank-info">
+                        <p className="item-title">Toán CD</p>
+                        <span className="status"></span>
+                    </div>
+                </NavLink> */}
+
             </div>
         </>
     )
 }
-
