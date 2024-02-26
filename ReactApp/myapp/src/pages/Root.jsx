@@ -35,8 +35,8 @@ const Root = () => (
       <Route path="/exrepo" element={<RepoSelectp></RepoSelectp>}></Route>
       <Route path="/exconfig" element={<ExamConfigp></ExamConfigp>}></Route>
       {/* <Route path="/qbank/pbank/:bid" element={<YourNestedComponent/>}/> */}
-        
-      
+
+
       {/* <Route path="/user/create" element={<UserFormScreen />} />
       <Route path="/user/:id" element={<UserFormScreen />} /> */}
 
