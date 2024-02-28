@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
 
 
 export default function BankSelect(){
@@ -7,7 +8,7 @@ export default function BankSelect(){
         <>
             <div className="pathlink">
                 <NavLink className="link" to='/exsystembank'>Tạo đề kiểm tra</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/expersonalbank'>Ngân hàng câu hỏi cá nhân</NavLink>
             </div>
 
