@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
+import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
 const Repository = (props) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
     const [editingRepoId, setEditingRepoId] = useState(null);
+    const [isDropdownVisible, setDropdownVisible] = useState();
+    const handleMenuClick = (repoId) => {
+        setDropdownVisible(prevId => prevId === repoId ? null : repoId);
+    };
 
     const [repos, setRepos] = useState([
         {
@@ -52,47 +57,19 @@ const Repository = (props) => {
                     <span className="thead">Tác giả</span>
                 </div>
                 {repos.map(repo => (
-                    // <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem">
-                    <NavLink key={repo.id} to={'/sec/1'} className="pitem titem">
-                        <span className="td">{repo.title}</span>
-                        <span className="td">{repo.datetime}</span>
-                        <span className="td">{repo.owner}</span>
-                        <NavLink as="span" className="ta">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                    <div>
+                        {/* <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem"> */}
+                        <NavLink key={repo.id} to={'/sec/1'} className="pitem titem">
+                            <span className="td">{repo.title}</span>
+                            <span className="td">{repo.datetime}</span>
+                            <span className="td">{repo.owner}</span>
+                            <NavLink as="span" className="ta" onClick={() => handleMenuClick(repo.id)}>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </NavLink>
                         </NavLink>
-
-                    </NavLink>
+                        <Dropdown id={repo.id} visible={isDropdownVisible === repo.id} onClose={() => setDropdownVisible(null)} />
+                    </div>
                 ))}
-
-                {/* <NavLink to={'/sec/1'} className="pitem titem">
-                    <span className="td">Chương II</span>
-                    <span className="td">23:00 2/1/2024</span>
-                    <span className="td">Phạm Thanh Hương</span>
-                    <NavLink as="span" className="ta">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </NavLink>
-
-                </NavLink>
-
-                <NavLink to={'/sec/1'} className="pitem titem">
-                    <span className="td">Chương III</span>
-                    <span className="td">23:00 2/1/2024</span>
-                    <span className="td">Phạm Thanh Hương</span>
-                    <NavLink as="span" className="ta">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </NavLink>
-
-                </NavLink>
-
-                <NavLink to={'/sec/1'} className="pitem titem">
-                    <span className="td">Chương IV</span>
-                    <span className="td">23:00 2/1/2024</span>
-                    <span className="td">Phạm Thanh Hương</span>
-                    <NavLink as="span" className="ta">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </NavLink>
-
-                </NavLink> */}
 
             </div>
         </div>

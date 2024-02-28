@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import MyEditor from '../../../../common/MyEditor';
-import ConvertTextTagToHTML from '../../../../common/convertTextTagToHTML';
+import ImportModal from '../../../../common/importModal';
+import Question from '../../../../common/question';
 import '../Section/Section.css';
 
 const Section = (props) => {
@@ -21,11 +21,11 @@ const Section = (props) => {
       id: '1',
       title: 'Đề ở đây',
       answers: [
-        { id: 'answer1', content: 'Đáp án ở đây' },
+        // { id: 'answer1', content: 'Đáp án ở đây' },
         // { id: 'answer2', content: 'Đáp án ở đây' },
         // { id: 'answer3', content: 'Đáp án ở đây' },
         // { id: 'answer4', content: 'Đáp án ở đây' }
-      ]
+      ],
     }
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
@@ -84,17 +84,6 @@ const Section = (props) => {
     );
     console.log("mảng mới sau edit answer:", questions)
   };
-  // const addAnswer = (questionId) => {
-  //   setQuestions(() =>
-  //     questions.map((question) =>
-  //       question.id === questionId
-  //         ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: 'Đáp án ở đây' }] }
-  //         : question
-  //     )
-  //   );
-  //   console.log("mảng mới sau khi thêm đáp án:", questions);
-  // };
-
 
   const handleSaveEdit = () => {
     setEditingQuestionId(null);
@@ -302,131 +291,28 @@ const Section = (props) => {
 
             <div className='qlistitem'>
               {questions.map((question, index) => (
-                <div onClick={() => handleSelectSection(1)}>
-                  <React.Fragment key={index}>
-                    {editingQuestionId === question.id && (
-                      <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
-                        <div className="modal-content">
-                          <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
-                          <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
-                          <div className='myeditor-ck'>
-                            <MyEditor type="title" quesid={question.id} ansid="" value={questions[index].title} onChange={handleEditorDataChange} />
-                          </div>
-                          <table className="edit-answers">
-                            <thead>
-                              <tr>
-                                <th>Đáp án</th>
-                                <th>Nội dung đáp án</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {question.answers.map((answer, index2) => (
-                                <tr key={answer.id}>
-                                  <th>Đáp án {index2 + 1}</th>
-                                  <td>
-                                    <div className='editanswer-each'>
-                                      <div className='myeditor-ck'>
-                                        <MyEditor type="answer" quesid={question.id} ansid={index2} value={questions[index].answers[index2].content} onChange={handleEditorDataChange} />
-                                      </div>
-                                      <i className="fa-solid fa-trash-can deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}></i>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                          <div className='addquestion-savebutton'>
-                            <button onClick={() => addAnswer(question.id)}>Thêm đáp án</button>
-                            <button onClick={() => handleSaveEdit()}>
-                              Lưu chỉnh sửa
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <table className="addquestion-table">
-                      <thead>
-                        <td className="row-head">
-                          <span className="left-row"> <i className="fa-solid fa-circle-question"></i> Câu hỏi {index + 1}</span>
-                          <span className="right-row">
-                            <button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i className="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
-                          </span>
-                        </td>
-                      </thead>
-                      <tr>
-                        <td className='ckeditor-result'>
-                          <label htmlFor={questions[index].title}>Đề: </label>
-                          <ConvertTextTagToHTML htmlContent={questions[index].title}></ConvertTextTagToHTML>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          {questions[index].answers.map((answer, answerIndex) => (
-                            <div className='ckeditor-result' key={answer.id}>
-                              <label htmlFor={`answer${answerIndex + 1}`}>Đáp án {answerIndex + 1}: </label>
-                              <ConvertTextTagToHTML htmlContent={answer.content} />
-                            </div>
-                          ))}
-                        </td>
-                      </tr>
-
-                    </table>
-                    <br></br>
-                  </React.Fragment>
-                </div>
+                <Question
+                  key={index}
+                  question={question}
+                  handleEditQuestion={handleEditQuestion}
+                  deleteQuestion={handleDeleteQuestion}
+                  handleEditAnswer={handleEditAnswer}
+                  deleteAnswer={deleteAnswer}
+                  addAnswer={addAnswer}
+                  handleSaveEdit={handleSaveEdit}
+                  editingQuestionId={editingQuestionId}
+                  modalIsOpen={modalIsOpen}
+                  handleEditorDataChange={handleEditorDataChange}
+                  handleSelectSection={handleSelectSection }
+                />
               ))}
-              {showModal1 && (
-                <div className="modal-background">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <div className='header-left'>
-                        <div className="header-icon">
-                          <i class="fa-solid fa-table fa-2xl"></i>
-                        </div>
-                        <div>
-                          <h5>Nhập câu hỏi từ excel</h5>
-                          <div className="modal-subtitle">Vui lòng tải lên bảng tính excel theo mẫu</div>
-                        </div>
-                      </div>
-                      <i class="fa-solid fa-xmark fa-2xl" onClick={close1}></i>
-                    </div>
-                    <div className="modal-body">
-                      <MyEditor type="excel" quesid="" ansid="" onChange={handleEditorDataChange} />
-                    </div>
-                    <div className="modal-footer">
-                      <button>Tải về mẫu</button>
-                      <button onClick={close1}>Close</button>
-                    </div>
-                  </div>
-                </div>
-              )}
 
-              {showModal2 && (
-                <div className="modal-background">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <div className='header-left'>
-                        <div className="header-icon">
-                          <i class="fa-regular fa-file-word fa-2xl"></i>
-                        </div>
-                        <div>
-                          <h5>Nhập câu hỏi từ Word</h5>
-                          <div className="modal-subtitle">Vui lòng tải lên Word theo định dạng mẫu</div>
-                        </div>
-                      </div>
-                      <i class="fa-solid fa-xmark fa-2xl" onClick={close2}></i>
-                    </div>
-                    <div className="modal-body">
-                      <MyEditor type="word" quesid="" ansid="" onChange={handleEditorDataChange} />
-                    </div>
-                    <div className="modal-footer">
-                      <button>Tải về mẫu</button>
-                      <button onClick={close2}>Close</button>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <ImportModal
+                showModal={showModal1 || showModal2}
+                closeModal={showModal1 ? close1 : close2}
+                handleEditorDataChange={handleEditorDataChange}
+                modalType={showModal1 ? 'excel' : 'word'}
+              />
 
             </div>
 
