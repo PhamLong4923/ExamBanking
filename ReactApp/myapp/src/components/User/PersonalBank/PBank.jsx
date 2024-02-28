@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
+import Dropdown from '../../../common/dropdown';
 import '../PersonalBank/PBank.css';
 import { IoIosArrowForward } from 'react-icons/io';
 import { HiDotsVertical } from "react-icons/hi";
@@ -8,6 +9,10 @@ const PBank = (props) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
     const [editingBankId, setEditingBankId] = useState(null);
+    const [isDropdownVisible, setDropdownVisible] = useState();
+    const handleMenuClick = (repoId) => {
+        setDropdownVisible(prevId => prevId === repoId ? null : repoId);
+    };
 
     const [banks, setBanks] = useState([
         {
@@ -57,19 +62,12 @@ const PBank = (props) => {
                         <span className="td">{bank.title}</span>
                         <span className="td">{bank.datetime}</span>
                         <span className="td">{bank.owner}</span>
-                        <NavLink as="span" className="ta">
+                        <NavLink as="span" className="ta" onClick={() => handleMenuClick(bank.id)}>
                             <i><HiDotsVertical></HiDotsVertical></i>
                         </NavLink>
+                        <Dropdown id={bank.id} visible={isDropdownVisible === bank.id} onClose={() => setDropdownVisible(null)} />
                     </NavLink>
                 ))}
-
-                {/* <NavLink to='/repo' className="pitem">
-                    <div className="bank-thumnail"></div> 
-                    <div className="bank-info">
-                        <p className="item-title">Toán CD</p>
-                        <span className="status"></span>
-                    </div>
-                </NavLink> */}
             </div >
         </div>
     )
