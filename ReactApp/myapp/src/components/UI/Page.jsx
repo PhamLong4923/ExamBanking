@@ -9,14 +9,7 @@ export default function Page() {
     return (
 
         <div>
-            <Header></Header>
-
-            <div className='body'>
-                <Sidebar></Sidebar>
-                
-            </div>
-
-            <Footer></Footer>
+            
 
         </div>
 
