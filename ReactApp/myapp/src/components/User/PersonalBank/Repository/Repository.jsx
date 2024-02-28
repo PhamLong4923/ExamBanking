@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
@@ -40,14 +42,15 @@ const Repository = (props) => {
         <div className='wrapper'>
             <div className="pathlink">
                 <NavLink className="link" to='/qbank'>Ngân hàng câu hỏi</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/pbank'>Ngân hàng câu hỏi cá nhân</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/repo'>ToanCD</NavLink>
             </div>
-            <div className='add-new-bank'>
+            <div className='add-new-bank' onClick={handleAddRepo}>
                 {/* <button onClick={handleAddBank}>Thêm ngân hàng câu hỏi</button> */}
-                <i onClick={handleAddRepo} class="fa-solid fa-plus fa-2xl icon-pointer"></i>
+
+                <FaPlus></FaPlus>
             </div>
             <div className="pitem-containers">
 

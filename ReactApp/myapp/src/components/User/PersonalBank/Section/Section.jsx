@@ -4,6 +4,11 @@ import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
+import { IoIosArrowForward } from 'react-icons/io';
+import { FaPlus } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { FaXmark } from "react-icons/fa6";
+import { FaRegFileWord, FaRegFileExcel, FaEdit } from "react-icons/fa";
 
 const Section = (props) => {
   // Sử dụng useParams để trích xuất tham số bid từ URL
@@ -227,11 +232,11 @@ const Section = (props) => {
     <>
       <div className="pathlink">
         <NavLink className="link" to='/qbank'>Ngân hàng câu hỏi</NavLink>
-        <i class="fa-solid fa-caret-right"></i>
+        <IoIosArrowForward></IoIosArrowForward>
         <NavLink className="link" to='/pbank'>Ngân hàng câu hỏi cá nhân</NavLink>
-        <i class="fa-solid fa-caret-right"></i>
+        <IoIosArrowForward></IoIosArrowForward>
         <NavLink className="link" to='/repo'>ToanCD</NavLink>
-        <i class="fa-solid fa-caret-right"></i>
+        <IoIosArrowForward></IoIosArrowForward>
         <NavLink className="link" to='/sec/1'>Chương I</NavLink>
       </div>
       <div className="section-container">
@@ -280,13 +285,13 @@ const Section = (props) => {
 
           <div className='section-rightside'>
             <div className='question-tool'>
-              <span className='tool-item' onClick={() => unSelect()}><i className="fa-solid fa-xmark"></i></span>
+              <span className='tool-item' onClick={() => unSelect()}><FaXmark /></span>
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
-              <span className='tool-item'><i className="fa-solid fa-pen-to-square"></i></span>
-              <span className='tool-item' onClick={deleteQuestions}><i className="fa-solid fa-trash-can"></i></span>
-              <span className='tool-item' onClick={handleAddQuestion}><i class="fa-solid fa-plus"></i></span>
-              <span className='tool-item' onClick={open2}><i class="fa-regular fa-file-word"></i></span>
-              <span className='tool-item' onClick={open1}><i class="fa-regular fa-file-excel"></i></span>
+      
+              <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
+              <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
+              <span className='tool-item' onClick={open2}><FaRegFileWord></FaRegFileWord></span>
+              <span className='tool-item' onClick={open1}><FaRegFileExcel></FaRegFileExcel></span>
             </div>
 
             <div className='qlistitem'>
@@ -320,9 +325,9 @@ const Section = (props) => {
 
           <div className='section-leftside'>
             <div className='section-tool'>
-              <span className='tool-item'><i class="fa-solid fa-plus"></i></span>
-              <span className='tool-item'><i className="fa-solid fa-pen-to-square"></i></span>
-              <span className='tool-item' onClick={deleteQuestions}><i className="fa-solid fa-trash-can"></i></span>
+              <span className='tool-item'><FaPlus></FaPlus></span>
+              <span className='tool-item'><FaEdit></FaEdit></span>
+              <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
             </div>
 
             <div className="section-list">

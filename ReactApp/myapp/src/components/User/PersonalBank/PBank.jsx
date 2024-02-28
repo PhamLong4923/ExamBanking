@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../common/dropdown';
 import '../PersonalBank/PBank.css';
-
 const PBank = (props) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
@@ -41,12 +42,12 @@ const PBank = (props) => {
         <div className='wrapper'>
             <div className="pathlink">
                 <NavLink className="link" to='/qbank'>Ngân hàng câu hỏi</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link">Ngân hàng câu hỏi cá nhân</NavLink>
             </div>
-            <div className='add-new-bank'>
+            <div className='add-new-bank' onClick={handleAddBank}>
                 {/* <button onClick={handleAddBank}>Thêm ngân hàng câu hỏi</button> */}
-                <i onClick={handleAddBank} class="fa-solid fa-plus fa-2xl icon-pointer"></i>
+                <FaPlus></FaPlus>
             </div>
             <div className="pitem-containers">
                 <div className="pitem">

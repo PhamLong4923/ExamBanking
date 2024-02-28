@@ -1,7 +1,7 @@
 .reposelect{
     width: 99%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .reposelect-tool{
@@ -19,7 +19,7 @@
 }
 
 .next{
-    width: 140px;
+    width: 20%;
     height: 80%;
     border: 1px solid rgb(126, 169, 235);
     border-radius: 20px;
@@ -27,6 +27,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    float: right;
 }
 
 .next:hover{
@@ -34,10 +35,15 @@
 }
 
 .fake-space{
-    width: 65%;
+    width: 60%;
 }
 
 .next>p{
     font-size: 10px;
     font-weight: 700;
+}
+
+.selectedq{
+    width: 15%;
+    font-size: 12px;
 }

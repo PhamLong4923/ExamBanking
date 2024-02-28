@@ -1,6 +1,7 @@
 import { useState, React } from "react";
 import { NavLink } from "react-router-dom";
 import '../ExamConfig/ExamConfig.css'
+import { IoIosArrowForward } from "react-icons/io";
 import axios from "axios";
 
 export default function ExamConfig() {
@@ -47,11 +48,11 @@ export default function ExamConfig() {
         <>
             <div className="pathlink">
                 <NavLink className="link" to='/exsystembank'>Tạo đề kiểm tra</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/expersonalbank'>Ngân hàng câu hỏi cá nhân</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/'>Toán 8</NavLink>
-                <i class="fa-solid fa-caret-right"></i>
+                <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/'>Ma trận</NavLink>
             </div>
 
@@ -81,7 +82,7 @@ export default function ExamConfig() {
 
 
                         <tr className="mt-tb-config" key={2}>
-                            <td rowSpan={2}>Bài 1: làm sao để uống nước bằng mồm ahhahahahhahahahhahah</td>
+                            <td rowSpan={2}>Bài 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint obcaecati culpa animi facilis quis sunt, perferendis non veniam maxime libero aspernatur quasi, excepturi minus nihil, debitis dicta provident autem eaque!</td>
                             <td><input type="text" onChange={(e) => handleInputChange(1, 1, 1, e.target.value)} /></td>
                             <td><input type="number" /></td>
                             <td><input type="number" /></td>

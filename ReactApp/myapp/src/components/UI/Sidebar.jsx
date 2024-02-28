@@ -1,7 +1,9 @@
 import { React } from 'react';
 import '../UI/UIStyle/Sidebar.css'
 import { NavLink } from 'react-router-dom';
-
+import { FaHome } from "react-icons/fa";
+import { PiBankBold } from "react-icons/pi";
+import { RiFileEditFill } from "react-icons/ri";
 
 export default function Sidebar({picker}) {    
 
@@ -15,21 +17,22 @@ export default function Sidebar({picker}) {
                 </div>
                 <NavLink to='/' title='Trang chủ'>
                     <div className='sidebar-item'>
-                        <i className="fa-solid fa-house fa-xl"></i>
+                        <i><FaHome></FaHome></i>
+                        
                         <span className='tooltip'>Trang chủ</span>
                     </div>
                 </NavLink>
 
                 <NavLink to='/qbank'>
-                    <div className='sidebar-item sidebar-item2'>
-                        <i className="fa-solid fa-building-columns fa-xl"></i>
+                    <div className='sidebar-item'>
+                        <i><PiBankBold></PiBankBold></i>
                         <span className='tooltip'>Ngân hàng câu hỏi</span>
                     </div>
                 </NavLink>
 
                 <NavLink to='/exam'>
                     <div className='sidebar-item-noround'>
-                        <i className="fa-solid fa-file-pen fa-2xl"></i>
+                        <i><RiFileEditFill></RiFileEditFill></i>
                         <span className='tooltip'>Tạo đề kiểm tra</span>
                     </div>
                 </NavLink>
