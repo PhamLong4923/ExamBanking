@@ -67,7 +67,7 @@ const Repository = (props) => {
                             <span className="td">{repo.datetime}</span>
                             <span className="td">{repo.owner}</span>
                             <NavLink as="span" className="ta" onClick={() => handleMenuClick(repo.id)}>
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                <i><HiDotsVertical></HiDotsVertical></i>
                             </NavLink>
                         </NavLink>
                         <Dropdown id={repo.id} visible={isDropdownVisible === repo.id} onClose={() => setDropdownVisible(null)} />

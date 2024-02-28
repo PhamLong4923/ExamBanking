@@ -62,7 +62,7 @@ const PBank = (props) => {
                         <span className="td">{bank.datetime}</span>
                         <span className="td">{bank.owner}</span>
                         <NavLink as="span" className="ta" onClick={() => handleMenuClick(bank.id)}>
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
+                            <i><HiDotsVertical></HiDotsVertical></i>
                         </NavLink>
                         <Dropdown id={bank.id} visible={isDropdownVisible === bank.id} onClose={() => setDropdownVisible(null)} />
                     </NavLink>
