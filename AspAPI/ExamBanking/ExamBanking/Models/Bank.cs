@@ -7,14 +7,17 @@ namespace ExamBanking.Models
     {
         public Bank()
         {
+            Accesses = new HashSet<Access>();
             Repositories = new HashSet<Repository>();
         }
 
-        public int BankId { get; set; }
-        public byte? BankStatus { get; set; }
-        public int? AccountId { get; set; }
+        public int Bankid { get; set; }
+        public string? Bankname { get; set; }
+        public byte? Bankstatus { get; set; }
+        public int? Accid { get; set; }
 
-        public virtual Account? Account { get; set; }
+        public virtual Account? Acc { get; set; }
+        public virtual ICollection<Access> Accesses { get; set; }
         public virtual ICollection<Repository> Repositories { get; set; }
     }
 }

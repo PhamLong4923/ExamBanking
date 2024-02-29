@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ExamBanking.Models;
-using ExamBanking.Repository;
+
 
 namespace ExamBanking.Config
 {
@@ -10,7 +10,7 @@ namespace ExamBanking.Config
         {
             //add service
             services.AddDbContext<ExamBankingContext>();
-            services.AddScoped<RExample>();
+            
 
             services.AddCors(options =>
             {

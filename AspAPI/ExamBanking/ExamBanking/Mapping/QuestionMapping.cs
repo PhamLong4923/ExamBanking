@@ -9,7 +9,7 @@ namespace ExamBanking.Mapping
         public QuestionMapping()
         {
             CreateMap<Question, QuestionDTO>()
-                .ForMember(dest => dest.QTitle, opt => opt.MapFrom(src => src.QModeNavigation.QTitle));
+                .ForMember(dest => dest.QTitle, opt => opt.MapFrom(src => src.Mode.Qmode));
         }
     }
 }

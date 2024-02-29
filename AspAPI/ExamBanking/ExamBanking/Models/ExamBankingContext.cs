@@ -16,242 +16,274 @@ namespace ExamBanking.Models
         {
         }
 
+        public virtual DbSet<Access> Accesses { get; set; } = null!;
         public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Answer> Answers { get; set; } = null!;
         public virtual DbSet<Bank> Banks { get; set; } = null!;
+        public virtual DbSet<Mode> Modes { get; set; } = null!;
+        public virtual DbSet<Payment> Payments { get; set; } = null!;
         public virtual DbSet<Question> Questions { get; set; } = null!;
-        public virtual DbSet<QuestionMode> QuestionModes { get; set; } = null!;
         public virtual DbSet<Repository> Repositories { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Section> Sections { get; set; } = null!;
-        public virtual DbSet<Solution> Solutions { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var builder = new ConfigurationBuilder()
-                                              .SetBasePath(Directory.GetCurrentDirectory())
-                                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                IConfigurationRoot configuration = builder.Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
-
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server =exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Access>(entity =>
+            {
+                entity.ToTable("Access");
+
+                entity.Property(e => e.Accessid).HasColumnName("accessid");
+
+                entity.Property(e => e.Bankid).HasColumnName("bankid");
+
+                entity.Property(e => e.Fromid).HasColumnName("fromid");
+
+                entity.Property(e => e.Message)
+                    .HasMaxLength(1)
+                    .HasColumnName("message");
+
+                entity.Property(e => e.Repoid).HasColumnName("repoid");
+
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.Toid).HasColumnName("toid");
+
+                entity.HasOne(d => d.Bank)
+                    .WithMany(p => p.Accesses)
+                    .HasForeignKey(d => d.Bankid)
+                    .HasConstraintName("FK__Access__bankid__7A672E12");
+
+                entity.HasOne(d => d.From)
+                    .WithMany(p => p.AccessFroms)
+                    .HasForeignKey(d => d.Fromid)
+                    .HasConstraintName("FK__Access__fromid__7B5B524B");
+
+                entity.HasOne(d => d.Repo)
+                    .WithMany(p => p.Accesses)
+                    .HasForeignKey(d => d.Repoid)
+                    .HasConstraintName("FK__Access__repoid__7C4F7684");
+
+                entity.HasOne(d => d.To)
+                    .WithMany(p => p.AccessTos)
+                    .HasForeignKey(d => d.Toid)
+                    .HasConstraintName("FK__Access__toid__7D439ABD");
+            });
+
             modelBuilder.Entity<Account>(entity =>
             {
+                entity.HasKey(e => e.Accid)
+                    .HasName("PK__Account__A472ABF22B30F515");
+
                 entity.ToTable("Account");
 
-                entity.Property(e => e.AccountId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("accountId");
+                entity.Property(e => e.Accid).HasColumnName("accid");
+
+                entity.Property(e => e.Accmode).HasColumnName("accmode");
 
                 entity.Property(e => e.Accname)
                     .HasMaxLength(255)
                     .HasColumnName("accname");
 
-                entity.Property(e => e.DateJoin)
+                entity.Property(e => e.Datejoin)
                     .HasColumnType("datetime")
-                    .HasColumnName("dateJoin");
+                    .HasColumnName("datejoin");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("email");
 
-                entity.Property(e => e.RoleId).HasColumnName("roleId");
+                entity.Property(e => e.PasswordHash).HasMaxLength(64);
 
-                entity.Property(e => e.Username)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("username");
+                entity.Property(e => e.PasswordResetToken).HasMaxLength(30);
 
-                entity.Property(e => e.Userpass)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("userpass");
+                entity.Property(e => e.PasswordSalt).HasMaxLength(64);
+
+                entity.Property(e => e.ResetTokenExpires).HasColumnType("datetime");
+
+                entity.Property(e => e.Roleid).HasColumnName("roleid");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
-                    .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Account__roleId__398D8EEE");
+                    .HasForeignKey(d => d.Roleid)
+                    .HasConstraintName("FK__Account__roleid__7E37BEF6");
             });
 
             modelBuilder.Entity<Answer>(entity =>
             {
+                entity.HasKey(e => e.Ansid)
+                    .HasName("PK__Answer__2626EE5857ACE090");
+
                 entity.ToTable("Answer");
 
-                entity.Property(e => e.AnswerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("answerId");
+                entity.Property(e => e.Ansid).HasColumnName("ansid");
 
-                entity.Property(e => e.AccountId).HasColumnName("accountId");
+                entity.Property(e => e.Anscontent).HasColumnName("anscontent");
 
-                entity.Property(e => e.AnswerStatus).HasColumnName("answerStatus");
+                entity.Property(e => e.Ansstatus).HasColumnName("ansstatus");
 
-                entity.Property(e => e.QuestionId).HasColumnName("questionId");
+                entity.Property(e => e.Quesid).HasColumnName("quesid");
 
-                entity.HasOne(d => d.Question)
+                entity.HasOne(d => d.Ques)
                     .WithMany(p => p.Answers)
-                    .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Answer__question__4AB81AF0");
+                    .HasForeignKey(d => d.Quesid)
+                    .HasConstraintName("FK__Answer__quesid__6A30C649");
             });
 
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("Bank");
 
-                entity.Property(e => e.BankId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("bankId");
+                entity.Property(e => e.Bankid).HasColumnName("bankid");
 
-                entity.Property(e => e.AccountId).HasColumnName("accountId");
+                entity.Property(e => e.Accid).HasColumnName("accid");
 
-                entity.Property(e => e.BankStatus).HasColumnName("bankStatus");
+                entity.Property(e => e.Bankname)
+                    .HasMaxLength(255)
+                    .HasColumnName("bankname");
 
-                entity.HasOne(d => d.Account)
+                entity.Property(e => e.Bankstatus).HasColumnName("bankstatus");
+
+                entity.HasOne(d => d.Acc)
                     .WithMany(p => p.Banks)
-                    .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__Bank__accountId__3C69FB99");
+                    .HasForeignKey(d => d.Accid)
+                    .HasConstraintName("FK__Bank__accid__00200768");
+            });
+
+            modelBuilder.Entity<Mode>(entity =>
+            {
+                entity.ToTable("Mode");
+
+                entity.Property(e => e.Modeid).HasColumnName("modeid");
+
+                entity.Property(e => e.Qmode)
+                    .HasMaxLength(100)
+                    .HasColumnName("qmode");
+            });
+
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.HasKey(e => e.Payid)
+                    .HasName("PK__Payment__082D8EEB79556312");
+
+                entity.ToTable("Payment");
+
+                entity.Property(e => e.Payid).HasColumnName("payid");
+
+                entity.Property(e => e.Accid).HasColumnName("accid");
+
+                entity.Property(e => e.Money).HasColumnName("money");
+
+                entity.Property(e => e.Paydate)
+                    .HasColumnType("date")
+                    .HasColumnName("paydate");
+
+                entity.Property(e => e.Paymode).HasColumnName("paymode");
+
+                entity.HasOne(d => d.Acc)
+                    .WithMany(p => p.Payments)
+                    .HasForeignKey(d => d.Accid)
+                    .HasConstraintName("FK__Payment__accid__01142BA1");
             });
 
             modelBuilder.Entity<Question>(entity =>
             {
+                entity.HasKey(e => e.Quesid)
+                    .HasName("PK__Question__8FF5F51D4314634C");
+
                 entity.ToTable("Question");
 
-                entity.Property(e => e.QuestionId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("questionId");
+                entity.Property(e => e.Quesid).HasColumnName("quesid");
 
-                entity.Property(e => e.QMode).HasColumnName("qMode");
+                entity.Property(e => e.Modeid).HasColumnName("modeid");
 
-                entity.Property(e => e.QQuestion)
-                    .HasMaxLength(255)
-                    .HasColumnName("qQuestion");
+                entity.Property(e => e.Quescontent).HasColumnName("quescontent");
 
-                entity.Property(e => e.QSolution)
-                    .HasMaxLength(255)
-                    .HasColumnName("qSolution");
+                entity.Property(e => e.Secid).HasColumnName("secid");
 
-                entity.Property(e => e.QType)
-                    .HasMaxLength(255)
-                    .HasColumnName("qType");
+                entity.Property(e => e.Solution).HasColumnName("solution");
 
-                entity.Property(e => e.SectionId).HasColumnName("sectionId");
+                entity.Property(e => e.Type).HasColumnName("type");
 
-                entity.HasOne(d => d.QModeNavigation)
+                entity.HasOne(d => d.Mode)
                     .WithMany(p => p.Questions)
-                    .HasForeignKey(d => d.QMode)
-                    .HasConstraintName("FK__Question__qMode__46E78A0C");
+                    .HasForeignKey(d => d.Modeid)
+                    .HasConstraintName("FK__Question__modeid__02084FDA");
 
-                entity.HasOne(d => d.Section)
+                entity.HasOne(d => d.Sec)
                     .WithMany(p => p.Questions)
-                    .HasForeignKey(d => d.SectionId)
-                    .HasConstraintName("FK__Question__sectio__47DBAE45");
-            });
-
-            modelBuilder.Entity<QuestionMode>(entity =>
-            {
-                entity.HasKey(e => e.QModeId)
-                    .HasName("PK__Question__7FC60E7C6329A746");
-
-                entity.ToTable("QuestionMode");
-
-                entity.Property(e => e.QModeId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("qModeId");
-
-                entity.Property(e => e.QTitle)
-                    .HasMaxLength(255)
-                    .HasColumnName("qTitle");
+                    .HasForeignKey(d => d.Secid)
+                    .HasConstraintName("FK__Question__secid__02FC7413");
             });
 
             modelBuilder.Entity<Repository>(entity =>
             {
-                entity.HasKey(e => e.RepoId)
-                    .HasName("PK__Reposito__217368C9D45472EF");
+                entity.HasKey(e => e.Repoid)
+                    .HasName("PK__Reposito__217014F166C39978");
 
                 entity.ToTable("Repository");
 
-                entity.Property(e => e.RepoId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("repoId");
+                entity.Property(e => e.Repoid).HasColumnName("repoid");
 
-                entity.Property(e => e.BankId).HasColumnName("bankId");
+                entity.Property(e => e.Bankid).HasColumnName("bankid");
 
-                entity.Property(e => e.FrepoId).HasColumnName("frepoId");
+                entity.Property(e => e.Reponame)
+                    .HasMaxLength(100)
+                    .HasColumnName("reponame");
 
-                entity.Property(e => e.RepoTitle)
-                    .HasMaxLength(255)
-                    .HasColumnName("repoTitle");
+                entity.Property(e => e.Secondeditor).HasColumnName("secondeditor");
 
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Repositories)
-                    .HasForeignKey(d => d.BankId)
-                    .HasConstraintName("FK__Repositor__bankI__412EB0B6");
+                    .HasForeignKey(d => d.Bankid)
+                    .HasConstraintName("FK__Repositor__banki__03F0984C");
+
+                entity.HasOne(d => d.SecondeditorNavigation)
+                    .WithMany(p => p.Repositories)
+                    .HasForeignKey(d => d.Secondeditor)
+                    .HasConstraintName("FK__Repositor__secon__04E4BC85");
             });
 
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Role");
 
-                entity.Property(e => e.RoleId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("roleId");
+                entity.Property(e => e.Roleid).HasColumnName("roleid");
 
-                entity.Property(e => e.RoleTitle)
+                entity.Property(e => e.Role1)
                     .HasMaxLength(255)
-                    .HasColumnName("roleTitle");
+                    .HasColumnName("role");
             });
 
             modelBuilder.Entity<Section>(entity =>
             {
+                entity.HasKey(e => e.Secid)
+                    .HasName("PK__Section__C25197F081504682");
+
                 entity.ToTable("Section");
 
-                entity.Property(e => e.SectionId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("sectionId");
+                entity.Property(e => e.Secid).HasColumnName("secid");
 
-                entity.Property(e => e.RepoId).HasColumnName("repoId");
+                entity.Property(e => e.Repoid).HasColumnName("repoid");
 
-                entity.Property(e => e.SecDate)
-                    .HasColumnType("date")
-                    .HasColumnName("secDate");
-
-                entity.Property(e => e.SecTitle)
-                    .HasMaxLength(255)
-                    .HasColumnName("secTitle");
+                entity.Property(e => e.Secname)
+                    .HasMaxLength(100)
+                    .HasColumnName("secname");
 
                 entity.HasOne(d => d.Repo)
                     .WithMany(p => p.Sections)
-                    .HasForeignKey(d => d.RepoId)
-                    .HasConstraintName("FK__Section__repoId__440B1D61");
-            });
-
-            modelBuilder.Entity<Solution>(entity =>
-            {
-                entity.HasKey(e => e.SoluId)
-                    .HasName("PK__Solution__144C5C90194C5D06");
-
-                entity.ToTable("Solution");
-
-                entity.Property(e => e.SoluId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("soluId");
-
-                entity.Property(e => e.QuestionId).HasColumnName("questionId");
-
-                entity.Property(e => e.SoluContent)
-                    .HasMaxLength(1024)
-                    .HasColumnName("soluContent");
-
-                entity.HasOne(d => d.Question)
-                    .WithMany(p => p.Solutions)
-                    .HasForeignKey(d => d.QuestionId)
-                    .HasConstraintName("FK__Solution__questi__4D94879B");
+                    .HasForeignKey(d => d.Repoid)
+                    .HasConstraintName("FK__Section__repoid__05D8E0BE");
             });
 
             OnModelCreatingPartial(modelBuilder);

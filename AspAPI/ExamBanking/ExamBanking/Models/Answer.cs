@@ -5,11 +5,11 @@ namespace ExamBanking.Models
 {
     public partial class Answer
     {
-        public int AnswerId { get; set; }
-        public byte? AnswerStatus { get; set; }
-        public int? AccountId { get; set; }
-        public int? QuestionId { get; set; }
+        public int Ansid { get; set; }
+        public string? Anscontent { get; set; }
+        public byte? Ansstatus { get; set; }
+        public int? Quesid { get; set; }
 
-        public virtual Question? Question { get; set; }
+        public virtual Question? Ques { get; set; }
     }
 }

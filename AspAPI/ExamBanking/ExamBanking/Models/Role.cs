@@ -10,8 +10,8 @@ namespace ExamBanking.Models
             Accounts = new HashSet<Account>();
         }
 
-        public int RoleId { get; set; }
-        public string? RoleTitle { get; set; }
+        public int Roleid { get; set; }
+        public string? Role1 { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
     }
