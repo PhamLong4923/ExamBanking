@@ -1,6 +1,64 @@
 [
   {
     "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "CreateBank",
+    "RelativePath": "api/Bank/CreateBank",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.BankDto.CreateBankRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "DeleteBank",
+    "RelativePath": "api/Bank/DeleteBank",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.BankDto.DeleteBank",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "EditBank",
+    "RelativePath": "api/Bank/EditBank",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.BankDto.RenameBank",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "viewBankList",
+    "RelativePath": "api/Bank/GetBank",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.BankController",
     "Method": "viewQuestionList",
     "RelativePath": "api/Bank/vquestions",
     "HttpMethod": "POST",
@@ -45,7 +103,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "ExamBanking.DTO.UserLoginRequest",
+        "Type": "ExamBanking.DTO.AccountDto.UserLoginRequest",
         "IsRequired": true
       }
     ],
@@ -61,7 +119,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "ExamBanking.DTO.UserRegisterRequest",
+        "Type": "ExamBanking.DTO.AccountDto.UserRegisterRequest",
         "IsRequired": true
       }
     ],
@@ -77,7 +135,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "ExamBanking.DTO.ResetPasswordRequest",
+        "Type": "ExamBanking.DTO.AccountDto.ResetPasswordRequest",
         "IsRequired": true
       }
     ],

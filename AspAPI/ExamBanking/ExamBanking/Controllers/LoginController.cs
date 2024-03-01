@@ -1,4 +1,4 @@
-﻿using ExamBanking.DTO;
+﻿using ExamBanking.DTO.AccountDto;
 using ExamBanking.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
