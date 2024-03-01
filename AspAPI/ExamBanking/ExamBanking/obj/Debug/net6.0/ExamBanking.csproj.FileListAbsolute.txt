@@ -135,3 +135,6 @@ D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\refi
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.pdb
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.genruntimeconfig.cache
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\ExamBanking.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll

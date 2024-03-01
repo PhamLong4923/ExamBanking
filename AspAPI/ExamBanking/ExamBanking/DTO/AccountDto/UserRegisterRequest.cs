@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ExamBanking.DTO
+namespace ExamBanking.DTO.AccountDto
 {
     public class UserRegisterRequest
     {
