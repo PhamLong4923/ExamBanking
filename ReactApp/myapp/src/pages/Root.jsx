@@ -5,20 +5,20 @@ import PBanks from './User/Bank/PBank';
 import Profile from './User/Setting/Profile';
 import Sections from './User/Bank/Sectionp';
 import Qbanks from './User/Bank/Qbankp'
-import Header from '../components/UI/Header';
-import Footer from '../components/UI/Footer';
+
 import Repository from './User/Bank/Repositoryp';
 import BankSelectp from './User/Exam/BankSelectp';
 import BankTypeSelectp from './User/Exam/BankTypeSelectp';
 import RepoSelectp from './User/Exam/RepoSelectp';
 import ExamConfigp from './User/Exam/ExamConfigp';
+import Loginp from './User/Login/Loginp';
 
 const Root = () => (
   <BrowserRouter>
-    <Header></Header>
     <Routes>
 
       <Route path="/" element={<HomeScreen />} />
+      <Route path="/login" element={<Loginp/>} />
 
       {/*Question Bank*/}
       
@@ -51,7 +51,6 @@ const Root = () => (
       <Route path="/manager/:id" element={<ManagerFormScreen />} /> */}
 
     </Routes>
-    <Footer></Footer>
   </BrowserRouter>
 
 );

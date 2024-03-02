@@ -26,7 +26,7 @@ export default function RepoSelect() {
                                 <span className='tool-item' ><FaXmark></FaXmark></span>
                                 <span className='selectedq'>0 được chọn</span>
                                 <span className="fake-space"></span>
-                                <span className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></span>
+                                <NavLink to={'/exconfig'} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>
                         </div>
 
                         <div className="repolist">
