@@ -1,14 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
+import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
+import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
-import { IoIosArrowForward } from 'react-icons/io';
-import { FaPlus } from "react-icons/fa6";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { FaXmark } from "react-icons/fa6";
-import { FaRegFileWord, FaRegFileExcel, FaEdit } from "react-icons/fa";
 
 const Section = (props) => {
   // Sử dụng useParams để trích xuất tham số bid từ URL
@@ -57,12 +55,9 @@ const Section = (props) => {
       ...questions,
       {
         id: newId,
-        title: 'Đề ở đây',
+        title: '',
         answers: [
-          { id: 'answer1', content: 'Đáp án ở đây' },
-          // { id: 'answer2', content: 'Đáp án ở đây' },
-          // { id: 'answer3', content: 'Đáp án ở đây' },
-          // { id: 'answer4', content: 'Đáp án ở đây' }
+          { id: 'answer1', content: '' },
         ],
       },
     ]);
@@ -205,7 +200,7 @@ const Section = (props) => {
     setQuestions(() =>
       questions.map((question) =>
         question.id === questionId
-          ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: 'Đáp án ở đây' }] }
+          ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: '' }] }
           : question
       )
     );
@@ -287,7 +282,7 @@ const Section = (props) => {
             <div className='question-tool'>
               <span className='tool-item' onClick={() => unSelect()}><FaXmark /></span>
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
-      
+
               <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
               <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
               <span className='tool-item' onClick={open2}><FaRegFileWord></FaRegFileWord></span>
@@ -308,7 +303,8 @@ const Section = (props) => {
                   editingQuestionId={editingQuestionId}
                   modalIsOpen={modalIsOpen}
                   handleEditorDataChange={handleEditorDataChange}
-                  handleSelectSection={handleSelectSection }
+                  setModalIsOpen={setModalIsOpen}
+                  handleSelectSection={handleSelectSection}
                 />
               ))}
 
@@ -337,10 +333,7 @@ const Section = (props) => {
                 </div>
               ))}
             </div>
-
           </div>
-
-
         </div>
       </div>
     </>
