@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaTrash } from 'react-icons/fa';
 import MyEditor from './MyEditor';
 import ConvertTextTagToHTML from './convertTextTagToHTML';
 
@@ -12,15 +13,18 @@ const Question = ({
     handleSaveEdit,
     editingQuestionId,
     modalIsOpen,
-    handleEditorDataChange
+    handleEditorDataChange,
+    handleSelectSection,
+    setModalIsOpen,
 }) => {
     return (
-        <div onClick={() => handleSelectSection(1)}>
+        <div onClick={() => handleSelectSection}>
             <React.Fragment>
                 {editingQuestionId === question.id && (
                     <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
                         <div className="modal-content">
                             <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
+
                             <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
                             <div className='myeditor-ck'>
                                 <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
@@ -41,7 +45,7 @@ const Question = ({
                                                     <div className='myeditor-ck'>
                                                         <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
                                                     </div>
-                                                    <i className="fa-solid fa-trash-can deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}></i>
+                                                    <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash></FaTrash></i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -51,7 +55,7 @@ const Question = ({
                             <div className='addquestion-savebutton'>
                                 <button onClick={() => addAnswer(question.id)}>Thêm đáp án</button>
                                 <button onClick={() => handleSaveEdit()}>
-                                    Lưu chỉnh sửa
+                                    Lưu
                                 </button>
                             </div>
                         </div>
