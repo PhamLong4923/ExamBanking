@@ -22,7 +22,7 @@ export const Login = () => {
                         <div class="flex items-center justify-between">
                             <label for="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
                             <div class="text-sm">
-                                <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                                <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Quên mật khẩu?</a>
                             </div>
                         </div>
                         <div className="mt-2">
@@ -31,7 +31,7 @@ export const Login = () => {
                     </div>
 
                     <div>
-                        <button type="submit" className="flex w-full justify-center ml-0 mt-4 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+                        <button type="submit" className="flex w-full justify-center ml-0 mt-4 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Đăng nhập</button>
                     </div>
                 </form>
 
@@ -46,7 +46,7 @@ export const Login = () => {
             <div class="flex items-center justify-center">
                     <button className="px-4 py-2 border flex gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
                         <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo"/>
-                            <span className='text-black'>Login with Google</span>
+                            <span className='text-black'>Đăng nhập bằng tài khoản google</span>
                     </button>
                 </div>
         </div>
