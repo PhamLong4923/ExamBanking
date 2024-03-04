@@ -5,7 +5,7 @@ import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
-import Question from '../Question/question.jsx';
+import Question from '../../../../common/question';
 import '../Section/Section.css';
 
 const Section = (props) => {
