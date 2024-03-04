@@ -4,7 +4,7 @@ import Header from "../../../components/UI/Header.jsx";
 import Footer from "../../../components/UI/Footer.jsx";
 
 
-const PBanks = () => {
+const Bankp = () => {
   return (
     
     <>
@@ -17,4 +17,4 @@ const PBanks = () => {
   )
 };
 
-export default PBanks;
+export default Bankp;

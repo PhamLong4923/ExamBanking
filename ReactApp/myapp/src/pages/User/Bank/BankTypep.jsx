@@ -3,7 +3,7 @@ import Body from "../../../components/UI/Body.jsx";
 import Header from "../../../components/UI/Header.jsx";
 import Footer from "../../../components/UI/Footer.jsx";
 
-const Qbanks = () => {
+const BankTypep = () => {
 
 
   return (
@@ -16,4 +16,4 @@ const Qbanks = () => {
   )
 };
 
-export default Qbanks;
+export default BankTypep;

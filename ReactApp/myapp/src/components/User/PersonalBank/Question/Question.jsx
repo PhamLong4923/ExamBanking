@@ -67,7 +67,7 @@ const Question = ({
                         <td className="row-head">
                             <span className="left-row"> <i className="fa-solid fa-circle-question"></i> Câu hỏi {question.id}</span>
                             <span className="right-row">
-                                <button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i className="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
+                                <button className='editqbutton' title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i className="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
                             </span>
                         </td>
                     </thead>
