@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { IoIosArrowDropdown, IoIosArrowDropdownCircle } from "react-icons/io";
 import MyEditor from './MyEditor';
+import './Style/question.css';
 import ConvertTextTagToHTML from './convertTextTagToHTML';
 
 const Question = ({
@@ -16,7 +18,15 @@ const Question = ({
     handleEditorDataChange,
     handleSelectSection,
     setModalIsOpen,
+    handleQuestionTypeChange,
+    handleEditSolution,
 }) => {
+    const [solutionVisible, setSolutionVisible] = useState(false);
+
+    const toggleSolution = () => {
+        setSolutionVisible(!solutionVisible);
+    };
+
     return (
         <div onClick={() => handleSelectSection}>
             <React.Fragment>
@@ -24,36 +34,64 @@ const Question = ({
                     <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
                         <div className="modal-content">
                             <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
-
-                            <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
-                            <div className='myeditor-ck'>
-                                <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
+                            <div className='editquestion-head'>
+                                <div className='editquestion-title'>
+                                    <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
+                                    <div className='myeditor-ck'>
+                                        <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <select defaultValue={question.type} onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}>
+                                        <option value='1'>
+                                            Trắc nghiệm
+                                        </option>
+                                        <option value='2'>
+                                            Tự luận
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                             <table className="edit-answers">
-                                <thead>
-                                    <tr>
-                                        <th>Đáp án</th>
-                                        <th>Nội dung đáp án</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {question.answers.map((answer, index2) => (
-                                        <tr key={answer.id}>
-                                            <th>Đáp án {index2 + 1}</th>
-                                            <td>
-                                                <div className='editanswer-each'>
-                                                    <div className='myeditor-ck'>
-                                                        <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
-                                                    </div>
-                                                    <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash></FaTrash></i>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
+                                {question.type === '1' && (
+                                    <>
+                                        <thead>
+                                            <tr>
+                                                <th>Đáp án</th>
+                                                <th>Nội dung đáp án</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {question.answers.map((answer, index2) => (
+                                                <tr key={answer.id}>
+                                                    <th>Đáp án {index2 + 1}</th>
+                                                    <td>
+                                                        <div className='editanswer-each'>
+                                                            <div className='myeditor-ck'>
+                                                                <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
+                                                            </div>
+                                                            <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash></FaTrash></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </>
+                                )}
+                                <tr className='edit-solution'>
+                                    <th>Hướng dẫn giải</th>
+                                    <td>
+                                        <div className='myeditor-ck'>
+                                            <MyEditor type="solution" quesid={question.id} ansid="" value={question.solution} onChange={handleEditorDataChange} />
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
+
                             <div className='addquestion-savebutton'>
-                                <button onClick={() => addAnswer(question.id)}>Thêm đáp án</button>
+                                {question.type === '1' && (
+                                    <button onClick={() => addAnswer(question.id)}>Thêm đáp án</button>
+                                )}
                                 <button onClick={() => handleSaveEdit()}>
                                     Lưu
                                 </button>
@@ -87,9 +125,24 @@ const Question = ({
                             ))}
                         </td>
                     </tr>
-
+                    <tr>
+                        {solutionVisible ? (
+                            <>
+                                <IoIosArrowDropdownCircle className="cursor-icon" onClick={toggleSolution} />
+                            </>
+                        ) : (
+                            <>
+                                <IoIosArrowDropdown className="cursor-icon" onClick={toggleSolution} />
+                            </>
+                        )}
+                    </tr>
+                    <tr className={`solution ${solutionVisible ? '' : 'hidden'}`}>
+                        <td>Hướng dẫn giải:
+                            <ConvertTextTagToHTML htmlContent={question.solution} />
+                        </td>
+                    </tr>
                 </table>
-                <br></br>
+                <br /><br />
             </React.Fragment>
         </div>
     );
