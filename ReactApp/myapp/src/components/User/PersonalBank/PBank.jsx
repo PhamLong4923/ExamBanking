@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../common/dropdown';
-import '../PersonalBank/PBank.css';
 import { getBank } from '../../../services/Api';
+import '../PersonalBank/PBank.css';
 const PBank = (props) => {
 
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
@@ -16,7 +16,7 @@ const PBank = (props) => {
         setDropdownVisible(prevId => prevId === repoId ? null : repoId);
     };
 
-    
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,19 +30,19 @@ const PBank = (props) => {
         };
 
         fetchData();
-    }, []); 
+    }, []);
 
-    
+
 
     const handleAddBank = () => {
         const newId = (banks.length + 1).toString();
         setBanks([
             ...banks,
             {
-                id: newId,
-                title: 'Toán cánh diều',
-                datetime: '23:00 2/1/2024',
-                owner: 'Phạm Thanh Hương',
+                bankid: newId,
+                bankname: 'Toán cánh diều',
+                bankstatus: '23:00 2/1/2024',
+                accid: 'Phạm Thanh Hương',
             },
         ]);
         setEditingBankId(newId);
