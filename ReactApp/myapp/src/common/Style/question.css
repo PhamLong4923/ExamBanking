@@ -1,0 +1,22 @@
+.cursor-icon {
+    cursor: pointer;
+}
+
+.editquestion-head {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.editquestion-title {
+    flex-direction: column;
+    width: 100%;
+}
+
+.editquestion-title .myeditor-ck {
+    width: 90%;
+}
+
+.edit-solution {
+    margin-top: 20px;
+}
