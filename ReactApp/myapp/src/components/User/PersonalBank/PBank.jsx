@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../common/dropdown';
-import '../PersonalBank/PBank.css';
 import { getBank } from '../../../services/Api';
+import '../PersonalBank/PBank.css';
 import ToastMessage from '../../Toast/toast';
 import BarLoader from "react-spinners/BarLoader";
 import { useBank } from '../../../pages/User/Bank/BankContext';
@@ -46,10 +46,10 @@ const PBank = () => {
         setBanks([
             ...banks,
             {
-                id: newId,
-                title: 'Toán cánh diều',
-                datetime: '23:00 2/1/2024',
-                owner: 'Phạm Thanh Hương',
+                bankid: newId,
+                bankname: 'Toán cánh diều',
+                bankstatus: '23:00 2/1/2024',
+                accid: 'Phạm Thanh Hương',
             },
         ]);
         ToastMessage("Thêm thành công");

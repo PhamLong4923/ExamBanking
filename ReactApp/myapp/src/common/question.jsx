@@ -20,6 +20,8 @@ const Question = ({
     setModalIsOpen,
     handleQuestionTypeChange,
     handleEditSolution,
+    isAddQuestion,
+    handleQuestionModeChange,
 }) => {
     const [solutionVisible, setSolutionVisible] = useState(false);
 
@@ -41,15 +43,48 @@ const Question = ({
                                         <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
                                     </div>
                                 </div>
-                                <div>
-                                    <select defaultValue={question.type} onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}>
-                                        <option value='1'>
-                                            Trắc nghiệm
-                                        </option>
-                                        <option value='2'>
-                                            Tự luận
-                                        </option>
-                                    </select>
+                                <div className='question-select-option'>
+                                    {isAddQuestion === true && (
+                                        <select className='cursor-icon' defaultValue={question.type} onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}>
+                                            <option value='1'>
+                                                Trắc nghiệm
+                                            </option>
+                                            <option value='2'>
+                                                Tự luận
+                                            </option>
+                                        </select>
+                                    )}
+                                    {question.type === '1' ? (
+                                        <select className='cursor-icon' defaultValue={question.mode} onChange={(e) => handleQuestionModeChange(question.id, e.target.value)}>
+                                            <option value='1'>
+                                                Nhận biết
+                                            </option>
+                                            <option value='2'>
+                                                Thông hiểu
+                                            </option>
+                                            <option value='3'>
+                                                Vận dụng
+                                            </option>
+                                            <option value='4'>
+                                                Vận dụng cao
+                                            </option>
+                                        </select>
+                                    ) : (
+                                        <select className='cursor-icon' defaultValue={question.mode} onChange={(e) => handleQuestionModeChange(question.id, e.target.value)}>
+                                            <option value='5'>
+                                                Dễ
+                                            </option>
+                                            <option value='6'>
+                                                Thường
+                                            </option>
+                                            <option value='7'>
+                                                Khó
+                                            </option>
+                                            <option value='8'>
+                                                Anh hùng
+                                            </option>
+                                        </select>
+                                    )}
                                 </div>
                             </div>
                             <table className="edit-answers">
@@ -70,7 +105,7 @@ const Question = ({
                                                             <div className='myeditor-ck'>
                                                                 <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
                                                             </div>
-                                                            <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash></FaTrash></i>
+                                                            <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash className='cursor-icon'></FaTrash></i>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -103,7 +138,7 @@ const Question = ({
                 <table className="addquestion-table">
                     <thead>
                         <td className="row-head">
-                            <span className="left-row"> <i className="fa-solid fa-circle-question"></i> Câu hỏi {question.id}</span>
+                            <span className="left-row">Câu hỏi {question.id} - {question.type === '1' ? 'Trắc nghiệm' : 'Tự luận'}</span>
                             <span className="right-row">
                                 <button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i className="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
                             </span>
