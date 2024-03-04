@@ -32,29 +32,7 @@ const Header = React.memo(() => {
     //     setIsLoggedIn(true);
     // };
 
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post(
-                'https://localhost:7064/api/Login/login',
-                {
-                    username: 'Testlogin',
-                    userpass: '123',
-                },
-                
-            );
     
-            if (response.status === 200) {
-                // Đăng nhập thành công, xử lý token hoặc thông tin khác nếu cần
-                const token = response.data;
-                console.log('Token:', token);
-            } else {
-                // Đăng nhập thất bại, xử lý lỗi
-                console.error('Login failed:', response.data);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
 
     // Hàm này được gọi khi người dùng đăng xuất
     const handleLogout = () => {
@@ -111,10 +89,12 @@ const Header = React.memo(() => {
 
                     </div>
                 ) : (
-                    <div className='account' onClick={handleLogin}>
-                        <h5>Đăng kí tài khoản</h5>
-
+                    <div className='account'>
+                        <NavLink to={'/signup'}><h5>Đăng kí </h5></NavLink>
+                        <p>/</p>
+                        <NavLink to={'/login'}><h5> Đăng nhập</h5></NavLink>
                     </div>
+                    
                 )}
 
 
