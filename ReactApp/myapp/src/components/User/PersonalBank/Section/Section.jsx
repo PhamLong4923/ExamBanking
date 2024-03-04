@@ -29,6 +29,8 @@ const Section = (props) => {
         // { id: 'answer3', content: 'Đáp án ở đây' },
         // { id: 'answer4', content: 'Đáp án ở đây' }
       ],
+      type: '1',
+      solution: 'Hướng dẫn giải'
     }
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
@@ -44,9 +46,10 @@ const Section = (props) => {
     } else if (type === "answer") {
       handleEditAnswer(quesid, ansid, data);
       console.log("đổi answer thành công");
+    } else if (type === "solution") {
+      handleEditSolution(quesid, data)
+      console.log("chỉnh sửa hướng dẫn giải thành công");
     }
-    // Thực hiện xử lý với dữ liệu nhận được từ CKEditor ở đây
-    // setEditorData(data);
   };
 
   const handleAddQuestion = () => {
@@ -59,6 +62,8 @@ const Section = (props) => {
         answers: [
           { id: 'answer1', content: '' },
         ],
+        type: '1',
+        solution: 'hướng dẫn giải'
       },
     ]);
     setEditingQuestionId(newId);
@@ -94,6 +99,14 @@ const Section = (props) => {
     setQuestions((prevQuestions) =>
       prevQuestions.map((question) =>
         question.id === questionId ? { ...question, title: newTitle } : question
+      )
+    );
+  };
+
+  const handleEditSolution = (questionId, newSolution) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, solution: newSolution } : question
       )
     );
   };
@@ -223,6 +236,23 @@ const Section = (props) => {
     setQuestype(e.target.value);
   };
 
+  const handleQuestionTypeChange = (questionId, selectedType) => {
+    // Cập nhật giá trị question.type khi thay đổi loại câu hỏi
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, type: selectedType } : question
+      )
+    );
+    if (selectedType === '2') {
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((question) =>
+          question.id === questionId ? { ...question, answers: [] } : question
+        )
+      );
+    }
+  };
+
+
   return (
     <>
       <div className="pathlink">
@@ -305,6 +335,8 @@ const Section = (props) => {
                   handleEditorDataChange={handleEditorDataChange}
                   setModalIsOpen={setModalIsOpen}
                   handleSelectSection={handleSelectSection}
+                  handleQuestionTypeChange={handleQuestionTypeChange}
+                  handleEditSolution={handleEditSolution}
                 />
               ))}
 
