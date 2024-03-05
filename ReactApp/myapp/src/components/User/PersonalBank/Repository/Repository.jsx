@@ -5,14 +5,32 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
+import { useBank } from '../../../../pages/User/Bank/BankContext';
 const Repository = (props) => {
 
+    const { bankType, bankId } = useBank();
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
     const [editingRepoId, setEditingRepoId] = useState(null);
     const [isDropdownVisible, setDropdownVisible] = useState();
     const handleMenuClick = (repoId) => {
         setDropdownVisible(prevId => prevId === repoId ? null : repoId);
     };
+
+    // api get repository
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getBank(); // Call getBank function
+    //             setBanks(response.data);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.error('Error fetching banks:', error);
+    //             // Handle error here
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
 
     const [repos, setRepos] = useState([
         {
@@ -34,6 +52,7 @@ const Repository = (props) => {
                 owner: 'Phạm Thanh Hương',
             },
         ]);
+        console.log('bankid '+ bankId)
         setEditingRepoId(newId);
         setModalIsOpen(true);
     };
