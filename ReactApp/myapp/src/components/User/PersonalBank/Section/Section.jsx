@@ -18,7 +18,8 @@ const Section = (props) => {
   const [selectedSection, setSelectedSection] = useState();
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isAddQuestion, setIsAddQuestion] = useState(false);
   const [questions, setQuestions] = useState([
     {
       id: '1',
@@ -30,7 +31,8 @@ const Section = (props) => {
         // { id: 'answer4', content: 'Đáp án ở đây' }
       ],
       type: '1',
-      solution: 'Hướng dẫn giải'
+      solution: 'Hướng dẫn giải',
+      mode: 'dễ',
     }
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
@@ -63,16 +65,19 @@ const Section = (props) => {
           { id: 'answer1', content: '' },
         ],
         type: '1',
-        solution: 'hướng dẫn giải'
+        solution: 'hướng dẫn giải',
+        mode: 'dễ',
       },
     ]);
     setEditingQuestionId(newId);
     setModalIsOpen(true);
+    setIsAddQuestion(true);
   };
 
   const handleEditQuestion = (questionId) => {
     setEditingQuestionId(questionId);
     setModalIsOpen(true); // Mở modal khi bắt đầu chỉnh sửa câu hỏi
+    setIsAddQuestion(false);
     // Thực hiện các xử lý khác nếu cần
   };
 
@@ -107,6 +112,14 @@ const Section = (props) => {
     setQuestions((prevQuestions) =>
       prevQuestions.map((question) =>
         question.id === questionId ? { ...question, solution: newSolution } : question
+      )
+    );
+  };
+
+  const handleQuestionModeChange = (questionId, newMode) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, mode: newMode } : question
       )
     );
   };
@@ -337,6 +350,8 @@ const Section = (props) => {
                   handleSelectSection={handleSelectSection}
                   handleQuestionTypeChange={handleQuestionTypeChange}
                   handleEditSolution={handleEditSolution}
+                  isAddQuestion={isAddQuestion}
+                  handleQuestionModeChange={handleQuestionModeChange}
                 />
               ))}
 
