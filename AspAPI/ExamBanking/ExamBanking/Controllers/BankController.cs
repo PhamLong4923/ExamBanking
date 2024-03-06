@@ -17,29 +17,31 @@ namespace ExamBanking.Controllers
         {
             _context = context;
         }
-        [HttpPost("vquestions")]
-        public IActionResult viewQuestionList()
-        {
-            //check user
-            
-            List<Question> qlist = eContext.Questions.ToList(); //take all for test
-            
+        //[HttpPost("vquestions")]
+        //public IActionResult viewQuestionList()
+        //{
+        //    check user
 
-            return Ok(qlist);
 
-        }
+        //    List<Question> qlist = eContext.Questions.ToList(); //take all for test
 
-        [HttpPost("vsection")]
-        public IActionResult viewSectionList()
-        {
-            //check user
 
-            
-            List<Section> sec = eContext.Sections.ToList(); //take all for test
+        //    return Ok(qlist);
 
-            return Ok(sec);
+        //}
 
-        }
+        //[HttpPost("vsection")]
+        //public IActionResult viewSectionList()
+        //{
+        //    check user
+
+
+
+        //    List<Section> sec = eContext.Sections.ToList(); //take all for test
+
+        //    return Ok(sec);
+
+        //}
         [HttpPost("GetBank")]
         public IActionResult viewBankList()
         {
