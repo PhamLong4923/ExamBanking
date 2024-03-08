@@ -4,6 +4,7 @@ import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
+import { useBank } from '../../../../pages/User/Bank/BankContext';
 import '../Repository/Repository.css';
 import { useBank } from '../../../../pages/User/Bank/BankContext';
 const Repository = (props) => {
@@ -134,7 +135,7 @@ const Repository = (props) => {
                             onDelete={''}
                             onEdit={() => handleEditRepo(repo.id)}
                         />
-                        {modalIsOpen && (
+                        {modalIsOpen && editingRepoId === repo.id && (
                             <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
                                 <div className="modal-content">
                                     <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
