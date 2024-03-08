@@ -5,10 +5,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
-import ToastMessage from '../../../Toast/toast';
-import BarLoader from "react-spinners/BarLoader";
-import { setLocalStorageItem, getLocalStorageItem } from '../../../../services/LocalStorage';
-
+import { useBank } from '../../../../pages/User/Bank/BankContext';
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
     const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
@@ -49,6 +46,13 @@ const Repository = (props) => {
         }
     ]);
 
+    const handleEditRepo = (repoId) => {
+        setEditingRepoId(repoId);
+        setModalIsOpen(true);
+        setDropdownVisible(null);
+    };
+
+
     const handleAddRepo = () => {
         const newId = (repos.length + 1).toString(); // gọi api createrepo, trả về id repo
         setRepos([
@@ -60,9 +64,46 @@ const Repository = (props) => {
                 owner: 'Phạm Thanh Hương',
             },
         ]);
-
+        console.log('bankid ' + bankId)
         setEditingRepoId(newId);
         setModalIsOpen(true);
+        setDropdownVisible(null);
+    };
+
+    const handleSaveEdit = () => {
+        setEditingRepoId(null);
+        setModalIsOpen(false);
+    };
+
+    const handleDeleteRepo = (repoId) => {
+        const updatedRepos = repos.filter(repo => repo.id !== repoId);
+        setRepos(updatedRepos);
+        setDropdownVisible(null);
+    };
+
+
+    const handleEditTitle = (repoId, newTitle) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, title: newTitle } : repo
+            )
+        );
+    };
+
+    const handleEditDatetime = (repoId, newDatetime) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, datetime: newDatetime } : repo
+            )
+        );
+    };
+
+    const handleEditOwner = (repoId, newOwner) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, owner: newOwner } : repo
+            )
+        );
     };
 
     const handleSelectRepo = (repoid) => {
@@ -135,7 +176,38 @@ const Repository = (props) => {
                                 <i><HiDotsVertical></HiDotsVertical></i>
                             </NavLink>
                         </NavLink>
-                        <Dropdown id={repo.id} visible={isDropdownVisible === repo.id} onClose={() => setDropdownVisible(null)} />
+                        <Dropdown
+                            visible={isDropdownVisible === repo.id}
+                            onDelete={() => handleDeleteRepo(repo.id)}
+                            onEdit={() => handleEditRepo(repo.id)}
+                        />
+                        {modalIsOpen && editingRepoId === repo.id && (
+                            <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
+                                <div className="modal-content">
+                                    <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
+                                    <div className='editquestion-head'>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-title'>Title</label>
+                                            <input id='repo-title' value={repo.title} onChange={(e) => handleEditTitle(repo.id, e.target.value)}></input>
+                                        </div>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-datetime'>Datetime</label>
+                                            <input id='repo-datetime' value={repo.datetime} onChange={(e) => handleEditDatetime(repo.id, e.target.value)}></input>
+                                        </div>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-owner'>Owner</label>
+                                            <input id='repo-owner' value={repo.owner} onChange={(e) => handleEditOwner(repo.id, e.target.value)}></input>
+                                        </div>
+                                    </div>
+
+                                    <div className='addquestion-savebutton'>
+                                        <button onClick={() => handleSaveEdit()}>
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ))}
 
