@@ -13,16 +13,17 @@ import RepoSelectp from './User/Exam/RepoSelectp';
 import ExamConfigp from './User/Exam/ExamConfigp';
 import Loginp from './User/Login/Loginp';
 import Signupp from './User/Login/Signupp';
+import GoogleCallbackPage from '../components/User/Login/googlecallback.jsx';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import { BankProvider } from './User/Bank/BankContext';
 
 const Root = () => (
   <BrowserRouter>
-    <BankProvider>
       <Routes>
+
+        <Route path="/google-callback" component={GoogleCallbackPage} />
 
         <Route path="/" element={<HomeScreen />} />
         <Route path="/login" element={<Loginp />} />
@@ -63,7 +64,6 @@ const Root = () => (
         position="bottom-right"
         autoClose={3000}
       />
-    </BankProvider>
   </BrowserRouter>
 
 );

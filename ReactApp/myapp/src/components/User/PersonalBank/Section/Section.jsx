@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
 import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
@@ -7,19 +6,29 @@ import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
+import ToastMessage from '../../../Toast/toast';
+import HashLoader from "react-spinners/HashLoader";
 
 const Section = (props) => {
-  // Sử dụng useParams để trích xuất tham số bid từ URL
-  const { bid } = useParams();
+
+  const [loading, setLoading] = useState();
+  const [isEndOfPage, setIsEndOfPage] = useState(false);
+
+
   const [data, setData] = useState([]);
   const [section, setSection] = useState([]);
-  const [selectedQuestions, setSelectedQuestions] = useState([]);
-  const [questype, setQuestype] = useState('3');
   const [selectedSection, setSelectedSection] = useState();
+
+  
+  const [questype, setQuestype] = useState('3');
+  
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const [isAddQuestion, setIsAddQuestion] = useState(false);
+
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [questions, setQuestions] = useState([
     {
       id: '1',
@@ -34,6 +43,7 @@ const Section = (props) => {
       solution: 'Hướng dẫn giải',
       mode: 'dễ',
     }
+    
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
 
@@ -145,42 +155,86 @@ const Section = (props) => {
   const open2 = () => {
     setShowModal2(true);
   };
-  const fetchDataFromApi = async () => {
+
+  //load section
+  useEffect(() => {
     try {
-      const resq = await axios.post('https://localhost:7064/api/Bank/vquestions', {
-        // Data you want to send in the POST request body
-        // For example: { key1: 'value1', key2: 'value2' }
-      });
+      
+      //call getSection api (repoid) -> list of sections
 
-      setData(resq.data);
+      // setSection(ress.data);
 
-      const ress = await axios.post('https://localhost:7064/api/Bank/vsection', {
-        // Data you want to send in the POST request body
-        // For example: { key1: 'value1', key2: 'value2' }
-      });
-
-      setSection(ress.data);
+      //useState , set secid, selectSection
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  };
-
-  useEffect(() => {
-    fetchDataFromApi();
   }, []);
 
+  //load question
+  useEffect(() =>{
+    //load question by secid which are selected
+  })
+
+  useEffect(() =>{
+    //load question if secid change
+  },[])
+
+  useEffect(() =>{
+    //load 10 question first
+  })
+
+  useEffect(() => {
+    const qlistitemElement = document.querySelector('.qlistitem');
+    qlistitemElement.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      qlistitemElement.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isEndOfPage) {
+      // Gọi hàm để load thêm câu hỏi ở đây
+      loadMoreQuestions();
+    }
+  }, [isEndOfPage]);
+
+  const loadMoreQuestions = async () => {
+    try {
+      // Gọi API để lấy thêm câu hỏi
+      const response = await fetch('API_URL');
+      const data = await response.json();
+  
+      // Cập nhật state questions bằng cách thêm câu hỏi mới vào mảng questions hiện có
+      setQuestions(prevQuestions => [...prevQuestions, ...data.questions]);
+    } catch (error) {
+      console.error('Error loading more questions:', error);
+    }
+  };
+  
+  
+  
+  const handleScroll = () => {
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY;
+    const scrolledToBottom = Math.ceil(scrollTop + windowHeight) >= documentHeight;
+    
+    if (scrolledToBottom) {
+      setIsEndOfPage(true);
+    } else {
+      setIsEndOfPage(false);
+    }
+  };
 
 
-  const selectQuestionsHandle = (qid) => {
+  const handleSelectQuestion = (qid) => {
     setSelectedQuestions((prevQuestions) => {
-      // Kiểm tra xem câu hỏi đã được chọn chưa
       const isSelected = prevQuestions.includes(qid);
 
-      // Nếu chưa được chọn, thêm vào mảng
       if (!isSelected) {
         return [...prevQuestions, qid];
       } else {
-        // Nếu đã được chọn, loại bỏ khỏi mảng
         return prevQuestions.filter((id) => id !== qid);
       }
 
@@ -199,7 +253,7 @@ const Section = (props) => {
           //await axios.post('https://localhost:7064/api/DeleteQuestions', { questionIds: selectedQuestions });
 
           // Sau khi xóa thành công, cập nhật danh sách câu hỏi
-          fetchDataFromApi();
+          
 
           // Đặt lại mảng câu hỏi được chọn
           setSelectedQuestions([]);
@@ -219,7 +273,7 @@ const Section = (props) => {
   }
 
   const handleSelectSection = (secid) => {
-    setSelectedSection(secid);
+    // useState, set selectSection
   }
 
   const addAnswer = (questionId) => {
@@ -352,8 +406,12 @@ const Section = (props) => {
                   handleEditSolution={handleEditSolution}
                   isAddQuestion={isAddQuestion}
                   handleQuestionModeChange={handleQuestionModeChange}
+                  handleSelectQuestion={handleSelectQuestion}
+                  isSelected={selectedQuestions.includes(question.id)}
                 />
               ))}
+
+              {loading }
 
               <ImportModal
                 showModal={showModal1 || showModal2}

@@ -15,7 +15,7 @@ namespace ExamBanking.Config
 
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder =>
+                options.AddPolicy("AllowOrigin", builder =>
                 {
                     builder.WithOrigins("http://localhost:3000")
                            .AllowAnyMethod()

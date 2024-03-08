@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import '../Qbank/SbrQbank.css'
 import { NavLink } from "react-router-dom";
-import { useBank } from "../../../pages/User/Bank/BankContext";
+import { setLocalStorageItem } from "../../../services/LocalStorage";
+
 export default function SbrQbank() {
 
-    const { setBankType } = useBank();
+
 
     const handleSelectBank = (bankType) => {
-        setBankType(bankType);
-        console.log(bankType);
+        setLocalStorageItem("bankType", bankType);
     };
     
     return(
