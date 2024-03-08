@@ -70,6 +70,13 @@ const Repository = (props) => {
         setModalIsOpen(false);
     };
 
+    const handleDeleteRepo = (repoId) => {
+        const updatedRepos = repos.filter(repo => repo.id !== repoId);
+        setRepos(updatedRepos);
+        setDropdownVisible(null);
+    };
+
+
     const handleEditTitle = (repoId, newTitle) => {
         setRepos((prevRepos) =>
             prevRepos.map((repo) =>
@@ -128,10 +135,8 @@ const Repository = (props) => {
                             </NavLink>
                         </NavLink>
                         <Dropdown
-                            id={repo.id}
-                            // onClick={() => handleEditRepo(repo.id)}
                             visible={isDropdownVisible === repo.id}
-                            onDelete={''}
+                            onDelete={() => handleDeleteRepo(repo.id)}
                             onEdit={() => handleEditRepo(repo.id)}
                         />
                         {modalIsOpen && editingRepoId === repo.id && (
