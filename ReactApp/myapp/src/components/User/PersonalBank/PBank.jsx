@@ -12,7 +12,7 @@ import { useBank } from '../../../pages/User/Bank/BankContext';
 
 const PBank = () => {
 
-    const { bankType } = useBank();
+    const { bankType, setBankId } = useBank();
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
     const [editingBankId, setEditingBankId] = useState(null);
     const [isDropdownVisible, setDropdownVisible] = useState();
@@ -27,7 +27,7 @@ const PBank = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getBank(); // Call getBank function
+                const response = await getBank({Bank:bankType}); // Call getBank function
                 setBanks(response.data);
                 setLoading(false);
             } catch (error) {
@@ -37,7 +37,7 @@ const PBank = () => {
         };
 
         fetchData();
-    }, []);
+    }, [bankType]);
 
 
 
@@ -56,6 +56,10 @@ const PBank = () => {
         setEditingBankId(newId);
         setModalIsOpen(true);
     };
+
+    const handleSeclectBank = (bankId) => {
+        setBankId(bankId)
+    }
 
     return (
 
@@ -85,7 +89,7 @@ const PBank = () => {
                     :
                     banks.map(bank => (
                         // <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem">
-                        <NavLink key={bank.bankid} to={`/repo`} className="pitem titem">
+                        <NavLink key={bank.bankid} to={`/repo`} className="pitem titem" onClick={handleSeclectBank(bank.bankid)}>
                             <span className="td">{bank.bankname}</span>
                             <span className="td">{bank.bankstatus}</span>
                             <span className="td">{bank.accid}</span>

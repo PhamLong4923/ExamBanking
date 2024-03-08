@@ -6,6 +6,7 @@ import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import { useBank } from '../../../../pages/User/Bank/BankContext';
 import '../Repository/Repository.css';
+import { useBank } from '../../../../pages/User/Bank/BankContext';
 const Repository = (props) => {
 
     const { bankType, bankId } = useBank();
@@ -59,7 +60,7 @@ const Repository = (props) => {
                 owner: 'Phạm Thanh Hương',
             },
         ]);
-        console.log('bankid ' + bankId)
+        console.log('bankid '+ bankId)
         setEditingRepoId(newId);
         setModalIsOpen(true);
         setDropdownVisible(null);
