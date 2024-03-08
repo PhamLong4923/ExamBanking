@@ -4,15 +4,33 @@ import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
+import { useBank } from '../../../../pages/User/Bank/BankContext';
 import '../Repository/Repository.css';
 const Repository = (props) => {
 
+    const { bankType, bankId } = useBank();
     const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
     const [editingRepoId, setEditingRepoId] = useState(null);
     const [isDropdownVisible, setDropdownVisible] = useState();
     const handleMenuClick = (repoId) => {
         setDropdownVisible(prevId => prevId === repoId ? null : repoId);
     };
+
+    // api get repository
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getBank(); // Call getBank function
+    //             setBanks(response.data);
+    //             setLoading(false);
+    //         } catch (error) {
+    //             console.error('Error fetching banks:', error);
+    //             // Handle error here
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
 
     const [repos, setRepos] = useState([
         {
@@ -41,6 +59,7 @@ const Repository = (props) => {
                 owner: 'Phạm Thanh Hương',
             },
         ]);
+        console.log('bankid ' + bankId)
         setEditingRepoId(newId);
         setModalIsOpen(true);
         setDropdownVisible(null);
@@ -115,7 +134,7 @@ const Repository = (props) => {
                             onDelete={''}
                             onEdit={() => handleEditRepo(repo.id)}
                         />
-                        {modalIsOpen && (
+                        {modalIsOpen && editingRepoId === repo.id && (
                             <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
                                 <div className="modal-content">
                                     <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
