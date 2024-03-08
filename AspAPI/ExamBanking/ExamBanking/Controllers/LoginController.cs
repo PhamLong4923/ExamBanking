@@ -68,7 +68,7 @@ namespace ExamBanking.Controllers
         public IActionResult Login()
         {
             // Chỉ cần decorate action này với [Authorize] để chuyển hướng đến Google Authentication
-            return Challenge(new AuthenticationProperties { RedirectUri = "https://localhost:7064/api/Login/signin-google" });
+            return Challenge(new AuthenticationProperties { RedirectUri = "https://localhost:7064/signin-google" });
         }
 
         [HttpGet("LogoutGoogle")]

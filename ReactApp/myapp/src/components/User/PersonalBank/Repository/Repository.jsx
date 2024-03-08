@@ -5,7 +5,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
-import { useBank } from '../../../../pages/User/Bank/BankContext';
+import { getLocalStorageItem, setLocalStorageItem } from '../../../../services/LocalStorage';
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
     const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
