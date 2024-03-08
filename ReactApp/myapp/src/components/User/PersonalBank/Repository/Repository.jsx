@@ -23,6 +23,13 @@ const Repository = (props) => {
         }
     ]);
 
+    const handleEditRepo = (repoId) => {
+        setEditingRepoId(repoId);
+        setModalIsOpen(true);
+        setDropdownVisible(null);
+    };
+
+
     const handleAddRepo = () => {
         const newId = (repos.length + 1).toString();
         setRepos([
@@ -36,6 +43,36 @@ const Repository = (props) => {
         ]);
         setEditingRepoId(newId);
         setModalIsOpen(true);
+        setDropdownVisible(null);
+    };
+
+    const handleSaveEdit = () => {
+        setEditingRepoId(null);
+        setModalIsOpen(false);
+    };
+
+    const handleEditTitle = (repoId, newTitle) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, title: newTitle } : repo
+            )
+        );
+    };
+
+    const handleEditDatetime = (repoId, newDatetime) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, datetime: newDatetime } : repo
+            )
+        );
+    };
+
+    const handleEditOwner = (repoId, newOwner) => {
+        setRepos((prevRepos) =>
+            prevRepos.map((repo) =>
+                repo.id === repoId ? { ...repo, owner: newOwner } : repo
+            )
+        );
     };
 
     return (
@@ -71,12 +108,45 @@ const Repository = (props) => {
                                 <i><HiDotsVertical></HiDotsVertical></i>
                             </NavLink>
                         </NavLink>
-                        <Dropdown id={repo.id} visible={isDropdownVisible === repo.id} onClose={() => setDropdownVisible(null)} />
+                        <Dropdown
+                            id={repo.id}
+                            // onClick={() => handleEditRepo(repo.id)}
+                            visible={isDropdownVisible === repo.id}
+                            onDelete={''}
+                            onEdit={() => handleEditRepo(repo.id)}
+                        />
+                        {modalIsOpen && (
+                            <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
+                                <div className="modal-content">
+                                    <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
+                                    <div className='editquestion-head'>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-title'>Title</label>
+                                            <input id='repo-title' value={repo.title} onChange={(e) => handleEditTitle(repo.id, e.target.value)}></input>
+                                        </div>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-datetime'>Datetime</label>
+                                            <input id='repo-datetime' value={repo.datetime} onChange={(e) => handleEditDatetime(repo.id, e.target.value)}></input>
+                                        </div>
+                                        <div className='repo-input'>
+                                            <label htmlFor='repo-owner'>Owner</label>
+                                            <input id='repo-owner' value={repo.owner} onChange={(e) => handleEditOwner(repo.id, e.target.value)}></input>
+                                        </div>
+                                    </div>
+
+                                    <div className='addquestion-savebutton'>
+                                        <button onClick={() => handleSaveEdit()}>
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ))}
 
             </div>
-        </div>
+        </div >
     )
 }
 export default Repository;

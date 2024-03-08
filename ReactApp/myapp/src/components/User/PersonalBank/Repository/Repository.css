@@ -33,3 +33,11 @@
     width: 100%;
     height: fit-content;
 }
+
+.repo-input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10%
+}
