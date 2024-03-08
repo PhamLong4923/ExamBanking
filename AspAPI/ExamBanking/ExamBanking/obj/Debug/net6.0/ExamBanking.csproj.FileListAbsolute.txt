@@ -138,3 +138,11 @@ D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Auth.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Core.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.CodeDom.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Management.dll
+D:\hoc\ki_6\abc\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Management.dll

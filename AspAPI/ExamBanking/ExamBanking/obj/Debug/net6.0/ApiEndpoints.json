@@ -1,5 +1,83 @@
 [
   {
+    "ContainingType": "ExamBanking.Controllers.AnswersController",
+    "Method": "GetAnswers",
+    "RelativePath": "api/Answers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AnswerDto.ListAnswerRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ExamBanking.Models.Answer, ExamBanking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AnswersController",
+    "Method": "CreateAnswer",
+    "RelativePath": "api/Answers/CreateAnswer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AnswerDto.CreateAnswerRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ExamBanking.Models.Answer",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AnswersController",
+    "Method": "DeleteAnswer",
+    "RelativePath": "api/Answers/deleteAnswer",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AnswersController",
+    "Method": "EditAnswer",
+    "RelativePath": "api/Answers/EditAnswer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AnswerDto.EditAnswerRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.BankController",
     "Method": "CreateBank",
     "RelativePath": "api/Bank/CreateBank",
@@ -58,26 +136,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ExamBanking.Controllers.BankController",
-    "Method": "viewQuestionList",
-    "RelativePath": "api/Bank/vquestions",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.BankController",
-    "Method": "viewSectionList",
-    "RelativePath": "api/Bank/vsection",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ExamBanking.Controllers.LoginController",
     "Method": "forgotPass",
     "RelativePath": "api/Login/forgotPass",
@@ -96,6 +154,16 @@
   {
     "ContainingType": "ExamBanking.Controllers.LoginController",
     "Method": "Login",
+    "RelativePath": "api/Login/google",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.LoginController",
+    "Method": "Login",
     "RelativePath": "api/Login/login",
     "HttpMethod": "POST",
     "IsController": true,
@@ -107,6 +175,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.LoginController",
+    "Method": "Logout",
+    "RelativePath": "api/Login/LogoutGoogle",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -139,6 +217,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.LoginController",
+    "Method": "GoogleCallback",
+    "RelativePath": "api/Login/signin-google",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
