@@ -15,10 +15,12 @@ namespace ExamBanking.Controllers
         private ExamBankingContext eContext = new ExamBankingContext();
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
-        public BankController(ExamBankingContext context,RRepositories rRepositories)
+        private readonly RAccount _rAccount;
+        public BankController(ExamBankingContext context,RRepositories rRepositories,RAccount rAccount)
         {
             _context = context;
             _rRepositories = rRepositories;
+            _rAccount = rAccount;
         }
         
         [HttpGet("GetBank")]

@@ -1,4 +1,4 @@
-﻿namespace ExamBanking.Controllers
+﻿namespace ExamBanking.DTO.AccountDto
 {
     public class TokenRequest
     {

@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using ExamBanking.Models;
 using System.IdentityModel.Tokens.Jwt;
+using ExamBanking.DTO.AccountDto;
 
 namespace ExamBanking.Controllers
 {
@@ -30,12 +31,14 @@ namespace ExamBanking.Controllers
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(request.Jwt) as JwtSecurityToken;
 
+
             if (jsonToken != null)
             {
                 var account = new Account
                 {
                     Accname = jsonToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value,
                     Email = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
+                    VerificationToken = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value,
                     Datejoin = DateTime.Now
                     // Thêm các trường khác cần lưu
                 };

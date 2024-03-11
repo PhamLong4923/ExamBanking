@@ -10,6 +10,7 @@ namespace ExamBanking.Config
         public static void AddCustomServices(this IServiceCollection services)
         {
             //add service
+            services.AddScoped<RAccount>();
             services.AddDbContext<ExamBankingContext>();
             services.AddScoped<RAnswer>();
             services.AddScoped<RQuestion>();
