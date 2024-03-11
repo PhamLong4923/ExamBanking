@@ -18,8 +18,6 @@ export const Login = () => {
                     'Content-Type': 'application/json',
                 },
             });
-
-
             console.log(response.data);
         } catch (error) {
             console.error('Error processing JWT:', error);
