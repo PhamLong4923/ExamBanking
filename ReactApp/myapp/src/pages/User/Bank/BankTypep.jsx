@@ -1,21 +1,19 @@
+import SbrQbank from "../../../components/User/Qbank/SbrQbank.jsx";
 import Body from "../../../components/UI/Body.jsx";
 import Header from "../../../components/UI/Header.jsx";
 import Footer from "../../../components/UI/Footer.jsx";
-import Profile from "../../../components/User/Profile/Profile.jsx";
+
+const BankTypep = () => {
 
 
-const HomeScreen = () => {
   return (
-    <div>
+    <>
       <Header></Header>
-
-      <Body content={<Profile></Profile>} picker={-5}>
-      </Body>
-
+      <Body content={<SbrQbank></SbrQbank>} picker={1}></Body>
       <Footer></Footer>
+    </>
 
-    </div>
   )
 };
 
-export default HomeScreen;
+export default BankTypep;

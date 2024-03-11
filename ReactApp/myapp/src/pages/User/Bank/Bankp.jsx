@@ -1,21 +1,20 @@
 import Body from "../../../components/UI/Body.jsx";
+import PBank from "../../../components/User/PersonalBank/PBank.jsx"
 import Header from "../../../components/UI/Header.jsx";
 import Footer from "../../../components/UI/Footer.jsx";
-import Profile from "../../../components/User/Profile/Profile.jsx";
 
 
-const HomeScreen = () => {
+const Bankp = () => {
   return (
-    <div>
+    
+    <>
       <Header></Header>
-
-      <Body content={<Profile></Profile>} picker={-5}>
-      </Body>
-
+      <Body content={<PBank></PBank>} picker={1}></Body>
       <Footer></Footer>
+    </>
+      
 
-    </div>
   )
 };
 
-export default HomeScreen;
+export default Bankp;

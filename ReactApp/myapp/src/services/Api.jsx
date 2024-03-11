@@ -26,7 +26,7 @@ export const login = () => Http.post("");
 
 //get-api
 
-export const getBank = () => Http.get("");
+export const getBank = () => Http.post("/Bank/GetBank");
 
 export const getSection = () => Http.get("");
 

@@ -1,14 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
+import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
+import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
-import { IoIosArrowForward } from 'react-icons/io';
-import { FaPlus } from "react-icons/fa6";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { FaXmark } from "react-icons/fa6";
-import { FaRegFileWord, FaRegFileExcel, FaEdit } from "react-icons/fa";
 
 const Section = (props) => {
   // Sử dụng useParams để trích xuất tham số bid từ URL
@@ -20,7 +18,8 @@ const Section = (props) => {
   const [selectedSection, setSelectedSection] = useState();
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // State để kiểm soát hiển thị 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isAddQuestion, setIsAddQuestion] = useState(false);
   const [questions, setQuestions] = useState([
     {
       id: '1',
@@ -31,6 +30,9 @@ const Section = (props) => {
         // { id: 'answer3', content: 'Đáp án ở đây' },
         // { id: 'answer4', content: 'Đáp án ở đây' }
       ],
+      type: '1',
+      solution: 'Hướng dẫn giải',
+      mode: 'dễ',
     }
   ]);
   const [editingQuestionId, setEditingQuestionId] = useState(null);
@@ -46,9 +48,10 @@ const Section = (props) => {
     } else if (type === "answer") {
       handleEditAnswer(quesid, ansid, data);
       console.log("đổi answer thành công");
+    } else if (type === "solution") {
+      handleEditSolution(quesid, data)
+      console.log("chỉnh sửa hướng dẫn giải thành công");
     }
-    // Thực hiện xử lý với dữ liệu nhận được từ CKEditor ở đây
-    // setEditorData(data);
   };
 
   const handleAddQuestion = () => {
@@ -57,22 +60,24 @@ const Section = (props) => {
       ...questions,
       {
         id: newId,
-        title: 'Đề ở đây',
+        title: '',
         answers: [
-          { id: 'answer1', content: 'Đáp án ở đây' },
-          // { id: 'answer2', content: 'Đáp án ở đây' },
-          // { id: 'answer3', content: 'Đáp án ở đây' },
-          // { id: 'answer4', content: 'Đáp án ở đây' }
+          { id: 'answer1', content: '' },
         ],
+        type: '1',
+        solution: 'hướng dẫn giải',
+        mode: 'dễ',
       },
     ]);
     setEditingQuestionId(newId);
     setModalIsOpen(true);
+    setIsAddQuestion(true);
   };
 
   const handleEditQuestion = (questionId) => {
     setEditingQuestionId(questionId);
     setModalIsOpen(true); // Mở modal khi bắt đầu chỉnh sửa câu hỏi
+    setIsAddQuestion(false);
     // Thực hiện các xử lý khác nếu cần
   };
 
@@ -99,6 +104,22 @@ const Section = (props) => {
     setQuestions((prevQuestions) =>
       prevQuestions.map((question) =>
         question.id === questionId ? { ...question, title: newTitle } : question
+      )
+    );
+  };
+
+  const handleEditSolution = (questionId, newSolution) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, solution: newSolution } : question
+      )
+    );
+  };
+
+  const handleQuestionModeChange = (questionId, newMode) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, mode: newMode } : question
       )
     );
   };
@@ -205,7 +226,7 @@ const Section = (props) => {
     setQuestions(() =>
       questions.map((question) =>
         question.id === questionId
-          ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: 'Đáp án ở đây' }] }
+          ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: '' }] }
           : question
       )
     );
@@ -227,6 +248,23 @@ const Section = (props) => {
   const handleQuestypeChange = (e) => {
     setQuestype(e.target.value);
   };
+
+  const handleQuestionTypeChange = (questionId, selectedType) => {
+    // Cập nhật giá trị question.type khi thay đổi loại câu hỏi
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, type: selectedType } : question
+      )
+    );
+    if (selectedType === '2') {
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((question) =>
+          question.id === questionId ? { ...question, answers: [] } : question
+        )
+      );
+    }
+  };
+
 
   return (
     <>
@@ -287,7 +325,7 @@ const Section = (props) => {
             <div className='question-tool'>
               <span className='tool-item' onClick={() => unSelect()}><FaXmark /></span>
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
-      
+
               <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
               <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
               <span className='tool-item' onClick={open2}><FaRegFileWord></FaRegFileWord></span>
@@ -308,7 +346,12 @@ const Section = (props) => {
                   editingQuestionId={editingQuestionId}
                   modalIsOpen={modalIsOpen}
                   handleEditorDataChange={handleEditorDataChange}
-                  handleSelectSection={handleSelectSection }
+                  setModalIsOpen={setModalIsOpen}
+                  handleSelectSection={handleSelectSection}
+                  handleQuestionTypeChange={handleQuestionTypeChange}
+                  handleEditSolution={handleEditSolution}
+                  isAddQuestion={isAddQuestion}
+                  handleQuestionModeChange={handleQuestionModeChange}
                 />
               ))}
 
@@ -337,10 +380,7 @@ const Section = (props) => {
                 </div>
               ))}
             </div>
-
           </div>
-
-
         </div>
       </div>
     </>
