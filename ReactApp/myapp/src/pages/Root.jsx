@@ -20,47 +20,47 @@ import { ToastContainer } from 'react-toastify';
 
 const Root = () => (
   <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/login" element={<Loginp />} />
-        <Route path="/signup" element={<Signupp />} />
-        <Route path="/profile" element={<Profile />} />
+      <Route path="/" element={<HomeScreen />} />
+      <Route path="/login" element={<Loginp />} />
+      <Route path="/signup" element={<Signupp />} />
+      <Route path="/profile" element={<Profile />} />
 
-        {/*Question Bank*/}
+      {/*Question Bank*/}
 
-        <Route path="/qbank" element={< BankTypep />} />
-        <Route path="/pbank" element={<Bankp />} />
-        <Route path="/repo" element={<Repository />} />
-        <Route path="/sec" element={<Sections />} />
+      <Route path="/qbank" element={< BankTypep />} />
+      <Route path="/pbank" element={<Bankp />} />
+      <Route path="/repo" element={<Repository />} />
+      <Route path="/sec" element={<Sections />} />
 
-        {/*Exam Create*/}
+      {/*Exam Create*/}
 
-        <Route path="/exam" element={<BankTypeSelectp />} />
-        <Route path="/exbank" element={<BankSelectp />} />
-        <Route path="/exrepo" element={<RepoSelectp></RepoSelectp>}></Route>
-        <Route path="/exconfig" element={<ExamConfigp></ExamConfigp>}></Route>
-        {/* <Route path="/qbank/pbank/:bid" element={<YourNestedComponent/>}/> */}
+      <Route path="/exam" element={<BankTypeSelectp />} />
+      <Route path="/exbank" element={<BankSelectp />} />
+      <Route path="/exrepo" element={<RepoSelectp></RepoSelectp>}></Route>
+      <Route path="/exconfig" element={<ExamConfigp></ExamConfigp>}></Route>
+      {/* <Route path="/qbank/pbank/:bid" element={<YourNestedComponent/>}/> */}
 
 
-        {/* <Route path="/user/create" element={<UserFormScreen />} />
+      {/* <Route path="/user/create" element={<UserFormScreen />} />
       <Route path="/user/:id" element={<UserFormScreen />} /> */}
 
-        {/* Book Routes
+      {/* Book Routes
       <Route path="/book/list" element={<BookListScreen />} />
       <Route path="/book/create" element={<BookFormScreen />} />
       <Route path="/book/:id" element={<BookFormScreen />} /> */}
 
-        {/* Manager Routes
+      {/* Manager Routes
       <Route path="/manager/list" element={<ManagerListScreen />} />
       <Route path="/manager/create" element={<ManagerFormScreen />} />
       <Route path="/manager/:id" element={<ManagerFormScreen />} /> */}
 
-      </Routes>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-      />
+    </Routes>
+    <ToastContainer
+      position="bottom-right"
+      autoClose={3000}
+    />
   </BrowserRouter>
 
 );

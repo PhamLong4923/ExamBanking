@@ -19,9 +19,6 @@ const Section = (props) => {
   const [section, setSection] = useState([]);
   const [selectedSection, setSelectedSection] = useState();
 
-  
-  const [questype, setQuestype] = useState('3');
-  
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -31,7 +28,7 @@ const Section = (props) => {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [questions, setQuestions] = useState([
     {
-      id: '1',
+      id: 1,
       title: 'Đề ở đây',
       answers: [
         // { id: 'answer1', content: 'Đáp án ở đây' },
@@ -39,12 +36,39 @@ const Section = (props) => {
         // { id: 'answer3', content: 'Đáp án ở đây' },
         // { id: 'answer4', content: 'Đáp án ở đây' }
       ],
-      type: '1',
+      type: 1,
       solution: 'Hướng dẫn giải',
-      mode: 'dễ',
+      mode: 2,
     }
-    
+
   ]);
+
+  //filter
+  const [qlfilter, setQlfilter] = useState([]);
+  const [qtypef, setQtypef] = useState(0);
+  const [qmodef, setQmodef] = useState(0);
+  const [qsearch, setQsearch] = useState('');
+
+  useEffect(() => {
+    let filteredQuestions = questions;
+
+    if (qsearch.length !== 0) {
+      filteredQuestions = filteredQuestions.filter(q => q.title.includes(qsearch));
+    }
+
+    if (qtypef !== 0) {
+      filteredQuestions = filteredQuestions.filter(q => q.type === parseInt(qtypef));
+    }
+
+    if (qmodef !== 0) {
+      filteredQuestions = filteredQuestions.filter(q => q.mode === parseInt(qmodef));
+    }
+
+    setQlfilter(filteredQuestions);
+  }, [qtypef, qmodef, qsearch, questions]);
+
+  //end filter
+
   const [editingQuestionId, setEditingQuestionId] = useState(null);
 
   const handleEditorDataChange = (data, type, quesid, ansid) => {
@@ -74,9 +98,9 @@ const Section = (props) => {
         answers: [
           { id: 'answer1', content: '' },
         ],
-        type: '1',
+        type: 1,
         solution: 'hướng dẫn giải',
-        mode: 'dễ',
+        mode: 1,
       },
     ]);
     setEditingQuestionId(newId);
@@ -159,7 +183,7 @@ const Section = (props) => {
   //load section
   useEffect(() => {
     try {
-      
+
       //call getSection api (repoid) -> list of sections
 
       // setSection(ress.data);
@@ -171,22 +195,22 @@ const Section = (props) => {
   }, []);
 
   //load question
-  useEffect(() =>{
+  useEffect(() => {
     //load question by secid which are selected
   })
 
-  useEffect(() =>{
+  useEffect(() => {
     //load question if secid change
-  },[])
+  }, [])
 
-  useEffect(() =>{
+  useEffect(() => {
     //load 10 question first
   })
 
   useEffect(() => {
     const qlistitemElement = document.querySelector('.qlistitem');
     qlistitemElement.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       qlistitemElement.removeEventListener('scroll', handleScroll);
     };
@@ -204,22 +228,22 @@ const Section = (props) => {
       // Gọi API để lấy thêm câu hỏi
       const response = await fetch('API_URL');
       const data = await response.json();
-  
+
       // Cập nhật state questions bằng cách thêm câu hỏi mới vào mảng questions hiện có
       setQuestions(prevQuestions => [...prevQuestions, ...data.questions]);
     } catch (error) {
       console.error('Error loading more questions:', error);
     }
   };
-  
-  
-  
+
+
+
   const handleScroll = () => {
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY;
     const scrolledToBottom = Math.ceil(scrollTop + windowHeight) >= documentHeight;
-    
+
     if (scrolledToBottom) {
       setIsEndOfPage(true);
     } else {
@@ -253,7 +277,7 @@ const Section = (props) => {
           //await axios.post('https://localhost:7064/api/DeleteQuestions', { questionIds: selectedQuestions });
 
           // Sau khi xóa thành công, cập nhật danh sách câu hỏi
-          
+
 
           // Đặt lại mảng câu hỏi được chọn
           setSelectedQuestions([]);
@@ -299,9 +323,6 @@ const Section = (props) => {
 
   //filter
 
-  const handleQuestypeChange = (e) => {
-    setQuestype(e.target.value);
-  };
 
   const handleQuestionTypeChange = (questionId, selectedType) => {
     // Cập nhật giá trị question.type khi thay đổi loại câu hỏi
@@ -337,35 +358,35 @@ const Section = (props) => {
 
           <form className="filterform">
             <div className="searcher">
-              <input type="search" placeholder="Search" class="search-field" />
+              <input type="search" placeholder="Search" className="search-field" onChange={(event) => setQsearch(event.target.value)} name="search" />
               {/* <img src="/search.png" alt='search icon' className='searchicon'/> */}
             </div>
 
-
-            <select className="filter" name="questype" value={questype} onChange={handleQuestypeChange}>
+            <select className="filter" name="questype" onChange={(event) => setQtypef(event.target.value)}>
+              <option value="0">Tất cả</option>
               <option value="1">Trắc nghiệm</option>
               <option value="2">Tự luận</option>
-              <option value="3">Tất cả</option>
             </select>
 
-            {questype === '1' && (
-              <select className="filter" name="mutitype">
-                <option value="mercedes">Nhận biết</option>
-                <option value="volvo">Thông hiểu</option>
-                <option value="saab">Vận dụng</option>
-                <option value="audi">Tất cả</option>
+            {qtypef === '1' && (
+              <select className="filter" name="mutitype" onChange={(event) => setQmodef(event.target.value)}>
+                <option value="0">Tất cả</option>
+                <option value="1">Nhận biết</option>
+                <option value="2">Thông hiểu</option>
+                <option value="3">Vận dụng</option>
               </select>
             )}
 
-            {questype === '2' && (
-              <select className="filter" name="essaytype">
-                <option value="mercedes">Dễ</option>
-                <option value="volvo">Trung bình</option>
-                <option value="saab">Nâng cao</option>
-                <option value="audi">Tất cả</option>
+            {qtypef === '2' && (
+              <select className="filter" name="essaytype" onChange={(event) => setQmodef(event.target.value)}>
+                <option value="0">Tất cả</option>
+                <option value="4">Dễ</option>
+                <option value="5">Trung bình</option>
+                <option value="6">Nâng cao</option>
               </select>
             )}
           </form>
+
 
           {/* <div className='addSection'><i class="fa-solid fa-plus fa-xl"></i></div> */}
 
@@ -387,7 +408,7 @@ const Section = (props) => {
             </div>
 
             <div className='qlistitem'>
-              {questions.map((question, index) => (
+              {qlfilter.map((question, index) => (
                 <Question
                   key={index}
                   question={question}
@@ -411,7 +432,7 @@ const Section = (props) => {
                 />
               ))}
 
-              {loading }
+              {loading}
 
               <ImportModal
                 showModal={showModal1 || showModal2}

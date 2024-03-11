@@ -63,18 +63,25 @@
 
 }
 
-.avata {
+.avataheader {
     height: 40px;
     width: 40px;
     border-radius: 50%;
     cursor: pointer;
+    margin-left: 70px;
+}
+
+.popup{
+    margin-left: -20px;
+    height: 30px;
+    width: 30px;
 }
 
 .account-dropdown {
     width: 250px;
     height: 150px;
     border: 1px solid black;
-    border-radius: 20px;
+    border-radius: 5px;
     right: 0;
     margin: 6px;
     display: none;
@@ -83,18 +90,20 @@
     align-items: center;
     background-color: rgb(250, 250, 250);
     position: absolute;
-    z-index: 9999999999999999999999;
+    z-index: 9;
 }
 
 .menu-account,
 .menu-setting,
 .menu-logout {
-    display: flex;
-    width: 90%;
+    margin: 0;
+    padding: 0;
+    width: 95%;
     height: 34%;
-    align-items: center;
+}
 
-
+.menu-account{
+    display: flex;
 }
 
 .account-name {

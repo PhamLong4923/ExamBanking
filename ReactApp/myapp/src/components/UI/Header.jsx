@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../UI/UIStyle/Header.css';
-import axios from 'axios';
-
+import { getLocalStorageItem } from '../../services/LocalStorage';
 
 const Header = React.memo(() => {
-
     const [isDropdownVisible, setDropdownVisible] = useState(false);
-
+    const [avatar, setAvatar] = useState();
+    const [email, setEmail] = useState();
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        // Kiểm tra nếu có thông tin đăng nhập trong local storage
         const storedLoginStatus = localStorage.getItem('isLoggedIn');
         return storedLoginStatus ? JSON.parse(storedLoginStatus) : false;
     });
@@ -18,31 +16,10 @@ const Header = React.memo(() => {
         setDropdownVisible(!isDropdownVisible);
     };
 
-    // Hàm này được gọi khi người dùng đăng nhập
-    // const handleLogin = () => {
-    //     const loginResponse = {
-    //         username: 'example_user',
-    //         avatar: 'link_to_avatar_image'
-    //     };
-
-    //     localStorage.setItem('isLoggedIn', JSON.stringify(true));
-
-    //     localStorage.setItem('userData', JSON.stringify(loginResponse));
-    //     // Cập nhật trạng thái đăng nhập
-    //     setIsLoggedIn(true);
-    // };
-
-    
-
-    // Hàm này được gọi khi người dùng đăng xuất
     const handleLogout = () => {
         setDropdownVisible(!isDropdownVisible);
-        // Thực hiện các bước đăng xuất, ví dụ: xóa thông tin đăng nhập từ localStorage
-        // ...
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userData');
-
-        // Cập nhật trạng thái đăng nhập
         setIsLoggedIn(false);
     };
 
@@ -50,7 +27,6 @@ const Header = React.memo(() => {
         const closeDropdownOnOutsideClick = (event) => {
             const accountElement = document.getElementById('account');
             const dropdownElement = document.getElementById('account-dropdown');
-
             if (accountElement && dropdownElement) {
                 if (!accountElement.contains(event.target) && !dropdownElement.contains(event.target)) {
                     setDropdownVisible(false);
@@ -66,27 +42,32 @@ const Header = React.memo(() => {
     }, []);
 
     useEffect(() => {
-        // useEffect để theo dõi thay đổi trạng thái và lưu vào localStorage
         localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
     }, [isLoggedIn]);
 
-    return (
+    
 
+    // Sử dụng useEffect để theo dõi thay đổi avatar và email
+    useEffect(() => {
+        const avatarUrl = getLocalStorageItem('uavate');
+        const email = getLocalStorageItem('uemail');
+        setAvatar(avatarUrl)
+        setEmail(email);
+    }, []);
+
+    return (
         <>
             <div className='margin-header'></div>
             <div className='header'>
-
                 <div className='header-logo'>
                     <img className='head-logo' src="/EBLogo.png" alt="logo" />
                     <div className='head-name'>
                         <h2>EXAM BANKING</h2>
-
                     </div>
                 </div>
                 {isLoggedIn ? (
                     <div className='account' id='account' onClick={handleAccountClick}>
-                        <img className='avata' src="/defaultavata.png" alt="avata" />
-
+                        <img className='avataheader' src={avatar} alt="avatar" />
                     </div>
                 ) : (
                     <div className='account'>
@@ -94,36 +75,27 @@ const Header = React.memo(() => {
                         <p>/</p>
                         <NavLink to={'/login'}><h5> Đăng nhập</h5></NavLink>
                     </div>
-                    
                 )}
-
-
             </div>
-
             <span className={`account-dropdown ${isDropdownVisible ? 'active' : ''}`} id='account-dropdown'>
-
                 <NavLink to='/profile' className='menu-item menu-account'>
-                    <img className='avata' src="/defaultavata.png" alt="avata" />
+                    <img className='avataheader popup' src={avatar || "/defaultavata.png"} alt="avatar" />
                     <div className='account-name'>
-                        <span className='menu-choice'>Tên tài khoản</span>
-                        <span className='account-email'>example@gmail.com</span>
+                        
+                        <span className='account-email'>{email}</span>
                     </div>
                 </NavLink>
-
-
                 <div className='menu-item menu-setting'>
                     <i className="fa-solid fa-gear fa-xl"></i>
                     <span className='menu-choice'>Quản lí tài khoản</span>
                 </div>
-
                 <div className='menu-item menu-logout' onClick={handleLogout}>
                     <i className="fa-solid fa-arrow-right-from-bracket fa-xl"></i>
                     <span className='menu-choice'>Đăng xuất</span>
                 </div>
-
             </span>
         </>
     );
 });
 
-export default Header
+export default Header;

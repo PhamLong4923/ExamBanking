@@ -5,7 +5,10 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
-import { getLocalStorageItem, setLocalStorageItem } from '../../../../services/LocalStorage';
+import ToastMessage from '../../../Toast/toast';
+import BarLoader from "react-spinners/BarLoader";
+import { setLocalStorageItem, getLocalStorageItem } from '../../../../services/LocalStorage';
+
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
     const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
@@ -105,6 +108,7 @@ const Repository = (props) => {
             )
         );
     };
+
 
     const handleSelectRepo = (repoid) => {
         setLocalStorageItem("repoId", repoid);

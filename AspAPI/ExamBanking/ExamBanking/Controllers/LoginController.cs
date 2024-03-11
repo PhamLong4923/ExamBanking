@@ -33,19 +33,15 @@ namespace ExamBanking.Controllers
         {
             // Xác thực thông tin người dùng từ Google
             var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
             if (!authenticateResult.Succeeded)
             {
                 // Xử lý lỗi xác thực
                 return RedirectToAction("LoginFailure");
             }
-
             // Lấy thông tin người dùng từ payload
             var email = authenticateResult.Principal.FindFirst(ClaimTypes.Email)?.Value;
-
             // Kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
             var existingUser = _context.Accounts.Any(a => a.Email == email);
-
             if (!existingUser)
             {
                 // Nếu người dùng không tồn tại, thêm mới vào cơ sở dữ liệu
@@ -54,13 +50,10 @@ namespace ExamBanking.Controllers
                     Email = email,
                     // Thêm các trường khác nếu cần
                 };
-
                 _context.Accounts.Add(newUser);
                 _context.SaveChanges();
             }
-
             // Sinh JWT token và trả về
-
             return Ok(CreateRandomToken());
         }
 
