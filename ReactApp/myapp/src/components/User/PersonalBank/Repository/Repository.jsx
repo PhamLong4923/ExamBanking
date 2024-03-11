@@ -5,8 +5,8 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Dropdown from '../../../../common/dropdown';
-import '../Repository/Repository.css';
 import { getLocalStorageItem, setLocalStorageItem } from '../../../../services/LocalStorage';
+import '../Repository/Repository.css';
 
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
@@ -81,10 +81,11 @@ const Repository = (props) => {
         const updatedRepos = repos.filter(repo => repo.id !== repoId);
         setRepos(updatedRepos);
         setDropdownVisible(null);
-        toast.dismiss(toastId)
+        toast.dismiss(toastId);
     };
 
     const toastVerifyDelete = (repoId) => {
+        setDropdownVisible(null);
         toast((t) => (
             <div>
                 Are you sure want to delete?
