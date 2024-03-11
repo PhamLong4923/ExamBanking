@@ -3,9 +3,11 @@ import { FaPlus } from 'react-icons/fa';
 import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
+import { toast } from 'react-toastify';
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
 import { getLocalStorageItem, setLocalStorageItem } from '../../../../services/LocalStorage';
+
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
     const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
@@ -75,12 +77,28 @@ const Repository = (props) => {
         setModalIsOpen(false);
     };
 
-    const handleDeleteRepo = (repoId) => {
+    const handleDeleteRepo = (repoId, toastId) => {
         const updatedRepos = repos.filter(repo => repo.id !== repoId);
         setRepos(updatedRepos);
         setDropdownVisible(null);
+        toast.dismiss(toastId)
     };
 
+    const toastVerifyDelete = (repoId) => {
+        toast((t) => (
+            <div>
+                Are you sure want to delete?
+                <div className='toast-buttons'>       
+                    <button onClick={() => toast.dismiss(t.id)}>
+                        Cancel
+                    </button>
+                    <button onClick={() => handleDeleteRepo(repoId, t.id)}>
+                        Yes
+                    </button>
+                </div>
+            </div>
+        ));
+    }
 
     const handleEditTitle = (repoId, newTitle) => {
         setRepos((prevRepos) =>
@@ -154,8 +172,6 @@ const Repository = (props) => {
                 <NavLink className="link" to='/repo'>ToanCD</NavLink>
             </div>
             <div className='add-new-bank' onClick={handleAddRepo}>
-                {/* <button onClick={handleAddBank}>Thêm ngân hàng câu hỏi</button> */}
-
                 <FaPlus></FaPlus>
             </div>
             <div className="pitem-containers">
@@ -167,7 +183,6 @@ const Repository = (props) => {
                 </div>
                 {repos.map(repo => (
                     <div>
-                        {/* <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem"> */}
                         <NavLink key={repo.id} to={'/sec/1'} className="pitem titem" onClick={() => handleSelectRepo(repo.id)}>
                             <span className="td">{repo.title}</span>
                             <span className="td">{repo.datetime}</span>
@@ -178,7 +193,7 @@ const Repository = (props) => {
                         </NavLink>
                         <Dropdown
                             visible={isDropdownVisible === repo.id}
-                            onDelete={() => handleDeleteRepo(repo.id)}
+                            onDelete={() => toastVerifyDelete(repo.id)}
                             onEdit={() => handleEditRepo(repo.id)}
                         />
                         {modalIsOpen && editingRepoId === repo.id && (
