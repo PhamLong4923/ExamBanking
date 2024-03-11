@@ -8,7 +8,7 @@ namespace ExamBanking.Models
         public Bank()
         {
             Accesses = new HashSet<Access>();
-            Repositories = new HashSet<Repository>();
+            Repos = new HashSet<Repo>();
         }
 
         public int Bankid { get; set; }
@@ -18,6 +18,6 @@ namespace ExamBanking.Models
 
         public virtual Account? Acc { get; set; }
         public virtual ICollection<Access> Accesses { get; set; }
-        public virtual ICollection<Repository> Repositories { get; set; }
+        public virtual ICollection<Repo> Repos { get; set; }
     }
 }

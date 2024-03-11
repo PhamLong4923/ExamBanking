@@ -1,6 +1,7 @@
 ﻿using ExamBanking.DTO.AccountDto;
 using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
+using ExamBanking.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,46 +14,24 @@ namespace ExamBanking.Controllers
     {
         private ExamBankingContext eContext = new ExamBankingContext();
         private readonly ExamBankingContext _context;
-        public BankController(ExamBankingContext context)
+        private readonly RRepositories _rRepositories;
+        public BankController(ExamBankingContext context,RRepositories rRepositories)
         {
             _context = context;
+            _rRepositories = rRepositories;
         }
-        //[HttpPost("vquestions")]
-        //public IActionResult viewQuestionList()
-        //{
-        //    check user
-
-
-        //    List<Question> qlist = eContext.Questions.ToList(); //take all for test
-
-
-        //    return Ok(qlist);
-
-        //}
-
-        //[HttpPost("vsection")]
-        //public IActionResult viewSectionList()
-        //{
-        //    check user
-
-
-
-        //    List<Section> sec = eContext.Sections.ToList(); //take all for test
-
-        //    return Ok(sec);
-
-        //}
-        [HttpPost("GetBank")]
+        
+        [HttpGet("GetBank")]
         public IActionResult viewBankList()
         {
-            var userid = 1; // sửa lại để lấy jwt token
+            var userid = 2; // sửa lại để lấy jwt token
             var listBank = _context.Banks.Where(a => a.Accid == userid).ToList();
             return Ok(listBank);
         }
         [HttpPost("CreateBank")]
         public async Task<IActionResult> CreateBank(CreateBankRequest request)
         {
-            var userid = 1;
+            var userid = 2;
             if (_context.Banks.Any(b => b.Accid == userid && b.Bankname == request.Bankname))
             {
                 return BadRequest("Bank name already exists ");
@@ -68,10 +47,10 @@ namespace ExamBanking.Controllers
             await _context.SaveChangesAsync();
             return Ok("bank has benn created!!");
         }
-        [HttpPost("EditBank")]
+        [HttpPut("EditBank")]
         public async Task<IActionResult> EditBank(RenameBank request)
         {
-            var userid = 1;
+            var userid = 2;
             var edit = _context.Banks.FirstOrDefault(a => a.Accid == userid && a.Bankid == request.Bankid);
             if(edit == null)
             {
@@ -81,16 +60,17 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok("Edit Succes");
         }
-        [HttpPost("DeleteBank")]
-        public async Task<IActionResult> DeleteBank(DeleteBank request)
+        [HttpDelete("DeleteBank")]
+        public async Task<IActionResult> DeleteBank(DeleteBankRequest request)
         {
-            var userid = 1;
+            var userid = 2;
             
             var remove = _context.Banks.FirstOrDefault(a => a.Accid == userid && a.Bankid == request.Bankid);
             if (remove == null)
             {
                 return BadRequest("Bank doesnt exist!!");
             }
+            _rRepositories.DeleteAllRepo(request.Bankid);
             _context.Banks.Remove(remove);
             _context.SaveChangesAsync();
             return Ok("Delete Succes");

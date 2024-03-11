@@ -12,7 +12,9 @@ namespace ExamBanking.Config
             //add service
             services.AddDbContext<ExamBankingContext>();
             services.AddScoped<RAnswer>();
-
+            services.AddScoped<RQuestion>();
+            services.AddScoped<RRepositories>();
+            services.AddScoped<RSection>();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>

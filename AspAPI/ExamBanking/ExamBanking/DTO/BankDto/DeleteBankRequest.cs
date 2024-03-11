@@ -2,7 +2,7 @@
 
 namespace ExamBanking.DTO.BankDto
 {
-    public class DeleteBank
+    public class DeleteBankRequest
     {
         [Required]
         public int Bankid { get; set; }

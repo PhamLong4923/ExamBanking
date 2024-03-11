@@ -11,13 +11,12 @@ namespace ExamBanking.Models
             AccessTos = new HashSet<Access>();
             Banks = new HashSet<Bank>();
             Payments = new HashSet<Payment>();
-            Repositories = new HashSet<Repository>();
+            Repos = new HashSet<Repo>();
         }
 
         public int Accid { get; set; }
         public string? Email { get; set; }
-        public byte[]? PasswordHash { get; set; }
-        public byte[]? PasswordSalt { get; set; }
+        public string? Userpass { get; set; }
         public string? Accname { get; set; }
         public int? Accmode { get; set; }
         public string? VerificationToken { get; set; }
@@ -31,6 +30,6 @@ namespace ExamBanking.Models
         public virtual ICollection<Access> AccessTos { get; set; }
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
-        public virtual ICollection<Repository> Repositories { get; set; }
+        public virtual ICollection<Repo> Repos { get; set; }
     }
 }
