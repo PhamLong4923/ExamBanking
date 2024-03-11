@@ -16,12 +16,13 @@ const Question = ({
     editingQuestionId,
     modalIsOpen,
     handleEditorDataChange,
-    handleSelectSection,
     setModalIsOpen,
     handleQuestionTypeChange,
     handleEditSolution,
     isAddQuestion,
     handleQuestionModeChange,
+    handleSelectQuestion,
+    isSelected,
 }) => {
     const [solutionVisible, setSolutionVisible] = useState(false);
 
@@ -30,7 +31,7 @@ const Question = ({
     };
 
     return (
-        <div onClick={() => handleSelectSection}>
+        <div onClick={() => handleSelectQuestion(question.id)}>
             <React.Fragment>
                 {editingQuestionId === question.id && (
                     <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
@@ -135,7 +136,7 @@ const Question = ({
                     </div>
                 )}
 
-                <table className="addquestion-table">
+                <table className={`addquestion-table ${isSelected ? 'selected' : ''}`}>
                     <thead>
                         <td className="row-head">
                             <span className="left-row">Câu hỏi {question.id} - {question.type === '1' ? 'Trắc nghiệm' : 'Tự luận'}</span>
@@ -160,7 +161,7 @@ const Question = ({
                             ))}
                         </td>
                     </tr>
-                    <tr>
+                    <tr onClick={e => e.stopPropagation()}>
                         {solutionVisible ? (
                             <>
                                 <IoIosArrowDropdownCircle className="cursor-icon" onClick={toggleSolution} />

@@ -22,7 +22,7 @@ export const order = (data, config) => Http.post(`/order`, data, config);
 
 export const signUp = () => Http.post("");
 
-export const login = () => Http.post("");
+export const login = () => Http.get("/Login/google");
 
 //get-api
 

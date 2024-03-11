@@ -17,11 +17,9 @@ import Signupp from './User/Login/Signupp';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
-import { BankProvider } from './User/Bank/BankContext';
 
 const Root = () => (
   <BrowserRouter>
-    <BankProvider>
       <Routes>
 
         <Route path="/" element={<HomeScreen />} />
@@ -63,7 +61,6 @@ const Root = () => (
         position="bottom-right"
         autoClose={3000}
       />
-    </BankProvider>
   </BrowserRouter>
 
 );
