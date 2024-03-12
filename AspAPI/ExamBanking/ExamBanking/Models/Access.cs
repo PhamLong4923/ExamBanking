@@ -15,7 +15,7 @@ namespace ExamBanking.Models
 
         public virtual Bank? Bank { get; set; }
         public virtual Account? From { get; set; }
-        public virtual Repository? Repo { get; set; }
+        public virtual Repo? Repo { get; set; }
         public virtual Account? To { get; set; }
     }
 }

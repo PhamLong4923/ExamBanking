@@ -10,12 +10,15 @@ namespace ExamBanking.Config
         public static void AddCustomServices(this IServiceCollection services)
         {
             //add service
+            services.AddScoped<RAccount>();
             services.AddDbContext<ExamBankingContext>();
             services.AddScoped<RAnswer>();
-
+            services.AddScoped<RQuestion>();
+            services.AddScoped<RRepositories>();
+            services.AddScoped<RSection>();
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin", builder =>
+                options.AddPolicy("CorsPolicy", builder =>
                 {
                     builder.WithOrigins("http://localhost:3000")
                            .AllowAnyMethod()

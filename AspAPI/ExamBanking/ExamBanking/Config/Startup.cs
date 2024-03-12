@@ -42,7 +42,7 @@ namespace ExamBanking.Config
 
             app.UseAuthentication();
             // Sử dụng CORS
-            app.UseCors("AllowOrigin");
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
