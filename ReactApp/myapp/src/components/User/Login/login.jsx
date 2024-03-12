@@ -1,7 +1,30 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export const Login = () => {
+    const responseGoogle = async (credentialResponse) => {
+        try {
+            const decoded = jwtDecode(credentialResponse?.credential);
 
+            console.log(decoded);
+
+            // Gửi JWT lên server để lưu vào cơ sở dữ liệu
+            const response = await axios.post('https://localhost:7064/api/GoogleAuth/save-jwt-data', {
+                jwt: credentialResponse?.credential,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error processing JWT:', error);
+        }
+    };
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -34,21 +57,20 @@ export const Login = () => {
                         <button type="submit" className="flex w-full justify-center ml-0 mt-4 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Đăng nhập</button>
                     </div>
                 </form>
-
-                
-
                 <p class="mt-10 ml-0 text-center text-sm text-gray-500 ">
                     or
-                    
+
                 </p>
             </div>
 
-            <div class="flex items-center justify-center">
-                    <button className="px-4 py-2 border flex gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
-                        <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo"/>
-                            <span className='text-black'>Đăng nhập bằng tài khoản google</span>
-                    </button>
-                </div>
+            <span style={{ display: 'flex', justifyContent: 'center' }}>
+                <GoogleLogin
+                    onSuccess={responseGoogle}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
+            </span>
         </div>
     );
 }
