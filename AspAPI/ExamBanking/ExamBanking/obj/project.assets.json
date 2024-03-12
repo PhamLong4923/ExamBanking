@@ -4502,11 +4502,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\hoc\\ki_6\\abc\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+      "projectUniqueName": "D:\\hoc\\ki_6\\resovle\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
       "projectName": "ExamBanking",
-      "projectPath": "D:\\hoc\\ki_6\\abc\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+      "projectPath": "D:\\hoc\\ki_6\\resovle\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
       "packagesPath": "C:\\Users\\viet2\\.nuget\\packages\\",
-      "outputPath": "D:\\hoc\\ki_6\\abc\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+      "outputPath": "D:\\hoc\\ki_6\\resovle\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\viet2\\AppData\\Roaming\\NuGet\\NuGet.Config",
