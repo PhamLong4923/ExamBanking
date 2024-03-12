@@ -3,14 +3,14 @@ import Root from './pages/Root';
 
 
 const App = () => {
-  
+
 
   return (
-    
-      
-        <Root></Root>
-      
-    
+
+
+    <Root></Root>
+
+
   );
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import '../RepoSelect/RepoSeclect.css'
 import { IoIosArrowForward } from "react-icons/io";
@@ -6,6 +6,49 @@ import { CgPlayTrackNextO } from "react-icons/cg";
 import { FaXmark } from "react-icons/fa6";
 
 export default function RepoSelect() {
+
+    const [selectNumber, setSelectNumber] = useState(0);
+
+    const [repos, SetRepos] = useState([
+        {
+            id: '1',
+            title: 'chương I',
+        },
+        {
+            id: '2',
+            title: 'chương II',
+        },
+        {
+            id: '3',
+            title: 'chương III',
+        },
+        {
+            id: '4',
+            title: 'chương IV',
+        }
+    ])
+
+    const [repoSelect, SetRepoSelect] = useState([]);
+
+    const handleRepoSelect = (value) => {
+        const isValueExist = repoSelect.includes(value);
+        if (isValueExist) {
+            const updatedRepoSelect = repoSelect.filter(item => item !== value);
+            SetRepoSelect(updatedRepoSelect);
+        } else {
+            SetRepoSelect(prevState => [...prevState, value]);
+        }
+    }
+
+    const handleUnSelect = () => {
+        SetRepoSelect([]);
+    }
+
+
+    useEffect(() => {
+        setSelectNumber(repoSelect.length);
+    }, [repoSelect]);
+
     return (
         <>
             <div className="pathlink">
@@ -23,10 +66,10 @@ export default function RepoSelect() {
                 <div className="reposelect">
                     <div className="reposelect-tool">
                         <div className='question-tool repo-tool'>
-                                <span className='tool-item' ><FaXmark></FaXmark></span>
-                                <span className='selectedq'>0 được chọn</span>
-                                <span className="fake-space"></span>
-                                <NavLink to={'/exconfig'} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>
+                            <span className='tool-item' onClick={() => handleUnSelect()}><FaXmark></FaXmark></span>
+                            <span className='selectedq'>{selectNumber} được chọn</span>
+                            <span className="fake-space"></span>
+                            <NavLink to={'/exconfig'} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>
                         </div>
 
                         <div className="repolist">
@@ -35,21 +78,14 @@ export default function RepoSelect() {
 
                                 <span className="thead"></span>
                             </div>
-                            <NavLink to={'/sec/1'} className="pitem titem">
-                                <span className="td">Chương I</span>
-                            </NavLink>
+                            {repos.map(repo => {
+                                return (
+                                    <div key={repo.id} onClick={() => handleRepoSelect(repo.id)} className={`pitem titem ${repoSelect.includes(repo.id) ? "selectrepo" : ""}`}>
+                                        <span className="td">{repo.title}</span>
+                                    </div>
+                                )
 
-                            <NavLink to={'/sec/1'} className="pitem titem">
-                                <span className="td">Chương II</span>
-                            </NavLink>
-
-                            <NavLink to={'/sec/1'} className="pitem titem">
-                                <span className="td">Chương III</span>
-                            </NavLink>
-
-                            <NavLink to={'/sec/1'} className="pitem titem">
-                                <span className="td">Chương IV</span>
-                            </NavLink>
+                            })}
                         </div>
 
                     </div>

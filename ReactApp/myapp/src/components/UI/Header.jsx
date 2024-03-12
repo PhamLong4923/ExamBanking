@@ -21,6 +21,7 @@ const Header = React.memo(() => {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userData');
         setIsLoggedIn(false);
+        window.location.href = "/";
     };
 
     useEffect(() => {
@@ -45,7 +46,7 @@ const Header = React.memo(() => {
         localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
     }, [isLoggedIn]);
 
-    
+
 
     // Sử dụng useEffect để theo dõi thay đổi avatar và email
     useEffect(() => {
@@ -81,7 +82,7 @@ const Header = React.memo(() => {
                 <NavLink to='/profile' className='menu-item menu-account'>
                     <img className='avataheader popup' src={avatar || "/defaultavata.png"} alt="avatar" />
                     <div className='account-name'>
-                        
+
                         <span className='account-email'>{email}</span>
                     </div>
                 </NavLink>

@@ -7,8 +7,9 @@ import { toast } from 'react-toastify';
 import Dropdown from '../../../../common/dropdown';
 import '../Repository/Repository.css';
 import ToastMessage from '../../../Toast/toast';
-import BarLoader from "react-spinners/BarLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 import { setLocalStorageItem, getLocalStorageItem } from '../../../../services/LocalStorage';
+import { getRepository } from '../../../../services/Api';
 
 const Repository = (props) => {
     const bankId = getLocalStorageItem("bankId");
@@ -17,38 +18,33 @@ const Repository = (props) => {
     const [editingRepoId, setEditingRepoId] = useState(null);
     const [isDropdownVisible, setDropdownVisible] = useState();
     const [loading, setLoading] = useState(true);
+    const [repos, setRepos] = useState([
+        // {
+        //     id: '1',
+        //     title: 'chương I',
+        //     datetime: '23:00 2/1/2024',
+        //     owner: 'Phạm Thanh Hương',
+        // }
+    ]);
     const handleMenuClick = (repoId) => {
         setDropdownVisible(prevId => prevId === repoId ? null : repoId);
     };
 
     // api get repository
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await getBank(); // Call getBank function
-    //             setBanks(response.data);
-    //             setLoading(false);
-    //         } catch (error) {
-    //             console.error('Error fetching banks:', error);
-    //             // Handle error here
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, []);
-
     useEffect(() => {
-        console.log(bankType);
-    })
+        const fetchData = async () => {
+            try {
+                const response = await getRepository(); // Call getBank function
+                setRepos(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching banks:', error);
+                // Handle error here
+            }
+        };
 
-    const [repos, setRepos] = useState([
-        {
-            id: '1',
-            title: 'chương I',
-            datetime: '23:00 2/1/2024',
-            owner: 'Phạm Thanh Hương',
-        }
-    ]);
+        fetchData();
+    }, []);
 
     const handleEditRepo = (repoId) => {
         setEditingRepoId(repoId);
@@ -151,18 +147,23 @@ const Repository = (props) => {
                             <span className="thead">Ngày tạo</span>
                             <span className="thead">Tác giả</span>
                         </div>
-                        {repos.map(repo => (
-                            <div>
-                                {/* <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem"> */}
-                                <NavLink key={repo.id} to={'/sec/1'} className="pitem titem" onClick={() => handleSelectRepo(repo.id)}>
-                                    <span className="td">{repo.title}</span>
-                                    <span className="td">{repo.datetime}</span>
-                                    <span className="td">{repo.owner}</span>
+                        {loading ? (
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+                                <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
+                            </div>)
+                            : (
+                                repos.map(repo => (
+                                    <div>
+                                        {/* <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem"> */}
+                                        <NavLink key={repo.id} to={'/sec/1'} className="pitem titem" onClick={() => handleSelectRepo(repo.id)}>
+                                            <span className="td">{repo.title}</span>
+                                            <span className="td">{repo.datetime}</span>
+                                            <span className="td">{repo.owner}</span>
 
-                                </NavLink>
+                                        </NavLink>
 
-                            </div>
-                        ))}
+                                    </div>
+                                )))}
 
                     </div>
                 </div>
@@ -185,50 +186,58 @@ const Repository = (props) => {
                             <span className="thead">Ngày tạo</span>
                             <span className="thead">Tác giả</span>
                         </div>
-                        {repos.map(repo => (
-                            <div>
-                                <NavLink key={repo.id} to={'/sec/1'} className="pitem titem" onClick={() => handleSelectRepo(repo.id)}>
-                                    <span className="td">{repo.title}</span>
-                                    <span className="td">{repo.datetime}</span>
-                                    <span className="td">{repo.owner}</span>
-                                    <NavLink as="span" className="ta" onClick={() => handleMenuClick(repo.id)}>
-                                        <i><HiDotsVertical></HiDotsVertical></i>
+                        {loading ? (
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+                                <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
+                            </div>
+                        ) : (
+                            repos.map(repo => (
+                                <div key={repo.id}>
+                                    <NavLink to={'/sec/1'} className="pitem titem" onClick={() => handleSelectRepo(repo.id)}>
+                                        <span className="td">{repo.title}</span>
+                                        <span className="td">{repo.datetime}</span>
+                                        <span className="td">{repo.owner}</span>
+                                        <NavLink as="span" className="ta" onClick={() => handleMenuClick(repo.id)}>
+                                            <i><HiDotsVertical></HiDotsVertical></i>
+                                        </NavLink>
                                     </NavLink>
-                                </NavLink>
-                                <Dropdown
-                                    visible={isDropdownVisible === repo.id}
-                                    onDelete={() => toastVerifyDelete(repo.id)}
-                                    onEdit={() => handleEditRepo(repo.id)}
-                                />
-                                {modalIsOpen && editingRepoId === repo.id && (
-                                    <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
-                                        <div className="modal-content">
-                                            <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
-                                            <div className='editquestion-head'>
-                                                <div className='repo-input'>
-                                                    <label htmlFor='repo-title'>Title</label>
-                                                    <input id='repo-title' value={repo.title} onChange={(e) => handleEditTitle(repo.id, e.target.value)}></input>
+                                    <Dropdown
+                                        visible={isDropdownVisible === repo.id}
+                                        onDelete={() => toastVerifyDelete(repo.id)}
+                                        onEdit={() => handleEditRepo(repo.id)}
+                                    />
+                                    {modalIsOpen && editingRepoId === repo.id && (
+                                        <div className="modal" style={{ display: modalIsOpen ? 'block' : 'none' }}>
+                                            <div className="modal-content">
+                                                <span className="close" onClick={() => setModalIsOpen(false)}>&times;</span>
+                                                <div className='editquestion-head'>
+                                                    <div className='repo-input'>
+                                                        <label htmlFor='repo-title'>Title</label>
+                                                        <input id='repo-title' value={repo.title} onChange={(e) => handleEditTitle(repo.id, e.target.value)}></input>
+                                                    </div>
+                                                    <div className='repo-input'>
+                                                        <label htmlFor='repo-datetime'>Datetime</label>
+                                                        <input id='repo-datetime' value={repo.datetime} onChange={(e) => handleEditDatetime(repo.id, e.target.value)}></input>
+                                                    </div>
+                                                    <div className='repo-input'>
+                                                        <label htmlFor='repo-owner'>Owner</label>
+                                                        <input id='repo-owner' value={repo.owner} onChange={(e) => handleEditOwner(repo.id, e.target.value)}></input>
+                                                    </div>
                                                 </div>
-                                                <div className='repo-input'>
-                                                    <label htmlFor='repo-datetime'>Datetime</label>
-                                                    <input id='repo-datetime' value={repo.datetime} onChange={(e) => handleEditDatetime(repo.id, e.target.value)}></input>
-                                                </div>
-                                                <div className='repo-input'>
-                                                    <label htmlFor='repo-owner'>Owner</label>
-                                                    <input id='repo-owner' value={repo.owner} onChange={(e) => handleEditOwner(repo.id, e.target.value)}></input>
-                                                </div>
-                                            </div>
 
-                                            <div className='addquestion-savebutton'>
-                                                <button onClick={() => handleSaveEdit()}>
-                                                    Lưu
-                                                </button>
+                                                <div className='addquestion-savebutton'>
+                                                    <button onClick={() => handleSaveEdit()}>
+                                                        Lưu
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                                    )}
+                                </div>
+                            ))
+                        )}
+
+
 
                     </div>
                 </div>

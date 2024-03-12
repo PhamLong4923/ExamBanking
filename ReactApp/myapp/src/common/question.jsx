@@ -4,6 +4,7 @@ import { IoIosArrowDropdown, IoIosArrowDropdownCircle } from "react-icons/io";
 import MyEditor from './MyEditor';
 import './Style/question.css';
 import ConvertTextTagToHTML from './convertTextTagToHTML';
+import { getLocalStorageItem } from '../services/LocalStorage';
 
 const Question = ({
     question,
@@ -24,6 +25,9 @@ const Question = ({
     handleSelectQuestion,
     isSelected,
 }) => {
+
+    const bankType = getLocalStorageItem('bankType') || '-1';
+
     const [solutionVisible, setSolutionVisible] = useState(false);
 
     const toggleSolution = () => {
@@ -140,9 +144,10 @@ const Question = ({
                     <thead>
                         <td className="row-head">
                             <span className="left-row">Câu hỏi {question.id} - {question.type === '1' ? 'Trắc nghiệm' : 'Tự luận'}</span>
-                            <span className="right-row">
+                            {bankType === '0' ? (<></>) : (<span className="right-row">
                                 <button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)}><i className="fa-solid fa-pen-to-square"></i>Chỉnh sửa</button>
-                            </span>
+                            </span>)}
+
                         </td>
                     </thead>
                     <tr>
