@@ -1,10 +1,14 @@
-.reposelect{
+.reposelect {
     width: 99%;
     display: flex;
     justify-content: space-evenly;
 }
 
-.reposelect-tool{
+.selectrepo {
+    background-color: rgb(215, 219, 223);
+}
+
+.reposelect-tool {
     width: 60%;
     border-radius: 10px;
     background-color: rgb(241, 244, 248);
@@ -12,13 +16,13 @@
     height: 600px;
 }
 
-.repolist{
+.repolist {
     margin-top: 5px;
     overflow-y: scroll;
     height: 95%;
 }
 
-.next{
+.next {
     width: 20%;
     height: 80%;
     border: 1px solid rgb(126, 169, 235);
@@ -30,20 +34,20 @@
     float: right;
 }
 
-.next:hover{
+.next:hover {
     background-color: rgb(188, 214, 238);
 }
 
-.fake-space{
+.fake-space {
     width: 60%;
 }
 
-.next>p{
+.next>p {
     font-size: 10px;
     font-weight: 700;
 }
 
-.selectedq{
+.selectedq {
     width: 15%;
     font-size: 12px;
 }

@@ -9,21 +9,21 @@ export const Signup = () => {
 
     const handleSuccess = (credentialResponse) => {
         console.log(credentialResponse);
-        const credecode =  jwtDecode(credentialResponse.credential);
+        const credecode = jwtDecode(credentialResponse.credential);
         console.log(credecode);
         const { email, picture } = credecode;
         setLocalStorageItem("isLoggedIn", true);
         setLocalStorageItem("uavata", picture);
         setLocalStorageItem("uemail", email);
-        window.location.href = '/home';
-        
+        // window.location.href = '/';
+
     }
 
-    useEffect(() => {
-        if(getLocalStorageItem('isLoggedIn')){
-            window.location.href = '/home';
-        }
-    });
+    // useEffect(() => {
+    //     if (getLocalStorageItem('isLoggedIn')) {
+    //         window.location.href = '/';
+    //     }
+    // });
 
     return (
         <div className="relative py-16 bg-gradient-to-br from-sky-50 to-gray-200">
@@ -49,7 +49,7 @@ export const Signup = () => {
                                     onSuccess={credentialResponse => {
                                         handleSuccess(credentialResponse);
                                     }}
-                                    
+
                                     onError={() => {
                                         console.log('Login Failed');
                                     }}

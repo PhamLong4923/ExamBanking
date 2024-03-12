@@ -42,7 +42,7 @@ export default function ExamConfig() {
         for (let i = 0; i < files.length; i++) {
             console.log(files[i]);
         }
-    };    
+    };
 
     return (
         <>
@@ -251,7 +251,7 @@ export default function ExamConfig() {
                             <td>5</td>
                         </tr>
 
-                        
+
                     </tbody>
 
                 </table>
@@ -265,15 +265,15 @@ export default function ExamConfig() {
                     <span>Số lượng :</span>
                     <input type="number" name="" id="" />
                 </div>
-                <div className="file">
+                {/* <div className="file">
                     <span>Chọn thư mục đích</span>
                     <input id="myInput" type="file" webkitdirectory directory multiple onChange={handleFolderSelect}/>
                     
-                </div>
+                </div> */}
                 <div className="export">
-                    
-                <i class="fa-solid fa-file-import fa-lg"></i>
-                <span>Bắt đầu khởi tạo</span>
+
+                    <i class="fa-solid fa-file-import fa-lg"></i>
+                    <span>Bắt đầu khởi tạo</span>
                 </div>
 
 

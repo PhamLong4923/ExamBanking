@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
 import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
+import { TiWarningOutline } from "react-icons/ti";
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink, useParams } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
@@ -8,10 +9,14 @@ import Question from '../../../../common/question';
 import '../Section/Section.css';
 import ToastMessage from '../../../Toast/toast';
 import HashLoader from "react-spinners/HashLoader";
+import { MoonLoader } from 'react-spinners';
+import { getLocalStorageItem } from '../../../../services/LocalStorage';
 
 const Section = (props) => {
+  const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
 
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
+  const [loadingSec, setLoadingSec] = useState(true);
   const [isEndOfPage, setIsEndOfPage] = useState(false);
 
 
@@ -44,27 +49,35 @@ const Section = (props) => {
   ]);
 
   //filter
-  const [qlfilter, setQlfilter] = useState([]);
+  const [qlfilter, setQlfilter] = useState(questions);
   const [qtypef, setQtypef] = useState(0);
   const [qmodef, setQmodef] = useState(0);
   const [qsearch, setQsearch] = useState('');
 
+  const handleChangeQtypef = (value) => {
+    setQtypef(value);
+    setQmodef(0);
+  }
+
   useEffect(() => {
+
     let filteredQuestions = questions;
 
     if (qsearch.length !== 0) {
-      filteredQuestions = filteredQuestions.filter(q => q.title.includes(qsearch));
+      const searchQuery = qsearch.toLowerCase();
+      filteredQuestions = filteredQuestions.filter(q => q.title.toLowerCase().includes(searchQuery));
     }
 
     if (qtypef !== 0) {
-      filteredQuestions = filteredQuestions.filter(q => q.type === parseInt(qtypef));
-    }
-
-    if (qmodef !== 0) {
-      filteredQuestions = filteredQuestions.filter(q => q.mode === parseInt(qmodef));
+      filteredQuestions = filteredQuestions.filter(q => q.type === qtypef);
+      if (qmodef !== 0) {
+        filteredQuestions = filteredQuestions.filter(q => q.mode === qmodef);
+      }
     }
 
     setQlfilter(filteredQuestions);
+
+
   }, [qtypef, qmodef, qsearch, questions]);
 
   //end filter
@@ -362,27 +375,27 @@ const Section = (props) => {
               {/* <img src="/search.png" alt='search icon' className='searchicon'/> */}
             </div>
 
-            <select className="filter" name="questype" onChange={(event) => setQtypef(event.target.value)}>
-              <option value="0">Tất cả</option>
-              <option value="1">Trắc nghiệm</option>
-              <option value="2">Tự luận</option>
+            <select className="filter" name="questype" onChange={(event) => handleChangeQtypef(parseInt(event.target.value))}>
+              <option value='0'>Tất cả</option>
+              <option value='1'>Trắc nghiệm</option>
+              <option value='2'>Tự luận</option>
             </select>
 
-            {qtypef === '1' && (
-              <select className="filter" name="mutitype" onChange={(event) => setQmodef(event.target.value)}>
-                <option value="0">Tất cả</option>
-                <option value="1">Nhận biết</option>
-                <option value="2">Thông hiểu</option>
-                <option value="3">Vận dụng</option>
+            {qtypef === 1 && (
+              <select className="filter" name="mutitype" onChange={(event) => setQmodef(parseInt(event.target.value))}>
+                <option value='0'>Tất cả</option>
+                <option value='1'>Nhận biết</option>
+                <option value='2'>Thông hiểu</option>
+                <option value='3'>Vận dụng</option>
               </select>
             )}
 
-            {qtypef === '2' && (
-              <select className="filter" name="essaytype" onChange={(event) => setQmodef(event.target.value)}>
-                <option value="0">Tất cả</option>
-                <option value="4">Dễ</option>
-                <option value="5">Trung bình</option>
-                <option value="6">Nâng cao</option>
+            {qtypef === 2 && (
+              <select className="filter" name="essaytype" onChange={(event) => setQmodef(parseInt(event.target.value))}>
+                <option value='0'>Tất cả</option>
+                <option value='4'>Dễ</option>
+                <option value='5'>Trung bình</option>
+                <option value='6'>Nâng cao</option>
               </select>
             )}
           </form>
@@ -400,11 +413,16 @@ const Section = (props) => {
             <div className='question-tool'>
               <span className='tool-item' onClick={() => unSelect()}><FaXmark /></span>
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
+              {bankType === '0' ? (<><span className='tool-item'><TiWarningOutline /></span></>) : (
+                <>
+                  <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
+                  <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
+                  <span className='tool-item' onClick={open2}><FaRegFileWord></FaRegFileWord></span>
+                  <span className='tool-item' onClick={open1}><FaRegFileExcel></FaRegFileExcel></span>
+                </>
 
-              <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
-              <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
-              <span className='tool-item' onClick={open2}><FaRegFileWord></FaRegFileWord></span>
-              <span className='tool-item' onClick={open1}><FaRegFileExcel></FaRegFileExcel></span>
+              )}
+
             </div>
 
             <div className='qlistitem'>
@@ -447,18 +465,31 @@ const Section = (props) => {
 
           <div className='section-leftside'>
             <div className='section-tool'>
-              <span className='tool-item'><FaPlus></FaPlus></span>
-              <span className='tool-item'><FaEdit></FaEdit></span>
-              <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
+              {bankType === '0' ?
+                (<><span style={{ textAlign: 'center', width: '100%', fontWeight: '600' }}>Bạn không có quyền chỉnh sửa nội dung này</span></>) :
+                (
+                  <><span className='tool-item'><FaPlus></FaPlus></span>
+                    <span className='tool-item'><FaEdit></FaEdit></span>
+                    <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
+                  </>
+                )}
+
             </div>
 
             <div className="section-list">
-              {section.map((sec) => (
-                <div key={sec.sectionId} className={`sectionitem ${selectedSection === sec.sectionId ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.sectionId)}>
-                  {sec.secTitle}
+              {loading ? (
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+                  <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
                 </div>
-              ))}
+              ) : (
+                section.map((sec) => (
+                  <div key={sec.sectionId} className={`sectionitem ${selectedSection === sec.sectionId ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.sectionId)}>
+                    {sec.secTitle}
+                  </div>
+                ))
+              )}
             </div>
+
           </div>
         </div>
       </div>

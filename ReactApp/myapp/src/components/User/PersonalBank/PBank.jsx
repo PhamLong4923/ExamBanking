@@ -7,7 +7,7 @@ import Dropdown from '../../../common/dropdown';
 import { getBank } from '../../../services/Api';
 import '../PersonalBank/PBank.css';
 import ToastMessage from '../../Toast/toast';
-import BarLoader from "react-spinners/BarLoader";
+import MoonLoader from "react-spinners/MoonLoader";
 import { getLocalStorageItem, setLocalStorageItem } from '../../../services/LocalStorage';
 
 const PBank = () => {
@@ -25,7 +25,6 @@ const PBank = () => {
 
 
     useEffect(() => {
-        console.log(bankType);
         const fetchData = async () => {
             try {
                 const response = await getBank({ Bank: bankType }); // Call getBank function
@@ -81,7 +80,10 @@ const PBank = () => {
                             <span className="thead">Tác giả</span>
                         </div>
                         {loading ?
-                            <BarLoader color="#36d7b7" width={1380} />
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+                                <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
+                            </div>
+
                             :
                             banks.map(bank => (
                                 // <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem">
@@ -89,7 +91,7 @@ const PBank = () => {
                                     <span className="td">{bank.bankname}</span>
                                     <span className="td">{bank.bankstatus}</span>
                                     <span className="td">{bank.accid}</span>
-                                    
+
                                 </NavLink>
                             ))}
                     </div >
@@ -112,7 +114,9 @@ const PBank = () => {
                             <span className="thead">Tác giả</span>
                         </div>
                         {loading ?
-                            <BarLoader color="#36d7b7" width={1380} />
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+                                <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
+                            </div>
                             :
                             banks.map(bank => (
                                 // <NavLink key={bank.id} to={`/repo/${bank.id}`} className="pitem titem">
