@@ -33,5 +33,18 @@ namespace ExamBanking.Repositories
             await _context.SaveChangesAsync();
             return answer;
         }
+
+        //delete all answer which have quesid using void
+        public void DeleteAllAnswer(int Quesid)
+        {
+            var list = _context.Answers.Where(a => a.Quesid ==Quesid).ToList();
+            foreach (var answer in list)
+            {
+                _context.Answers.Remove(answer);
+            }
+            _context.SaveChanges();
+        }
+        
+        
     }
 }

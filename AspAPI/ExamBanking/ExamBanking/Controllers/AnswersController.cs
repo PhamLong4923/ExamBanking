@@ -102,33 +102,20 @@ namespace ExamBanking.Controllers
             return answer;
         }
 
-        
 
-        // DELETE: api/Answers/5
-        [HttpDelete("deleteAnswer")]
-        public async Task<IActionResult> DeleteAnswer()
+        // delete answer using ranswer
+        [HttpDelete("DeleteAnswer")]
+        public async Task<ActionResult<Answer>> DeleteAnswer(DeleteAnswerRequest request)
         {
-            try
+            var answer = await _ranswer.DeleteAnswer(request);
+            if (answer == null)
             {
-                var userid = 1;
-                var answerToRemove = _context.Answers.FirstOrDefault(a => a.Quesid == userid);
-
-                if (answerToRemove == null)
-                {
-                    return NotFound(); // or any other appropriate status code
-                }
-
-                _context.Answers.Remove(answerToRemove);
-                await _context.SaveChangesAsync();
-
-                return Ok("delete succes");
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, "Internal server error");
-            }
+            return answer;
         }
+        
+        
 
         private bool AnswerExists(int id)
         {
