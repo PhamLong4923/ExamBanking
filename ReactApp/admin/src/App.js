@@ -9,63 +9,75 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
-import React from 'react';
-import Profile from './Users/profile';
+import React, { useState } from 'react';
+import AccountManagement from './components/UI/Features/AccountManagement';
+import Home from './components/UI/Features/AdminHome';
+import Analysis from './components/UI/Features/Analysis';
+import Payment from './components/UI/Features/Payment';
+import SystemBank from './components/UI/Features/SystemBank';
+import Profile from './components/UI/Users/profile';
+
 const { Header, Content, Footer, Sider } = Layout;
-const items = [];
 
-items.push({        //key này là id nhé :))
-  key: "0",
-  icon: React.createElement(AppstoreOutlined),
-  label: "home",
-})
-
-items.push({
-  key: "1",
-  icon: React.createElement(UserOutlined),
-  label: "Profile",
-});
-
-items.push({
-  key: "2",
-  icon: React.createElement(BarChartOutlined),
-  label: "Analysis",
-});
-
-items.push({
-  key: "3",
-  icon: React.createElement(CloudOutlined),
-  label: "System bank",
-});
-
-items.push({
-  key: "4",
-  icon: React.createElement(TeamOutlined),
-  label: "Account",
-});
-
-items.push({
-  key: "5",
-  icon: React.createElement(ShopOutlined),
-  label: "Payment",
-});
-
-items.push({
-  key: "6",
-  icon: React.createElement(VideoCameraOutlined),
-  label: "nav 2",
-});
-
-items.push({
-  key: "7",
-  icon: React.createElement(UploadOutlined),
-  label: "nav 3",
-});
+const items = [
+  {
+    key: '0',
+    icon: <AppstoreOutlined />,
+    label: 'Home',
+    link: '/home',
+  },
+  {
+    key: '1',
+    icon: <UserOutlined />,
+    label: 'Profile',
+    link: '/profile',
+  },
+  {
+    key: '2',
+    icon: <BarChartOutlined />,
+    label: 'Analysis',
+    link: '/analysis',
+  },
+  {
+    key: '3',
+    icon: <CloudOutlined />,
+    label: 'System Bank',
+    link: '/system_bank',
+  },
+  {
+    key: '4',
+    icon: <TeamOutlined />,
+    label: 'Account',
+    link: '/account_management',
+  },
+  {
+    key: '5',
+    icon: <ShopOutlined />,
+    label: 'Payment',
+    link: '/payment_management',
+  },
+  {
+    key: '6',
+    icon: <VideoCameraOutlined />,
+    label: 'Nav 2',
+  },
+  {
+    key: '7',
+    icon: <UploadOutlined />,
+    label: 'Nav 3',
+  },
+];
 
 const App = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const [selectedMenu, setSelectedMenu] = useState('0'); // Initialize selectedMenu state
+
+  const handleMenuClick = (e) => {
+    setSelectedMenu(e.key);
+  };
+
   return (
     <Layout hasSider>
       <Sider
@@ -79,7 +91,19 @@ const App = () => {
         }}
       >
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['0']}
+          selectedKeys={[selectedMenu]} // Pass selectedMenu state as selectedKeys
+          onClick={handleMenuClick} // Handle menu item click event
+        >
+          {items.map((item) => (
+            <Menu.Item key={item.key} icon={item.icon}>
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
       </Sider>
       <Layout
         style={{
@@ -105,7 +129,15 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            <Profile></Profile>
+            {/* Content based on selectedMenu */}
+            {selectedMenu === '0' && <Home />}
+            {selectedMenu === '1' && <Profile />}
+            {selectedMenu === '2' && <Analysis />}
+            {selectedMenu === '3' && <SystemBank />}
+            {selectedMenu === '4' && <AccountManagement />}
+            {selectedMenu === '5' && <Payment />}
+            {selectedMenu === '6' && null}
+            {selectedMenu === '7' && null}
           </div>
         </Content>
         <Footer
@@ -116,7 +148,8 @@ const App = () => {
           Ant Design ©{new Date().getFullYear()} Created by Ant UED
         </Footer>
       </Layout>
-    </Layout >
+    </Layout>
   );
 };
+
 export default App;
