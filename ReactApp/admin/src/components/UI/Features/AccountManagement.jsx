@@ -14,12 +14,14 @@ const AccountManagement = () => {
       name: 'John Doe',
       email: 'john@example.com',
       role: 'Admin',
+      locked: false,
     },
     {
       key: '2',
       name: 'Jane Smith',
       email: 'jane@example.com',
       role: 'User',
+      locked: false,
     },
     // More users...
   ]);
@@ -47,6 +49,11 @@ const AccountManagement = () => {
         <Flex gap="middle">
           <Button onClick={() => handleEdit(record)}>Edit</Button>
           <Button onClick={() => handleDelete(record.key)}>Delete</Button>
+          {record.locked ? (
+            <Button onClick={() => handleUnlock(record.key)}>Unlock</Button> // Nút Unlock
+          ) : (
+            <Button onClick={() => handleLock(record.key)}>Lock</Button> // Nút Lock
+          )}
         </Flex>
       ),
     },
@@ -103,6 +110,20 @@ const AccountManagement = () => {
     form.resetFields();
     setEditingKey('');
     setVisible(false);
+  };
+
+  const handleLock = (key) => {
+    const newData = dataSource.map(item =>
+      item.key === key ? { ...item, locked: true } : item
+    );
+    setDataSource(newData);
+  };
+
+  const handleUnlock = (key) => {
+    const newData = dataSource.map(item =>
+      item.key === key ? { ...item, locked: false } : item
+    );
+    setDataSource(newData);
   };
 
   return (
