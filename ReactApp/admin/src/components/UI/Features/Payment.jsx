@@ -6,7 +6,7 @@ const { RangePicker } = DatePicker;
 const Payment = () => {
   const [visible, setVisible] = useState(false);
 
-  const dataSource = [
+  const [dataSource, setDataSource] = useState([
     {
       key: '1',
       invoice: 'INV-001',
@@ -20,7 +20,7 @@ const Payment = () => {
       status: 'Paid',
     },
     // More payments...
-  ];
+  ]);
 
   const columns = [
     {
@@ -41,16 +41,25 @@ const Payment = () => {
     {
       title: 'Action',
       key: 'action',
-      render: () => (
-        <Button type="primary" onClick={showModal}>
-          Add Payment
-        </Button>
+      render: (text, record) => (
+        <Button onClick={() => handleDelete(record.key)}>Delete</Button>
       ),
     },
   ];
 
   const showModal = () => {
     setVisible(true);
+  };
+
+  const handleDelete = (keyToDelete) => {
+    const newData = dataSource.filter(item => item.key !== keyToDelete);
+    // Giảm key của các phần tử sau phần tử được xóa
+    for (let i = 0; i < newData.length; i++) {
+      if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
+        newData[i].key = (parseInt(newData[i].key) - 1).toString();
+      }
+    }
+    setDataSource(newData);
   };
 
   const handleOk = () => {
@@ -64,13 +73,13 @@ const Payment = () => {
   return (
     <div>
       <Button type="primary" onClick={showModal}>
-        Add Payment
+        Add Payment(for develovper test only)
       </Button>
       <Table dataSource={dataSource} columns={columns} />
 
       <Modal
         title="Add Payment"
-        visible={visible}
+        open={visible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
@@ -79,7 +88,7 @@ const Payment = () => {
             <Input />
           </Form.Item>
           <Form.Item label="Amount">
-            <Input type="number" />
+            <Input />
           </Form.Item>
           <Form.Item label="Date">
             <RangePicker />
