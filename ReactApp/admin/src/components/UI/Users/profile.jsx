@@ -1,22 +1,31 @@
 import { Avatar, Button, Card, Col, Form, Input, List, Row } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 const Profile = () => {
-  // Dùng một state để quản lý việc hiển thị form chỉnh sửa
-  const [editing, setEditing] = React.useState(false);
 
-  // Hàm xử lý sự kiện khi người dùng nhấn nút chỉnh sửa
+  const [userData, setUserData] = useState({
+    name: "John Doe",
+    email: "john@example.com"
+  });
+
+  const [editing, setEditing] = useState(false);
+
   const handleEditClick = () => {
     setEditing(true);
   };
 
-  // Hàm xử lý sự kiện khi người dùng hoàn thành chỉnh sửa
   const handleSave = () => {
-    // Thực hiện lưu dữ liệu sau khi chỉnh sửa vào cơ sở dữ liệu
     setEditing(false);
   };
 
-  // Danh sách các câu hỏi đã tạo
+  const handleInputChange = (e, field) => {
+    const { value } = e.target;
+    setUserData(prevUserData => ({
+      ...prevUserData,
+      [field]: value
+    }));
+  };
+
   const bankList = [
     {
       id: 1,
@@ -44,16 +53,16 @@ const Profile = () => {
           <Col span={18}>
             <Form layout="vertical">
               <Form.Item label="Name">
-                {editing ? <Input defaultValue="John Doe" /> : <Input value="John Doe" readOnly />}
+                {editing ? <Input value={userData.name} onChange={(e) => handleInputChange(e, 'name')} /> : <Input value={userData.name} readOnly />}
               </Form.Item>
               <Form.Item label="Email">
-                {editing ? <Input defaultValue="john@example.com" /> : <Input value="john@example.com" readOnly />}
+                {editing ? <Input value={userData.email} onChange={(e) => handleInputChange(e, 'email')} /> : <Input value={userData.email} readOnly />}
               </Form.Item>
             </Form>
           </Col>
         </Row>
       </Card>
-      
+
       <Card title="Your banks">
         <List
           dataSource={bankList}

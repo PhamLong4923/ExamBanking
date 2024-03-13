@@ -10,6 +10,8 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AccountManagement from './components/UI/Features/AccountManagement';
 import Home from './components/UI/Features/AdminHome';
 import Analysis from './components/UI/Features/Analysis';
@@ -138,6 +140,10 @@ const App = () => {
             {selectedMenu === '5' && <Payment />}
             {selectedMenu === '6' && null}
             {selectedMenu === '7' && null}
+            <ToastContainer
+              position="bottom-right"
+              autoClose={3000}
+            />
           </div>
         </Content>
         <Footer
