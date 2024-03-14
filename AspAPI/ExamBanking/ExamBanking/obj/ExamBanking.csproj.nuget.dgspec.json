@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
         "packagesPath": "C:\\Users\\PHAM LONG\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+=======
+    "D:\\hoc\\ki_6\\v2\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
+  },
+  "projects": {
+    "D:\\hoc\\ki_6\\v2\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\hoc\\ki_6\\v2\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "projectName": "ExamBanking",
+        "projectPath": "D:\\hoc\\ki_6\\v2\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "packagesPath": "C:\\Users\\viet2\\.nuget\\packages\\",
+        "outputPath": "D:\\hoc\\ki_6\\v2\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+>>>>>>> a1fcf0508c2f028020ffce84b33e59773abd55e9
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PHAM LONG\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -59,6 +73,10 @@
               "target": "Package",
               "version": "[6.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -78,6 +96,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[6.0.1, )"
             }
           },
           "imports": [
