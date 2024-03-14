@@ -11,18 +11,20 @@ import ToastMessage from '../../../Toast/toast';
 import HashLoader from "react-spinners/HashLoader";
 import { MoonLoader } from 'react-spinners';
 import { getLocalStorageItem } from '../../../../services/LocalStorage';
+import { GoInbox } from "react-icons/go";
+import { getQuestions, getSection } from '../../../../services/Api';
+import PopupCreateModel from '../../../EditPopup/popupcreate';
 
 const Section = (props) => {
   const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
+  const repoid = getLocalStorageItem('repoid') || -1;
 
   const [loading, setLoading] = useState(true);
-  const [loadingSec, setLoadingSec] = useState(true);
+
   const [isEndOfPage, setIsEndOfPage] = useState(false);
 
-
-  const [data, setData] = useState([]);
   const [section, setSection] = useState([]);
-  const [selectedSection, setSelectedSection] = useState();
+  const [secid, setSecid] = useState(-1);
 
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -195,26 +197,50 @@ const Section = (props) => {
 
   //load section
   useEffect(() => {
-    try {
+    const fetchData = async () => {
+      try {
+        const response = await getSection({ repoid });
+        setSection(response.data);
+        if (section.length !== 0) {
+          setSecid(section[0].id)
+        } else {
+          setSecid(-1);
+        }
+        setLoading(false);
 
-      //call getSection api (repoid) -> list of sections
+      } catch (error) {
+        console.error('Error fetching banks:', error);
+        // Handle error here
+      }
+    };
 
-      // setSection(ress.data);
-
-      //useState , set secid, selectSection
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+    fetchData();
   }, []);
+  //end load section
+
+  //add section
+  //end add section
+
+  //del section
+  //end del section
+
 
   //load question
   useEffect(() => {
-    //load question by secid which are selected
-  })
+    const fetchData = async () => {
+      try {
+        const response = await getQuestions(secid);
+        setQuestions(response.data);
 
-  useEffect(() => {
-    //load question if secid change
-  }, [])
+
+      } catch (error) {
+        console.error('Error fetching banks:', error);
+        // Handle error here
+      }
+    };
+
+    fetchData();
+  }, [secid])
 
   useEffect(() => {
     //load 10 question first
@@ -425,32 +451,38 @@ const Section = (props) => {
 
             </div>
 
-            <div className='qlistitem'>
-              {qlfilter.map((question, index) => (
-                <Question
-                  key={index}
-                  question={question}
-                  handleEditQuestion={handleEditQuestion}
-                  deleteQuestion={handleDeleteQuestion}
-                  handleEditAnswer={handleEditAnswer}
-                  deleteAnswer={deleteAnswer}
-                  addAnswer={addAnswer}
-                  handleSaveEdit={handleSaveEdit}
-                  editingQuestionId={editingQuestionId}
-                  modalIsOpen={modalIsOpen}
-                  handleEditorDataChange={handleEditorDataChange}
-                  setModalIsOpen={setModalIsOpen}
-                  handleSelectSection={handleSelectSection}
-                  handleQuestionTypeChange={handleQuestionTypeChange}
-                  handleEditSolution={handleEditSolution}
-                  isAddQuestion={isAddQuestion}
-                  handleQuestionModeChange={handleQuestionModeChange}
-                  handleSelectQuestion={handleSelectQuestion}
-                  isSelected={selectedQuestions.includes(question.id)}
-                />
-              ))}
 
-              {loading}
+            <div className='qlistitem'>
+              {qlfilter.length === 0 ? (
+                <div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}><HashLoader color='#282cc0' /></div>
+              ) : (
+                qlfilter.map((question, index) => (
+                  <Question
+                    key={index}
+                    question={question}
+                    handleEditQuestion={handleEditQuestion}
+                    deleteQuestion={handleDeleteQuestion}
+                    handleEditAnswer={handleEditAnswer}
+                    deleteAnswer={deleteAnswer}
+                    addAnswer={addAnswer}
+                    handleSaveEdit={handleSaveEdit}
+                    editingQuestionId={editingQuestionId}
+                    modalIsOpen={modalIsOpen}
+                    handleEditorDataChange={handleEditorDataChange}
+                    setModalIsOpen={setModalIsOpen}
+                    handleSelectSection={handleSelectSection}
+                    handleQuestionTypeChange={handleQuestionTypeChange}
+                    handleEditSolution={handleEditSolution}
+                    isAddQuestion={isAddQuestion}
+                    handleQuestionModeChange={handleQuestionModeChange}
+                    handleSelectQuestion={handleSelectQuestion}
+                    isSelected={selectedQuestions.includes(question.id)}
+                  />
+                ))
+              )}
+
+              {/* Hiển thị loading khi đang tải dữ liệu */}
+              {loading && <HashLoader />}
 
               <ImportModal
                 showModal={showModal1 || showModal2}
@@ -458,8 +490,8 @@ const Section = (props) => {
                 handleEditorDataChange={handleEditorDataChange}
                 modalType={showModal1 ? 'excel' : 'word'}
               />
-
             </div>
+
 
           </div>
 
@@ -468,7 +500,8 @@ const Section = (props) => {
               {bankType === '0' ?
                 (<><span style={{ textAlign: 'center', width: '100%', fontWeight: '600' }}>Bạn không có quyền chỉnh sửa nội dung này</span></>) :
                 (
-                  <><span className='tool-item'><FaPlus></FaPlus></span>
+                  <>
+                    <PopupCreateModel title={'Thêm bài'} buttonstyle={<span className='tool-item'><FaPlus></FaPlus></span>}></PopupCreateModel>
                     <span className='tool-item'><FaEdit></FaEdit></span>
                     <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
                   </>
@@ -482,13 +515,21 @@ const Section = (props) => {
                   <MoonLoader color="hsla(224, 100%, 46%, 1)" size={50} />
                 </div>
               ) : (
-                section.map((sec) => (
-                  <div key={sec.sectionId} className={`sectionitem ${selectedSection === sec.sectionId ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.sectionId)}>
-                    {sec.secTitle}
+                section.length === 0 ? (
+                  <div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <GoInbox />
+                    <span>Không có dữ liệu</span>
                   </div>
-                ))
+                ) : (
+                  section.map((sec) => (
+                    <div key={sec.sectionId} className={`sectionitem ${secid === sec.sectionId ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.sectionId)}>
+                      {sec.secTitle}
+                    </div>
+                  ))
+                )
               )}
             </div>
+
 
           </div>
         </div>

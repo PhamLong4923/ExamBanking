@@ -19,7 +19,7 @@ namespace ExamBanking.Controllers
         }
 
         
-        [HttpPost]
+        [HttpPost("GetRepo")]
         public IActionResult GetRepo(ListRepoRequest request)
         {
             var list = _context.Repos.Where(a => a.Bankid == request.Bankid).ToList();
@@ -40,7 +40,7 @@ namespace ExamBanking.Controllers
             _rerepo.editRepo(request);
             return Ok("Edit repo success");
         }
-        [HttpDelete]
+        [HttpDelete("DelRepo")]
         public IActionResult DeleteRepo(DeleteRepoRequest request)
         {
             _rerepo.deleteRepo(request);

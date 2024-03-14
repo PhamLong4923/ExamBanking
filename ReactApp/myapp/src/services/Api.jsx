@@ -12,7 +12,7 @@ export const getProduct = (id, config) => Http.get(`/products/${id}`, config);
 
 export const getCommentByProduct = (id, config) => Http.get(`/products/${id}/comments`, config);
 
-export const createCommnetsProduct = (id,data, config) => Http.post(`/products/${id}/comments`, data, config);
+export const createCommnetsProduct = (id, data, config) => Http.post(`/products/${id}/comments`, data, config);
 
 export const order = (data, config) => Http.post(`/order`, data, config);
 
@@ -26,13 +26,13 @@ export const login = () => Http.get("/Login/google");
 
 //get-api
 
-export const getBank = (config) => Http.post("/Bank/GetBank", config);
+export const getBank = () => Http.get("/Bank/GetBank");
 
-export const getSection = () => Http.get("");
+export const getSection = (repoid) => Http.get("/Section/listSection", repoid);
 
-export const getRepository = () => Http.get("");
+export const getRepository = (bankid) => Http.post("/Repositories/GetRepo", bankid);
 
-export const getQuestions = (repoid) => Http.get("");
+export const getQuestions = (secid) => Http.get(`Question/listQuestion?sectionid=${secid}`);
 
 export const getQuestionType = () => Http.get();
 
@@ -40,7 +40,7 @@ export const getQuestionMode = () => Http.get();
 
 //create-api
 
-export const addBank = () => Http.get("");
+export const addBank = (config) => Http.post("", config);
 
 export const addSection = () => Http.get("");
 

@@ -16,11 +16,14 @@ import Signupp from './User/Login/Signupp';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import PopupCreateModel from '../components/EditPopup/popupcreate.jsx';
 
 
 const Root = () => (
   <BrowserRouter>
     <Routes>
+      {/*Model Create*/}
+      <Route path="/popup" element={<PopupCreateModel title={"Thêm ngân hàng"} />} />
 
       <Route path="/" element={<HomeScreen />} />
       <Route path="/login" element={<Loginp />} />
