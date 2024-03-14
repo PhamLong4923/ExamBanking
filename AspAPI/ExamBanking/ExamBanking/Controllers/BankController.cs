@@ -2,6 +2,7 @@
 using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace ExamBanking.Controllers
             _rAccount = rAccount;
         }
         
-        [HttpGet("GetBank")]
+        [HttpGet("GetBank"),Authorize(Roles = "User")]
         public IActionResult viewBankList()
         {
             var userid = 2; // sửa lại để lấy jwt token

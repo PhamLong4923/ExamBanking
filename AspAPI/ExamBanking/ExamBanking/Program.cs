@@ -1,6 +1,11 @@
 ﻿using ExamBanking.Config;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 namespace ExamBanking
 {
@@ -9,14 +14,30 @@ namespace ExamBanking
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var configuration = builder.Configuration;
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
+            builder.Services.AddAuthentication(
+                JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder
+                        .Configuration.GetSection("AppSetting:Token").Value)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
 
-            //builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-            //{
-            //    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-            //    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-            //});
-
+                    };
+                });
             // Add services to the container.
             builder.Services.AddStartupServices();
 
@@ -25,7 +46,8 @@ namespace ExamBanking
             // Configure the HTTP request pipeline.
             var env = app.Services.GetRequiredService<IWebHostEnvironment>();
             app.UseStartupConfiguration(env);
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.Run();
         }
     }
