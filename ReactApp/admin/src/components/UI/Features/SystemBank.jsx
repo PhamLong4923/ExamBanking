@@ -45,7 +45,7 @@ const SystemBank = () => {
         {
             title: 'Action',
             key: 'action',
-            render: (text, record) => (
+            render: (record) => (
                 <Flex gap="middle">
                     <Button onClick={() => handleEdit(record)}>Edit</Button>
                     <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>

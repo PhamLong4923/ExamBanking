@@ -1,5 +1,6 @@
 import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
@@ -7,20 +8,20 @@ const AccountManagement = () => {
   const [visible, setVisible] = useState(false);
   const [editingKey, setEditingKey] = useState('');
   const [form] = Form.useForm();
-
+  const [isToastOpen, setIsToastOpen] = useState(false);
   const [dataSource, setDataSource] = useState([
     {
       key: '1',
       name: 'John Doe',
       email: 'john@example.com',
-      role: 'Admin',
+      role: 'admin',
       locked: false,
     },
     {
       key: '2',
       name: 'Jane Smith',
       email: 'jane@example.com',
-      role: 'User',
+      role: 'user',
       locked: false,
     },
     // More users...
@@ -45,10 +46,10 @@ const AccountManagement = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
+      render: (record) => (
         <Flex gap="middle">
           <Button onClick={() => handleEdit(record)}>Edit</Button>
-          <Button onClick={() => handleDelete(record.key)}>Delete</Button>
+          <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>
           {record.locked ? (
             <Button onClick={() => handleUnlock(record.key)}>Unlock</Button> // Nút Unlock
           ) : (
@@ -65,7 +66,33 @@ const AccountManagement = () => {
     setVisible(true);
   };
 
-  const handleDelete = (keyToDelete) => {
+  const toastVerifyDelete = (key) => {
+    setVisible(false);
+    if (!isToastOpen) {
+      const id = toast.info(
+        <div>
+          Are you sure want to delete?
+          <div className='toast-buttons'>
+            <Flex gap="middle">
+              <Button onClick={() => {
+                toast.dismiss(id);
+                setIsToastOpen(false);
+              }}>
+                Cancel
+              </Button>
+              <Button onClick={() => handleDelete(key, id)}>
+                Yes
+              </Button>
+            </Flex>
+          </div>
+        </div>,
+        { onClose: () => setIsToastOpen(false) }
+      );
+      setIsToastOpen(true);
+    }
+  };
+
+  const handleDelete = (keyToDelete, toastId) => {
     const newData = dataSource.filter(item => item.key !== keyToDelete);
     // Giảm key của các phần tử sau phần tử được xóa
     for (let i = 0; i < newData.length; i++) {
@@ -74,6 +101,8 @@ const AccountManagement = () => {
       }
     }
     setDataSource(newData);
+    toast.dismiss(toastId);
+    setIsToastOpen(false);
   };
 
   const showModal = () => {
