@@ -45,8 +45,8 @@
     width: 70%;
     margin-top: 10px;
 }
-/* 
-button {
+
+.button-container button {
     border-color: rgba(29, 199, 255, 0.901);
     height: 40px;
     margin-left: 2px;
@@ -56,15 +56,16 @@ button {
     min-width: auto;
     border-radius: 10px;
     padding: 10px;
-} */
+}
 
-
+.button-container {
+    display: flex;
+}
 
 .profile-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: -1.5%;
     margin-right: 10%;
 }
 
@@ -73,7 +74,7 @@ button {
 }
 
 /* CSS cho modal */
-.modal {
+.profile-modal {
     display: flex;
     justify-content: center;
     /* Hiển thị modal ở giữa trang */
@@ -90,7 +91,7 @@ button {
     /* Đảm bảo modal hiển thị trên tất cả các phần khác */
 }
 
-.modal-content {
+.profile-modal-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -98,11 +99,11 @@ button {
     /* Hiệu ứng bóng đổ */
 }
 
-.modal h2 {
+.profile-modal h2 {
     margin-top: 0;
 }
 
-.modal button {
+.profile-modal button {
     margin-top: 10px;
     padding: 8px 16px;
     border: none;
@@ -112,7 +113,7 @@ button {
     border-radius: 4px;
 }
 
-.modal button:hover {
+.profile-modal button:hover {
     background-color: #0056b3;
 }
 
