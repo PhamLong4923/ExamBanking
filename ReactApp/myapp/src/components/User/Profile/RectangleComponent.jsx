@@ -1,7 +1,7 @@
 import React from 'react';
 import './RectangleComponent.css';
 
-const RectangleComponent = ({ avatarSrc, items }) => {
+const RectangleComponent = ({ avatarSrc, children }) => {
     return (
         <div className="rectangle-container">
             <div className="avatar-container">
@@ -9,7 +9,7 @@ const RectangleComponent = ({ avatarSrc, items }) => {
             </div>
             <div className="info-container">
                 <div className="info-content">
-                    {items}
+                    {children}
                 </div>
             </div>
         </div>

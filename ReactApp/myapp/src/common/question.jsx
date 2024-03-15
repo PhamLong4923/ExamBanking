@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { IoIosArrowDropdown, IoIosArrowDropdownCircle } from "react-icons/io";
+import { getLocalStorageItem } from '../services/LocalStorage';
 import MyEditor from './MyEditor';
 import './Style/question.css';
 import ConvertTextTagToHTML from './convertTextTagToHTML';
-import { getLocalStorageItem } from '../services/LocalStorage';
 
 const Question = ({
     question,
@@ -50,7 +50,7 @@ const Question = ({
                                 </div>
                                 <div className='question-select-option'>
                                     {isAddQuestion === true && (
-                                        <select className='cursor-icon' defaultValue={question.type} onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}>
+                                        <select className='cursor-icon' value={question.type} onChange={(e) => handleQuestionTypeChange(question.id, e.target.value)}>
                                             <option value='1'>
                                                 Trắc nghiệm
                                             </option>
@@ -59,7 +59,7 @@ const Question = ({
                                             </option>
                                         </select>
                                     )}
-                                    {question.type === '1' ? (
+                                    {question.type == 1 ? (
                                         <select className='cursor-icon' defaultValue={question.mode} onChange={(e) => handleQuestionModeChange(question.id, e.target.value)}>
                                             <option value='1'>
                                                 Nhận biết
@@ -93,7 +93,7 @@ const Question = ({
                                 </div>
                             </div>
                             <table className="edit-answers">
-                                {question.type === '1' && (
+                                {question.type == 1 && (
                                     <>
                                         <thead>
                                             <tr>
