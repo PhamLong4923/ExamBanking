@@ -313,38 +313,6 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
-    "Method": "GetRepo",
-    "RelativePath": "api/Repositories",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
-    "Method": "DeleteRepo",
-    "RelativePath": "api/Repositories",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.DeleteRepoRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "CreateRepo",
     "RelativePath": "api/Repositories/CreateRepo",
     "HttpMethod": "POST",
@@ -361,6 +329,22 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
+    "Method": "DeleteRepo",
+    "RelativePath": "api/Repositories/DelRepo",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.RepoDto.DeleteRepoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "EditRepo",
     "RelativePath": "api/Repositories/EditRepo",
     "HttpMethod": "PUT",
@@ -370,6 +354,22 @@
       {
         "Name": "request",
         "Type": "ExamBanking.DTO.RepoDto.EditRepoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
+    "Method": "GetRepo",
+    "RelativePath": "api/Repositories/GetRepo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
         "IsRequired": true
       }
     ],
@@ -438,25 +438,5 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "JwtWebApiDotNet7.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[JwtWebApiDotNet7.WeatherForecast, ExamBanking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   }
 ]

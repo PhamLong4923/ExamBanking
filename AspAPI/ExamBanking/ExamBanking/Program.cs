@@ -1,11 +1,7 @@
-﻿using ExamBanking.Config;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
-using System.Text;
+using ExamBanking.Config;
 
 namespace ExamBanking
 {
@@ -14,32 +10,10 @@ namespace ExamBanking
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-                options.OperationFilter<SecurityRequirementsOperationFilter>();
-            });
-            builder.Services.AddAuthentication(
-                JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder
-                        .Configuration.GetSection("AppSetting:Token").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+            var configuration = builder.Configuration;
 
-                    };
-                });
             // Add services to the container.
-            builder.Services.AddStartupServices();
+            builder.Services.AddStartupServices(configuration);
 
             var app = builder.Build();
 
@@ -54,9 +28,9 @@ namespace ExamBanking
 
     public static class WebApplicationExtensions
     {
-        public static void AddStartupServices(this IServiceCollection services)
+        public static void AddStartupServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var startup = new Startup();
+            var startup = new Startup(configuration);
             startup.ConfigureServices(services);
         }
 
