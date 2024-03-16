@@ -1,30 +1,60 @@
-﻿using ExamBanking.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Text;
 
 namespace ExamBanking.Config
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
+        // Constructor với tham số IConfiguration
+        public Startup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        // Constructor mặc định
+        public Startup()
+        {
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            // Các dịch vụ của bạn ở đây
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
 
-            //services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders();
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddCookie()
-            .AddGoogle(options =>
-            {
-                options.ClientId = "311161965628-8k24pqci93d1nc1bv1deootrgl6trr24.apps.googleusercontent.com";
-                options.ClientSecret = "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";
-             });
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSetting:Token").Value!)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             // Đăng ký các dịch vụ bằng cách sử dụng lớp mở rộng ServiceExtensions
             services.AddCustomServices();

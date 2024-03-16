@@ -27,7 +27,7 @@ namespace ExamBanking.Controllers
             _context = context;
             _configuration = configuration;
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Regeister(UserRegisterRequest request) //AccountDto tương đương với 1 table trong database là UserRegisterRequest
         {
@@ -36,8 +36,8 @@ namespace ExamBanking.Controllers
             {
                 return BadRequest("User already exist");
             }
-            
-           
+
+
             var account = new Account
             {
                 Email = request.Email,
@@ -60,7 +60,7 @@ namespace ExamBanking.Controllers
                 return BadRequest("User not found!");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password,account.Userpass))
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, account.Userpass))
             {
                 return BadRequest("Wrong password.");
             }
@@ -108,7 +108,7 @@ namespace ExamBanking.Controllers
             {
                 return BadRequest("token is expired");
             }
-           
+
             account.Userpass = BCrypt.Net.BCrypt.HashPassword(request.Password);
             account.PasswordResetToken = null;
             account.ResetTokenExpires = null;
@@ -117,33 +117,30 @@ namespace ExamBanking.Controllers
             return Ok("Password change succes!!");
         }
 
-        
 
-        /// <summary>
-        /// hàm tạo token để verify mail
-        /// </summary>
-        /// <returns>trả về 1 token đã được ngẫu nhiên</returns>
+
         private string CreateRandomToken()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
         private string CreateJWTToken(Account user)
         {
-            List<Claim> claims = new List<Claim>
-            {
+            List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "User")
+                new Claim(ClaimTypes.Role, "Admin"),
+                new Claim(ClaimTypes.Role, "User"),
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSetting:Token").Value!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds
+                );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
