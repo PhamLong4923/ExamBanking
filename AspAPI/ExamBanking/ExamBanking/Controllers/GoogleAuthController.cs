@@ -8,6 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using ExamBanking.Models;
 using System.IdentityModel.Tokens.Jwt;
 using ExamBanking.DTO.AccountDto;
+using ExamBanking.Utils;
 
 namespace ExamBanking.Controllers
 {
@@ -16,9 +17,11 @@ namespace ExamBanking.Controllers
     public class GoogleAuthController : ControllerBase
     {
         private readonly ExamBankingContext _context;
-        public GoogleAuthController(ExamBankingContext context)
+        private readonly Jwt _jwt;
+        public GoogleAuthController(ExamBankingContext context,Jwt jwt)
         {
             _context = context;
+            _jwt = jwt;
         }
         [HttpPost("save-jwt-data")]
         public IActionResult SaveJwtData([FromBody] TokenRequest request)
@@ -38,9 +41,9 @@ namespace ExamBanking.Controllers
                 {
                     Accname = jsonToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value,
                     Email = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
-                    VerificationToken = jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value,
+                    Accid = Convert.ToDecimal(jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value),
                     Datejoin = DateTime.Now
-                    // Thêm các trường khác cần lưu
+                   
                 };
 
                 // Thêm logic để kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
@@ -49,10 +52,11 @@ namespace ExamBanking.Controllers
                 {
                     return BadRequest("already exist");
                 }
+                var token = _jwt.CreateJWTToken(account);
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
 
-                return Ok(new { message = "Data saved successfully" });
+                return Ok(new { message = "Data saved successfully" } + token);
             }
 
             return BadRequest(new { message = "Invalid JWT format" });

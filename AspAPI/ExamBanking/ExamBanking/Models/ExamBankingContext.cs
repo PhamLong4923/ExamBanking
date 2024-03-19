@@ -32,7 +32,7 @@ namespace ExamBanking.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server =exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@;");
+                optionsBuilder.UseSqlServer("server = exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@");
             }
         }
 
@@ -46,7 +46,9 @@ namespace ExamBanking.Models
 
                 entity.Property(e => e.Bankid).HasColumnName("bankid");
 
-                entity.Property(e => e.Fromid).HasColumnName("fromid");
+                entity.Property(e => e.Fromid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("fromid");
 
                 entity.Property(e => e.Message)
                     .HasMaxLength(1)
@@ -56,7 +58,9 @@ namespace ExamBanking.Models
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.Toid).HasColumnName("toid");
+                entity.Property(e => e.Toid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("toid");
 
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Accesses)
@@ -82,11 +86,13 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => e.Accid)
-                    .HasName("PK__Account__A472ABF2E6816325");
+                    .HasName("PK__Account__A472ABF2322E135D");
 
                 entity.ToTable("Account");
 
-                entity.Property(e => e.Accid).HasColumnName("accid");
+                entity.Property(e => e.Accid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("accid");
 
                 entity.Property(e => e.Datejoin).HasColumnType("datetime");
 
@@ -108,7 +114,7 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Answer>(entity =>
             {
                 entity.HasKey(e => e.Ansid)
-                    .HasName("PK__Answer__2626EE58E657B86B");
+                    .HasName("PK__Answer__2626EE5882D22E93");
 
                 entity.ToTable("Answer");
 
@@ -132,7 +138,9 @@ namespace ExamBanking.Models
 
                 entity.Property(e => e.Bankid).HasColumnName("bankid");
 
-                entity.Property(e => e.Accid).HasColumnName("accid");
+                entity.Property(e => e.Accid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("accid");
 
                 entity.Property(e => e.Bankname)
                     .HasMaxLength(255)
@@ -160,13 +168,15 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Payment>(entity =>
             {
                 entity.HasKey(e => e.Payid)
-                    .HasName("PK__Payment__082D8EEBD03519AE");
+                    .HasName("PK__Payment__082D8EEBBF353082");
 
                 entity.ToTable("Payment");
 
                 entity.Property(e => e.Payid).HasColumnName("payid");
 
-                entity.Property(e => e.Accid).HasColumnName("accid");
+                entity.Property(e => e.Accid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("accid");
 
                 entity.Property(e => e.Money).HasColumnName("money");
 
@@ -185,7 +195,7 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Question>(entity =>
             {
                 entity.HasKey(e => e.Quesid)
-                    .HasName("PK__Question__8FF5F51DBA7B9DB4");
+                    .HasName("PK__Question__8FF5F51D54528006");
 
                 entity.ToTable("Question");
 
@@ -224,17 +234,19 @@ namespace ExamBanking.Models
                     .HasMaxLength(100)
                     .HasColumnName("reponame");
 
-                entity.Property(e => e.Secondeditor).HasColumnName("secondeditor");
+                entity.Property(e => e.Secondeditor)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("secondeditor");
 
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Repos)
                     .HasForeignKey(d => d.Bankid)
-                    .HasConstraintName("FK__Repositor__banki__778AC167");
+                    .HasConstraintName("FK__Repo__bankid__778AC167");
 
                 entity.HasOne(d => d.SecondeditorNavigation)
                     .WithMany(p => p.Repos)
                     .HasForeignKey(d => d.Secondeditor)
-                    .HasConstraintName("FK__Repositor__secon__787EE5A0");
+                    .HasConstraintName("FK__Repo__secondedit__787EE5A0");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -251,7 +263,7 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Section>(entity =>
             {
                 entity.HasKey(e => e.Secid)
-                    .HasName("PK__Section__C25197F0FBBE967C");
+                    .HasName("PK__Section__C25197F0BE545F53");
 
                 entity.ToTable("Section");
 

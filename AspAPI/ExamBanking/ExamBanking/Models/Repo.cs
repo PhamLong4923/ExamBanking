@@ -13,7 +13,7 @@ namespace ExamBanking.Models
 
         public int Repoid { get; set; }
         public string? Reponame { get; set; }
-        public int? Secondeditor { get; set; }
+        public decimal? Secondeditor { get; set; }
         public int? Bankid { get; set; }
 
         public virtual Bank? Bank { get; set; }
