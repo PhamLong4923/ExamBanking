@@ -2,10 +2,12 @@
 using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
+using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace ExamBanking.Controllers
 {
@@ -23,14 +25,33 @@ namespace ExamBanking.Controllers
             _rRepositories = rRepositories;
             _rAccount = rAccount;
         }
-        
-        [HttpGet("GetBank"),Authorize(Roles = "User")]
+
+
+        [HttpGet("GetBank")]
+        [Authorize(Roles = "User")]
         public IActionResult viewBankList()
         {
-            var userid = 2; // sửa lại để lấy jwt token
-            var listBank = _context.Banks.Where(a => a.Accid == userid).ToList();
-            return Ok(listBank);
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            
+            var userId = Jwt.GetUserId(token);
+            
+
+            // Sử dụng userId để truy vấn người dùng từ cơ sở dữ liệu
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            if (user != null)
+            {
+                var listBank = _context.Banks.Where(a => a.Accid == user.Accid).ToList();
+                return Ok(listBank + userId);
+            }
+            else
+            {
+               
+                return Ok("User not found or token is invalid." );
+            }
         }
+
         [HttpPost("CreateBank")]
         public async Task<IActionResult> CreateBank(CreateBankRequest request)
         {
@@ -78,5 +99,6 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok("Delete Succes");
         }
+        
     }
 }

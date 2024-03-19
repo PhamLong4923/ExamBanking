@@ -14,7 +14,7 @@ namespace ExamBanking.Models
         public int Bankid { get; set; }
         public string? Bankname { get; set; }
         public byte? Bankstatus { get; set; }
-        public int? Accid { get; set; }
+        public decimal? Accid { get; set; }
 
         public virtual Account? Acc { get; set; }
         public virtual ICollection<Access> Accesses { get; set; }

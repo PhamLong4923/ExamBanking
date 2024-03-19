@@ -7,9 +7,9 @@ namespace ExamBanking.Repositories
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public string GetUserIdFromToken()
-        {
-            return Jwt.GetUserIdFromToken(_httpContextAccessor.HttpContext.Request.Headers);
-        }
+        //public string GetUserIdFromToken()
+        //{
+        //    return Jwt.GetUserIdFromToken(_httpContextAccessor.HttpContext.Request.Headers);
+        //}
     }
 }

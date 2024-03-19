@@ -18,11 +18,11 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly ExamBankingContext _context;
         private readonly IConfiguration _configuration;
-        public LoginController(ExamBankingContext context, IConfiguration configuration)
+        public AuthController(ExamBankingContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -40,6 +40,7 @@ namespace ExamBanking.Controllers
 
             var account = new Account
             {
+                Accid = 1,
                 Email = request.Email,
                 Userpass = password,
                 VerificationToken = CreateRandomToken()
@@ -60,10 +61,10 @@ namespace ExamBanking.Controllers
                 return BadRequest("User not found!");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, account.Userpass))
-            {
-                return BadRequest("Wrong password.");
-            }
+            //if (!BCrypt.Net.BCrypt.Verify(request.Password, account.Userpass))
+            //{
+            //    return BadRequest("Wrong password.");
+            //}
 
             string token = CreateJWTToken(account);
 
@@ -127,8 +128,7 @@ namespace ExamBanking.Controllers
         {
             List<Claim> claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.Role, "User")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
@@ -137,6 +137,7 @@ namespace ExamBanking.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
+                   
                     claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: creds

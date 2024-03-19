@@ -14,7 +14,7 @@ namespace ExamBanking.Models
             Repos = new HashSet<Repo>();
         }
 
-        public int Accid { get; set; }
+        public decimal Accid { get; set; }
         public string? Email { get; set; }
         public string? Userpass { get; set; }
         public string? Accname { get; set; }
