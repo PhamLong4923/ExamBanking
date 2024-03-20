@@ -8,7 +8,7 @@ namespace ExamBanking.Utils
 {
     public class Jwt
     {
-        
+
         private readonly IConfiguration _configuration;
         public Jwt(IConfiguration configuration)
         {
@@ -20,7 +20,7 @@ namespace ExamBanking.Utils
             if (string.IsNullOrEmpty(token))
                 return null;
 
-            // Kiểm tra và loại bỏ phần "Bearer " nếu có
+
             if (token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
             {
                 token = token.Substring("Bearer ".Length).Trim();
@@ -32,21 +32,25 @@ namespace ExamBanking.Utils
             if (jsonToken == null)
                 return null;
 
-            var userIdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+            var userIdClaim = jsonToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
 
-            
 
             return userIdClaim;
         }
 
+        public static string GetUserIdFromToken(string authorizationHeader)
+        {
 
+            var token = authorizationHeader.ToString();
+            return Jwt.GetUserId(token);
+        }
 
         public string CreateJWTToken(Account user)
         {
             List<Claim> claims = new List<Claim> {
         new Claim(ClaimTypes.Email, user.Email),
         new Claim(ClaimTypes.Role, "User")
-    };
+        };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSetting:Token").Value!));
