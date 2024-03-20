@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
+using ExamBanking.Utils;
 
 
 namespace ExamBanking.Config
@@ -16,6 +17,7 @@ namespace ExamBanking.Config
             services.AddScoped<RQuestion>();
             services.AddScoped<RRepositories>();
             services.AddScoped<RSection>();
+            services.AddScoped<Jwt>();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>

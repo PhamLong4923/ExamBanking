@@ -98,7 +98,7 @@ const App = () => {
           mode="inline"
           defaultSelectedKeys={['0']}
           selectedKeys={[selectedMenu]} // Pass selectedMenu state as selectedKeys
-          onClick={handleMenuClick} // Handle menu item click event
+          onClick={handleMenuClick}
         >
           {items.map((item) => (
             <Menu.Item key={item.key} icon={item.icon}>
@@ -131,7 +131,6 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {/* Content based on selectedMenu */}
             {selectedMenu === '0' && <Home />}
             {selectedMenu === '1' && <Profile />}
             {selectedMenu === '2' && <Analysis />}

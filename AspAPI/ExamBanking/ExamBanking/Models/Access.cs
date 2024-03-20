@@ -6,8 +6,8 @@ namespace ExamBanking.Models
     public partial class Access
     {
         public int Accessid { get; set; }
-        public int? Fromid { get; set; }
-        public int? Toid { get; set; }
+        public decimal? Fromid { get; set; }
+        public decimal? Toid { get; set; }
         public int? Bankid { get; set; }
         public int? Repoid { get; set; }
         public string? Message { get; set; }

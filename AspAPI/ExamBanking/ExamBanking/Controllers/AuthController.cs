@@ -18,16 +18,17 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
+        public static Account a = new Account();
         private readonly ExamBankingContext _context;
         private readonly IConfiguration _configuration;
-        public LoginController(ExamBankingContext context, IConfiguration configuration)
+        public AuthController(ExamBankingContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
-        
+
         [HttpPost("register")]
         public async Task<IActionResult> Regeister(UserRegisterRequest request) //AccountDto tương đương với 1 table trong database là UserRegisterRequest
         {
@@ -36,10 +37,11 @@ namespace ExamBanking.Controllers
             {
                 return BadRequest("User already exist");
             }
-            
-           
+
+
             var account = new Account
             {
+                Accid = 1,
                 Email = request.Email,
                 Userpass = password,
                 VerificationToken = CreateRandomToken()
@@ -60,15 +62,64 @@ namespace ExamBanking.Controllers
                 return BadRequest("User not found!");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(request.Password,account.Userpass))
-            {
-                return BadRequest("Wrong password.");
-            }
+            //if (!BCrypt.Net.BCrypt.Verify(request.Password, account.Userpass))
+            //{
+            //    return BadRequest("Wrong password.");
+            //}
+            var refreshToken = GenerateRefreshToken();
 
+            SetRefreshToken(refreshToken);
             string token = CreateJWTToken(account);
 
             return Ok(token);
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var account = await _context.Accounts.SingleOrDefaultAsync(a => a.VerificationToken == refreshToken);
+            if (account == null)
+            {
+                return BadRequest("Invalid token");
+            }
+            if (account.ResetTokenExpires < DateTime.Now)
+            {
+                return BadRequest("Token is expired");
+            }
+            var newRefreshToken = GenerateRefreshToken();
+            SetRefreshToken(newRefreshToken);
+            string token = CreateJWTToken(account);
+            return Ok(token);
+        }
+
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = CreateRandomToken(),
+                Expires = DateTime.Now.AddDays(7)
+            };
+            return refreshToken;
+        }
+
+
+        private void SetRefreshToken(RefreshToken refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshToken.Expires
+            };
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+            a.VerificationToken = refreshToken.Token;
+            a.Datejoin = refreshToken.Expires;
+            a.ResetTokenExpires = refreshToken.Expires;
+
+        }
+
         [HttpPost("verify")]
         public async Task<IActionResult> Verify(string token)
         {
@@ -108,7 +159,7 @@ namespace ExamBanking.Controllers
             {
                 return BadRequest("token is expired");
             }
-           
+
             account.Userpass = BCrypt.Net.BCrypt.HashPassword(request.Password);
             account.PasswordResetToken = null;
             account.ResetTokenExpires = null;
@@ -117,33 +168,30 @@ namespace ExamBanking.Controllers
             return Ok("Password change succes!!");
         }
 
-        
 
-        /// <summary>
-        /// hàm tạo token để verify mail
-        /// </summary>
-        /// <returns>trả về 1 token đã được ngẫu nhiên</returns>
+
         private string CreateRandomToken()
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
         private string CreateJWTToken(Account user)
         {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, "User")
+            List<Claim> claims = new List<Claim> {
+                new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", user.Email),
+                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User")
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSetting:Token").Value!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
+                   
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: creds
+                );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

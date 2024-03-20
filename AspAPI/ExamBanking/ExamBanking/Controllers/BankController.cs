@@ -2,40 +2,65 @@
 using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
+using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User")]
     public class BankController : ControllerBase
     {
         private ExamBankingContext eContext = new ExamBankingContext();
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
-        public BankController(ExamBankingContext context,RRepositories rRepositories,RAccount rAccount)
+    
+        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount)
         {
             _context = context;
             _rRepositories = rRepositories;
-            _rAccount = rAccount;
+            _rAccount = rAccount;          
         }
-        
-        [HttpGet("GetBank"),Authorize(Roles = "User")]
+
+
+        [HttpGet("GetBank")]
         public IActionResult viewBankList()
         {
-            var userid = 2; // sửa lại để lấy jwt token
-            var listBank = _context.Banks.Where(a => a.Accid == userid).ToList();
-            return Ok(listBank);
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            // Sử dụng userId để truy vấn người dùng từ cơ sở dữ liệu
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            if (user != null)
+            {
+                var listBank = _context.Banks.Where(a => a.Accid == user.Accid).ToList();
+
+                return Ok(listBank);
+            }
+            else
+            {
+                return Ok("User not found or token is invalid.");
+            }
         }
+
+
+
         [HttpPost("CreateBank")]
         public async Task<IActionResult> CreateBank(CreateBankRequest request)
         {
-            var userid = 2;
-            if (_context.Banks.Any(b => b.Accid == userid && b.Bankname == request.Bankname))
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            if (_context.Banks.Any(b => b.Accid == user.Accid && b.Bankname == request.Bankname))
             {
                 return BadRequest("Bank name already exists ");
             }
@@ -43,7 +68,7 @@ namespace ExamBanking.Controllers
             {
                 Bankname = request.Bankname,
                 Bankstatus = request.Bankstatus,
-                Accid = userid,
+                Accid = user.Accid,
             };
 
             _context.Banks.Add(bank);
@@ -53,9 +78,12 @@ namespace ExamBanking.Controllers
         [HttpPut("EditBank")]
         public async Task<IActionResult> EditBank(RenameBank request)
         {
-            var userid = 2;
-            var edit = _context.Banks.FirstOrDefault(a => a.Accid == userid && a.Bankid == request.Bankid);
-            if(edit == null)
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
+            if (edit == null)
             {
                 return BadRequest("not found");
             }
@@ -66,9 +94,11 @@ namespace ExamBanking.Controllers
         [HttpDelete("DeleteBank")]
         public async Task<IActionResult> DeleteBank(DeleteBankRequest request)
         {
-            var userid = 2;
-            
-            var remove = _context.Banks.FirstOrDefault(a => a.Accid == userid && a.Bankid == request.Bankid);
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
             if (remove == null)
             {
                 return BadRequest("Bank doesnt exist!!");
@@ -78,5 +108,6 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok("Delete Succes");
         }
+
     }
 }

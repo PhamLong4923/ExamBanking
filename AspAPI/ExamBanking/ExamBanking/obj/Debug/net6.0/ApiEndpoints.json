@@ -94,6 +94,96 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "forgotPass",
+    "RelativePath": "api/Auth/forgotPass",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AccountDto.UserLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Auth/refresh-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "Regeister",
+    "RelativePath": "api/Auth/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AccountDto.UserRegisterRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "resetPass",
+    "RelativePath": "api/Auth/resetPass",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.AccountDto.ResetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "Verify",
+    "RelativePath": "api/Auth/verify",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "token",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.BankController",
     "Method": "CreateBank",
     "RelativePath": "api/Bank/CreateBank",
@@ -168,86 +258,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ExamBanking.Controllers.LoginController",
-    "Method": "forgotPass",
-    "RelativePath": "api/Login/forgotPass",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.LoginController",
-    "Method": "Login",
-    "RelativePath": "api/Login/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.UserLoginRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.LoginController",
-    "Method": "Regeister",
-    "RelativePath": "api/Login/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.UserRegisterRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.LoginController",
-    "Method": "resetPass",
-    "RelativePath": "api/Login/resetPass",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.ResetPasswordRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.LoginController",
-    "Method": "Verify",
-    "RelativePath": "api/Login/verify",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "token",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ExamBanking.Controllers.QuestionController",
     "Method": "CreateQuestion",
     "RelativePath": "api/Question/CreateQuestion",
@@ -313,38 +323,6 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
-    "Method": "GetRepo",
-    "RelativePath": "api/Repositories",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
-    "Method": "DeleteRepo",
-    "RelativePath": "api/Repositories",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.DeleteRepoRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "CreateRepo",
     "RelativePath": "api/Repositories/CreateRepo",
     "HttpMethod": "POST",
@@ -361,6 +339,22 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
+    "Method": "DeleteRepo",
+    "RelativePath": "api/Repositories/DelRepo",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.RepoDto.DeleteRepoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "EditRepo",
     "RelativePath": "api/Repositories/EditRepo",
     "HttpMethod": "PUT",
@@ -370,6 +364,22 @@
       {
         "Name": "request",
         "Type": "ExamBanking.DTO.RepoDto.EditRepoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.RepositoriesController",
+    "Method": "GetRepo",
+    "RelativePath": "api/Repositories/GetRepo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
         "IsRequired": true
       }
     ],
@@ -438,25 +448,5 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "JwtWebApiDotNet7.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[JwtWebApiDotNet7.WeatherForecast, ExamBanking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   }
 ]

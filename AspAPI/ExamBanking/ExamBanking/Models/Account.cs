@@ -14,7 +14,7 @@ namespace ExamBanking.Models
             Repos = new HashSet<Repo>();
         }
 
-        public int Accid { get; set; }
+        public decimal Accid { get; set; }
         public string? Email { get; set; }
         public string? Userpass { get; set; }
         public string? Accname { get; set; }
@@ -31,5 +31,10 @@ namespace ExamBanking.Models
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Repo> Repos { get; set; }
+
+        public override string? ToString()
+        {
+            return $"Account ID: {Accid}, Email: {Email}, Name: {Accname}, Role: {Roleid}";
+        }
     }
 }
