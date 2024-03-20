@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
-const SystemBank = () => {
+const AdminRepository = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
@@ -13,14 +13,14 @@ const SystemBank = () => {
     const [dataSource, setDataSource] = useState([
         {
             key: '1',
-            name: 'Bank 1',
-            subject: 'Toán',
+            name: 'Chương 1',
+            description: 'Toán',
             date: moment().format('DD/MM/YYYY'),
         },
         {
             key: '2',
-            name: 'Bank 2',
-            subject: 'Anh',
+            name: 'Chương 2',
+            description: 'Anh',
             date: moment().format('DD/MM/YYYY'),
         },
     ]);
@@ -30,12 +30,12 @@ const SystemBank = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <a href={`/adminrepo/${record.key}`}>{text}</a>,
+            render: (text, record) => <a href={`/bank/${record.key}`}>{text}</a>,
         },
         {
-            title: 'Subject',
-            dataIndex: 'subject',
-            key: 'subject',
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
         },
         {
             title: 'Date',
@@ -57,7 +57,7 @@ const SystemBank = () => {
     const handleEdit = (record) => {
         form.setFieldsValue({
             name: '',
-            subject: '',
+            description: '',
             date: '',
             ...record,
         });
@@ -144,12 +144,12 @@ const SystemBank = () => {
     return (
         <div>
             <Button type="primary" onClick={showModal}>
-                Add bank
+                Add repository
             </Button>
             <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
             <Modal
-                title="Add bank"
+                title="Add repository"
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -158,13 +158,13 @@ const SystemBank = () => {
                     form={form}
                     layout="vertical"
                     initialValues={{
-                        // subject: 'Toán',
+                        // description: 'abc',
                     }}
                 >
                     <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
+                    <Form.Item label="Description" name="description">
                         <Input />
                     </Form.Item>
                     <Form.Item label="Date" name="date">
@@ -176,4 +176,4 @@ const SystemBank = () => {
     );
 };
 
-export default SystemBank;
+export default AdminRepository;

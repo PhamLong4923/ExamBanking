@@ -1,21 +1,22 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import HomeScreen from './User/Home';
+import BankTypep from './User/Bank/BankTypep.jsx';
 import Bankp from './User/Bank/Bankp.jsx';
-import Profile from './User/Setting/Profile';
 import Sections from './User/Bank/Sectionp';
-import BankTypep from './User/Bank/BankTypep.jsx'
+import HomeScreen from './User/Home';
+import Profile from './User/Setting/Profile';
 
+// import AdminRepository from '../../../admin/src/components/UI/Features/repository.jsx';
 import Repository from './User/Bank/Repositoryp';
 import BankSelectp from './User/Exam/BankSelectp';
 import BankTypeSelectp from './User/Exam/BankTypeSelectp';
-import RepoSelectp from './User/Exam/RepoSelectp';
 import ExamConfigp from './User/Exam/ExamConfigp';
+import RepoSelectp from './User/Exam/RepoSelectp';
 import Loginp from './User/Login/Loginp';
 import Signupp from './User/Login/Signupp';
 
-import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import PopupCreateModel from '../components/EditPopup/popupcreate.jsx';
 
 
@@ -36,6 +37,7 @@ const Root = () => (
       <Route path="/pbank" element={<Bankp />} />
       <Route path="/repo" element={<Repository />} />
       <Route path="/sec" element={<Sections />} />
+      {/* <Route path="/adminrepo" element={<AdminRepository />}></Route> */}
 
       {/*Exam Create*/}
 
