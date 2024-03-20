@@ -14,17 +14,25 @@ import { getLocalStorageItem } from '../../../../services/LocalStorage';
 import { GoInbox } from "react-icons/go";
 import { getQuestions, getSection } from '../../../../services/Api';
 import PopupCreateModel from '../../../EditPopup/popupcreate';
+import checkLimit from '../../../../share/ultils/checklimit';
+import { toast } from 'react-toastify';
 
 const Section = (props) => {
   const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
   const repoid = getLocalStorageItem('repoid') || -1;
 
   const [loading, setLoading] = useState(true);
+  const [qloading, setQloading] = useState(true);
 
   const [isEndOfPage, setIsEndOfPage] = useState(false);
 
   const [section, setSection] = useState([]);
   const [secid, setSecid] = useState(-1);
+
+  const [isactive, setIsactive] = useState(false);
+  const [islimit, setIslimit] = useState(false);
+
+  const [isqueslimit, setIsQueslimit] = useState(false);
 
   const [showModal1, setShowModal1] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -34,21 +42,130 @@ const Section = (props) => {
 
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [questions, setQuestions] = useState([
-    {
-      id: 1,
-      title: 'Đề ở đây',
-      answers: [
-        // { id: 'answer1', content: 'Đáp án ở đây' },
-        // { id: 'answer2', content: 'Đáp án ở đây' },
-        // { id: 'answer3', content: 'Đáp án ở đây' },
-        // { id: 'answer4', content: 'Đáp án ở đây' }
-      ],
-      type: 1,
-      solution: 'Hướng dẫn giải',
-      mode: 2,
-    }
+    // {
+    //   id: 1,
+    //   title: 'Đề ở đây',
+    //   answers: [
+    //     // { id: 'answer1', content: 'Đáp án ở đây' },
+    //     // { id: 'answer2', content: 'Đáp án ở đây' },
+    //     // { id: 'answer3', content: 'Đáp án ở đây' },
+    //     // { id: 'answer4', content: 'Đáp án ở đây' }
+    //   ],
+    //   type: 1,
+    //   solution: 'Hướng dẫn giải',
+    //   mode: 2,
+    // }
 
   ]);
+
+  //Section handle
+  //load section
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getSection({ repoid });
+        setSection(response.data);
+        if (section.length !== 0) {
+          setSecid(section[0].id)
+        } else {
+          setSecid(-1);
+        }
+        setIslimit(checkLimit('sec', section.length))
+        setLoading(false);
+        setIsactive(true);
+
+      } catch (error) {
+        console.error('Error fetching banks:', error);
+        // Handle error here
+      }
+    };
+
+    fetchData();
+  }, []);
+  //end load section
+  //add section
+  const handleAddSecion = (value) => {
+    console.log(value);
+        // const response = addBank({ Bankname: value }) // call addBank api
+        // var newid = response.data;
+        // setBanks([
+        //     ...banks,
+        //     {
+        //         bankid: newid,
+        //         bankname: value,
+
+        //     },
+        // ]);
+        toast.success("Thêm thành công");
+  }
+  //end add section
+
+  //del section
+  const handleDelSecion = (value) => {
+    console.log(value);
+        // const response = addBank({ Bankname: value }) // call addBank api
+        // var newid = response.data;
+        // setBanks([
+        //     ...banks,
+        //     {
+        //         bankid: newid,
+        //         bankname: value,
+
+        //     },
+        // ]);
+        
+  }
+  //end del section
+
+  //edit section
+  const handleEditSecion = (value) => {
+    console.log(value);
+        // const response = addBank({ Bankname: value }) // call addBank api
+        // var newid = response.data;
+        // setBanks([
+        //     ...banks,
+        //     {
+        //         bankid: newid,
+        //         bankname: value,
+
+        //     },
+        // ]);
+        toast.success("Sửa thành công");
+  }
+  //end edit section
+
+  //section tool
+  const unSelect = () => {
+    setSelectedQuestions([]);
+  }
+
+  const handleSelectSection = (secid) => {
+    // useState, set selectSection
+  }
+  //End section tool
+  //End Section handle
+
+  //Question handle
+  //load question
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getQuestions(secid);
+        if (secid !== -1) {
+          setQloading(false);
+        }
+        setQuestions(response.data);
+        setIsQueslimit(checkLimit('ques', questions.length));
+
+      } catch (error) {
+        console.error('Error fetching banks:', error);
+        // Handle error here
+      }
+    };
+
+    fetchData();
+  }, [secid])
+  //End Question handle
 
   //filter
   const [qlfilter, setQlfilter] = useState(questions);
@@ -104,23 +221,30 @@ const Section = (props) => {
   };
 
   const handleAddQuestion = () => {
-    const newId = (questions.length + 1).toString();
-    setQuestions([
-      ...questions,
-      {
-        id: newId,
-        title: '',
-        answers: [
-          { id: 'answer1', content: '' },
-        ],
-        type: 1,
-        solution: 'hướng dẫn giải',
-        mode: 1,
-      },
-    ]);
-    setEditingQuestionId(newId);
-    setModalIsOpen(true);
-    setIsAddQuestion(true);
+    if (isqueslimit) {
+      toast.error("Đã đạt giới hạn");
+    } else {
+      const newId = (questions.length + 1).toString();
+      setQuestions([
+        ...questions,
+        {
+          id: newId,
+          title: '',
+          answers: [
+            { id: 'answer1', content: '' },
+          ],
+          type: 1,
+          solution: 'hướng dẫn giải',
+          mode: 1,
+        },
+      ]);
+
+      setEditingQuestionId(newId);
+      setModalIsOpen(true);
+      setIsAddQuestion(true);
+    }
+
+
   };
 
   const handleEditQuestion = (questionId) => {
@@ -195,100 +319,60 @@ const Section = (props) => {
     setShowModal2(true);
   };
 
-  //load section
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getSection({ repoid });
-        setSection(response.data);
-        if (section.length !== 0) {
-          setSecid(section[0].id)
-        } else {
-          setSecid(-1);
-        }
-        setLoading(false);
-
-      } catch (error) {
-        console.error('Error fetching banks:', error);
-        // Handle error here
-      }
-    };
-
-    fetchData();
-  }, []);
-  //end load section
-
-  //add section
-  //end add section
-
-  //del section
-  //end del section
-
-
-  //load question
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getQuestions(secid);
-        setQuestions(response.data);
-
-
-      } catch (error) {
-        console.error('Error fetching banks:', error);
-        // Handle error here
-      }
-    };
-
-    fetchData();
-  }, [secid])
-
-  useEffect(() => {
-    //load 10 question first
-  })
-
-  useEffect(() => {
-    const qlistitemElement = document.querySelector('.qlistitem');
-    qlistitemElement.addEventListener('scroll', handleScroll);
-
-    return () => {
-      qlistitemElement.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isEndOfPage) {
-      // Gọi hàm để load thêm câu hỏi ở đây
-      loadMoreQuestions();
-    }
-  }, [isEndOfPage]);
-
-  const loadMoreQuestions = async () => {
-    try {
-      // Gọi API để lấy thêm câu hỏi
-      const response = await fetch('API_URL');
-      const data = await response.json();
-
-      // Cập nhật state questions bằng cách thêm câu hỏi mới vào mảng questions hiện có
-      setQuestions(prevQuestions => [...prevQuestions, ...data.questions]);
-    } catch (error) {
-      console.error('Error loading more questions:', error);
-    }
-  };
 
 
 
-  const handleScroll = () => {
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const scrollTop = window.scrollY;
-    const scrolledToBottom = Math.ceil(scrollTop + windowHeight) >= documentHeight;
 
-    if (scrolledToBottom) {
-      setIsEndOfPage(true);
-    } else {
-      setIsEndOfPage(false);
-    }
-  };
+
+
+
+  // useEffect(() => {
+  //   //load 10 question first
+  // })
+
+  // useEffect(() => {
+  //   const qlistitemElement = document.querySelector('.qlistitem');
+  //   qlistitemElement.addEventListener('scroll', handleScroll);
+
+  //   return () => {
+  //     qlistitemElement.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   if (isEndOfPage) {
+  //     // Gọi hàm để load thêm câu hỏi ở đây
+  //     loadMoreQuestions();
+  //   }
+  // }, [isEndOfPage]);
+
+  // const loadMoreQuestions = async () => {
+  //   try {
+  //     // Gọi API để lấy thêm câu hỏi
+  //     const response = await fetch('API_URL');
+  //     const data = await response.json();
+
+  //     // Cập nhật state questions bằng cách thêm câu hỏi mới vào mảng questions hiện có
+  //     setQuestions(prevQuestions => [...prevQuestions, ...data.questions]);
+  //   } catch (error) {
+  //     console.error('Error loading more questions:', error);
+  //   }
+  // };
+
+
+
+  // const handleScroll = () => {
+  //   const windowHeight = window.innerHeight;
+  //   const documentHeight = document.documentElement.scrollHeight;
+  //   const scrollTop = window.scrollY;
+  //   const scrolledToBottom = Math.ceil(scrollTop + windowHeight) >= documentHeight;
+
+  //   if (scrolledToBottom) {
+  //     setIsEndOfPage(true);
+  //   } else {
+  //     setIsEndOfPage(false);
+  //   }
+  // };
 
 
   const handleSelectQuestion = (qid) => {
@@ -331,13 +415,7 @@ const Section = (props) => {
 
   //tool
 
-  const unSelect = () => {
-    setSelectedQuestions([]);
-  }
 
-  const handleSelectSection = (secid) => {
-    // useState, set selectSection
-  }
 
   const addAnswer = (questionId) => {
     setQuestions(() =>
@@ -360,7 +438,7 @@ const Section = (props) => {
     );
   };
 
-  //filter
+
 
 
   const handleQuestionTypeChange = (questionId, selectedType) => {
@@ -439,7 +517,14 @@ const Section = (props) => {
             <div className='question-tool'>
               <span className='tool-item' onClick={() => unSelect()}><FaXmark /></span>
               <span className='selectedq'>{selectedQuestions.length} được chọn</span>
-              {bankType === '0' ? (<><span className='tool-item'><TiWarningOutline /></span></>) : (
+              {bankType === '0' ? (<><span className='tool-item'><TiWarningOutline /></span></>) : qloading ? (
+                <>
+                  <span className='tool-item' ><FaRegTrashCan></FaRegTrashCan></span>
+                  <span className='tool-item' ><FaPlus></FaPlus></span>
+                  <span className='tool-item' ><FaRegFileWord></FaRegFileWord></span>
+                  <span className='tool-item' ><FaRegFileExcel></FaRegFileExcel></span>
+                </>
+              ) : (
                 <>
                   <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
                   <span className='tool-item' onClick={handleAddQuestion}><FaPlus></FaPlus></span>
@@ -453,36 +538,43 @@ const Section = (props) => {
 
 
             <div className='qlistitem'>
-              {qlfilter.length === 0 ? (
+              {qloading ? (
                 <div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}><HashLoader color='#282cc0' /></div>
-              ) : (
-                qlfilter.map((question, index) => (
-                  <Question
-                    key={index}
-                    question={question}
-                    handleEditQuestion={handleEditQuestion}
-                    deleteQuestion={handleDeleteQuestion}
-                    handleEditAnswer={handleEditAnswer}
-                    deleteAnswer={deleteAnswer}
-                    addAnswer={addAnswer}
-                    handleSaveEdit={handleSaveEdit}
-                    editingQuestionId={editingQuestionId}
-                    modalIsOpen={modalIsOpen}
-                    handleEditorDataChange={handleEditorDataChange}
-                    setModalIsOpen={setModalIsOpen}
-                    handleSelectSection={handleSelectSection}
-                    handleQuestionTypeChange={handleQuestionTypeChange}
-                    handleEditSolution={handleEditSolution}
-                    isAddQuestion={isAddQuestion}
-                    handleQuestionModeChange={handleQuestionModeChange}
-                    handleSelectQuestion={handleSelectQuestion}
-                    isSelected={selectedQuestions.includes(question.id)}
-                  />
-                ))
-              )}
+              ) :
+                qlfilter.length === 0 ?
+                  (
+                    <div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                      <GoInbox />
+                      <span>Không có dữ liệu</span>
+                    </div>
+                  ) : (
+                    qlfilter.map((question, index) => (
+                      <Question
+                        key={index}
+                        question={question}
+                        handleEditQuestion={handleEditQuestion}
+                        deleteQuestion={handleDeleteQuestion}
+                        handleEditAnswer={handleEditAnswer}
+                        deleteAnswer={deleteAnswer}
+                        addAnswer={addAnswer}
+                        handleSaveEdit={handleSaveEdit}
+                        editingQuestionId={editingQuestionId}
+                        modalIsOpen={modalIsOpen}
+                        handleEditorDataChange={handleEditorDataChange}
+                        setModalIsOpen={setModalIsOpen}
+                        handleSelectSection={handleSelectSection}
+                        handleQuestionTypeChange={handleQuestionTypeChange}
+                        handleEditSolution={handleEditSolution}
+                        isAddQuestion={isAddQuestion}
+                        handleQuestionModeChange={handleQuestionModeChange}
+                        handleSelectQuestion={handleSelectQuestion}
+                        isSelected={selectedQuestions.includes(question.id)}
+                      />
+                    ))
+                  )}
 
               {/* Hiển thị loading khi đang tải dữ liệu */}
-              {loading && <HashLoader />}
+              {/* {loading && <HashLoader />} */}
 
               <ImportModal
                 showModal={showModal1 || showModal2}
@@ -501,7 +593,7 @@ const Section = (props) => {
                 (<><span style={{ textAlign: 'center', width: '100%', fontWeight: '600' }}>Bạn không có quyền chỉnh sửa nội dung này</span></>) :
                 (
                   <>
-                    <PopupCreateModel title={'Thêm bài'} buttonstyle={<span className='tool-item'><FaPlus></FaPlus></span>}></PopupCreateModel>
+                    <PopupCreateModel isactive={isactive} islimit={islimit} title={'Thêm bài'} buttonstyle={<span className='tool-item'><FaPlus></FaPlus></span>}></PopupCreateModel>
                     <span className='tool-item'><FaEdit></FaEdit></span>
                     <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
                   </>

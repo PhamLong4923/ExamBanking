@@ -68,9 +68,37 @@ const PBank = () => {
     //End Add Bank
 
     //Del Bank
+    const handleDelBank = (bid) => {
+        console.log(bid);
+        // const response = addBank({ Bankname: value }) // call addBank api
+        // var newid = response.data;
+        setBanks([
+            banks.filter(b => b.bankid === bid)
+        ]);
+        ToastMessage("Thêm thành công");
+
+    };
     //End Del Bank
 
+    const handleEditTitle = (repoId, newTitle) => {
+        // setRepos((prevRepos) =>
+        //     prevRepos.map((repo) =>
+        //         repo.id === repoId ? { ...repo, title: newTitle } : repo
+        //     )
+        // );
+    };
+
+
     //Update Bank
+    const handleUpdateBank = (bid, newname) => {
+        console.log(bid);
+        // const response = addBank({ Bankname: value }) // call addBank api
+        // var newid = response.data;
+        setBanks((prev) =>
+            prev.map((bank) => bank.bankid === bid ? { ...bank, bankname: newname } : bank));
+        ToastMessage("Thêm thành công");
+
+    };
     //End Update Bank
 
     //Popup model function

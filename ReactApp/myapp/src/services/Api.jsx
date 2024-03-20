@@ -1,28 +1,10 @@
 import Http from "./Http";
 
-export const getProducts = (config) => Http.get("/products", config);
-
-export const getCategories = (config) => Http.get("/categories", config);
-
-export const getCategory = (id, config) => Http.get(`/categories/${id}`, config);
-
-export const getProdctCategory = (id, config) => Http.get(`/categories/${id}/products`, config);
-
-export const getProduct = (id, config) => Http.get(`/products/${id}`, config);
-
-export const getCommentByProduct = (id, config) => Http.get(`/products/${id}/comments`, config);
-
-export const createCommnetsProduct = (id, data, config) => Http.post(`/products/${id}/comments`, data, config);
-
-export const order = (data, config) => Http.post(`/order`, data, config);
-
-//my 
-
 //account-api
 
 export const signUp = () => Http.post("");
 
-export const login = () => Http.get("/Login/google");
+export const login = () => Http.post("");
 
 //get-api
 
@@ -40,7 +22,7 @@ export const getQuestionMode = () => Http.get();
 
 //create-api
 
-export const addBank = (config) => Http.post("", config);
+export const addBank = () => Http.get("");
 
 export const addSection = () => Http.get("");
 

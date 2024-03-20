@@ -5,7 +5,6 @@ import Footer from "../../../components/UI/Footer.jsx";
 
 const BankTypep = () => {
 
-
   return (
     <>
       <Header></Header>

@@ -4,28 +4,36 @@ import '../RepoSelect/RepoSeclect.css'
 import { IoIosArrowForward } from "react-icons/io";
 import { CgPlayTrackNextO } from "react-icons/cg";
 import { FaXmark } from "react-icons/fa6";
+import { getLocalStorageItem, setLocalStorageItem } from "../../../../services/LocalStorage";
+import { HashLoader } from "react-spinners";
+import { GoInbox } from "react-icons/go";
+import { toast } from "react-toastify";
 
 export default function RepoSelect() {
+
+    const bid = getLocalStorageItem('bid');
+
+    const [loading, setLoading] = useState(true);
 
     const [selectNumber, setSelectNumber] = useState(0);
 
     const [repos, SetRepos] = useState([
-        {
-            id: '1',
-            title: 'chương I',
-        },
-        {
-            id: '2',
-            title: 'chương II',
-        },
-        {
-            id: '3',
-            title: 'chương III',
-        },
-        {
-            id: '4',
-            title: 'chương IV',
-        }
+        // {
+        //     id: '1',
+        //     title: 'chương I',
+        // },
+        // {
+        //     id: '2',
+        //     title: 'chương II',
+        // },
+        // {
+        //     id: '3',
+        //     title: 'chương III',
+        // },
+        // {
+        //     id: '4',
+        //     title: 'chương IV',
+        // }
     ])
 
     const [repoSelect, SetRepoSelect] = useState([]);
@@ -44,6 +52,13 @@ export default function RepoSelect() {
         SetRepoSelect([]);
     }
 
+    useEffect(() => {
+        //get repo by bankid
+        setLoading(false);
+
+
+    })
+
 
     useEffect(() => {
         setSelectNumber(repoSelect.length);
@@ -52,9 +67,9 @@ export default function RepoSelect() {
     return (
         <>
             <div className="pathlink">
-                <NavLink className="link" to='/exsystembank'>Tạo đề kiểm tra</NavLink>
+                <NavLink className="link" to='/exam'>Tạo đề kiểm tra</NavLink>
                 <IoIosArrowForward></IoIosArrowForward>
-                <NavLink className="link" to='/expersonalbank'>Ngân hàng câu hỏi cá nhân</NavLink>
+                <NavLink className="link" to='/exbank'>Ngân hàng câu hỏi cá nhân</NavLink>
                 <IoIosArrowForward></IoIosArrowForward>
                 <NavLink className="link" to='/'>Toán 8</NavLink>
             </div>
@@ -69,7 +84,8 @@ export default function RepoSelect() {
                             <span className='tool-item' onClick={() => handleUnSelect()}><FaXmark></FaXmark></span>
                             <span className='selectedq'>{selectNumber} được chọn</span>
                             <span className="fake-space"></span>
-                            <NavLink to={'/exconfig'} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>
+                            {repoSelect.length === 0 ? (<NavLink onClick={() => toast.info("Hãy chọn ít nhất 1 mục")} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>) : (<NavLink onClick={() => setLocalStorageItem("repoids",JSON.stringify(repoSelect))} to={'/exconfig'} className="next"><p>Tiếp tục với lựa chọn</p><CgPlayTrackNextO /></NavLink>)}
+
                         </div>
 
                         <div className="repolist">
@@ -78,14 +94,17 @@ export default function RepoSelect() {
 
                                 <span className="thead"></span>
                             </div>
-                            {repos.map(repo => {
+                            {loading ? (<div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}><HashLoader color='#282cc0' /></div>) : repos.length === 0 ? (<div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                <GoInbox />
+                                <span>Không có dữ liệu</span>
+                            </div>) : (repos.map(repo => {
                                 return (
                                     <div key={repo.id} onClick={() => handleRepoSelect(repo.id)} className={`pitem titem ${repoSelect.includes(repo.id) ? "selectrepo" : ""}`}>
                                         <span className="td">{repo.title}</span>
                                     </div>
                                 )
 
-                            })}
+                            }))}
                         </div>
 
                     </div>
