@@ -31,5 +31,10 @@ namespace ExamBanking.Models
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Repo> Repos { get; set; }
+
+        public override string? ToString()
+        {
+            return $"Account ID: {Accid}, Email: {Email}, Name: {Accname}, Role: {Roleid}";
+        }
     }
 }

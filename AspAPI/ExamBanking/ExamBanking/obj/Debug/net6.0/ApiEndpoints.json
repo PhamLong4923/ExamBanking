@@ -127,6 +127,16 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.AuthController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Auth/refresh-token",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AuthController",
     "Method": "Regeister",
     "RelativePath": "api/Auth/register",
     "HttpMethod": "POST",
