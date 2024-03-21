@@ -15,7 +15,7 @@ namespace ExamBanking.Repositories
             _ranswer = ranswer;
         }
         // create question
-        public void CreateQuestion(CreateQuestionRequest request)
+        public int CreateQuestion(CreateQuestionRequest request)
         {
 
             Question question = new Question
@@ -29,6 +29,7 @@ namespace ExamBanking.Repositories
             };
             _context.Questions.Add(question);
             _context.SaveChanges();
+            return question.Quesid;
         }
         //edit question
         public void EditQuestion(EditQuestionRequest request)

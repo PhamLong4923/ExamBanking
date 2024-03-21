@@ -32,14 +32,14 @@ namespace ExamBanking.Controllers
         public IActionResult CreateQuestion(CreateQuestionRequest question)
         {
             _rquestion.CreateQuestion(question);
-            return Ok("Create question success");
+            return Ok(question.Quesid);
         }
         
         [HttpPut("EditQuestion")]
         public IActionResult EditQuestion(EditQuestionRequest question)
         {
             _rquestion.EditQuestion(question);
-            return Ok("Edit question success");
+            return Ok(question.Quesid);
         }
         
         [HttpDelete("DeleteQuestion")]
@@ -47,7 +47,7 @@ namespace ExamBanking.Controllers
         {
            
             _rquestion.DeleteQuestion(question);
-            return Ok("Delete question success");
+            return Ok(question.Quesid);
         }
 
     }

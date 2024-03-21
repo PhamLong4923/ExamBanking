@@ -25,54 +25,10 @@ namespace ExamBanking.Controllers
         public async Task<ActionResult<IEnumerable<Answer>>> GetAnswers(ListAnswerRequest request)
         {
            var list = await _ranswer.ListAnswers(request);
-            return list;
+            return Ok(list);
         }
 
-        //// GET: api/Answers/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Answer>> GetAnswer(int id)
-        //{
-        //    var answer = await _context.Answers.FindAsync(id);
-
-        //    if (answer == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return answer;
-        //}
-
-        //// PUT: api/Answers/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutAnswer(int id, Answer answer)
-        //{
-        //    if (id != answer.Ansid)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(answer).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!AnswerExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
+        
 
         // edit answer
         [HttpPost("EditAnswer")]
@@ -81,12 +37,12 @@ namespace ExamBanking.Controllers
             var answer = await _context.Answers.FirstOrDefaultAsync(a => a.Ansid == request.Answerid);
             if (answer == null)
             {
-                return BadRequest("Answer not found");
+                return BadRequest();
             }
             answer.Anscontent = request.Content;
             answer.Ansstatus = request.Ansstatus;
             await _context.SaveChangesAsync();
-            return Ok("Edit Succes");
+            return Ok(answer.Ansid);
         }
         [HttpPost("CreateAnswer")]
         public async Task<ActionResult<Answer>> CreateAnswer(CreateAnswerRequest request)
@@ -99,7 +55,7 @@ namespace ExamBanking.Controllers
             };
             _context.Answers.Add(answer);
             await _context.SaveChangesAsync();
-            return answer;
+            return Ok(answer.Ansid);
         }
 
 
@@ -112,7 +68,7 @@ namespace ExamBanking.Controllers
             {
                 return NotFound();
             }
-            return answer;
+            return Ok(answer.Ansid);
         }
         
         
