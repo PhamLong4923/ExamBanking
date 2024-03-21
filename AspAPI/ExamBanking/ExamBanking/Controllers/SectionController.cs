@@ -26,20 +26,20 @@ namespace ExamBanking.Controllers
         [HttpPost("CreateSection")]
         public IActionResult CreateSection(CreateSectionRequest section)
         {
-            _rsection.CreateSection(section);
-            return Ok("Create section success");
+            var sectionid = _rsection.CreateSection(section);
+            return Ok(sectionid);
         }
         [HttpPut("EditSection")]
         public IActionResult EditSection(EditSectionRequest section)
         {
             _rsection.EditSection(section);
-            return Ok("Edit section success");
+            return Ok(section.Secid);
         }
         [HttpDelete("DeleteSection")]
         public IActionResult DeleteSection(DeleteSectionRequest section)
         {
             _rsection.DeleteSection(section);
-            return Ok("Delete section success");
+            return Ok(section.Secid);
         }
     }
 }

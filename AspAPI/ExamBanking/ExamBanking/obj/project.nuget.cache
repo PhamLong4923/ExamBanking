@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "JKHC9XNVT1B6G32NIjCegMeWIT0kgU1/vLDmmGvPTwFZwTkS6UrRFYNLX+6X3bT68nbux84K6URXM8G1wAcWiQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+=======
+  "dgSpecHash": "oXkhRF7oKEtAjgTOZXlkcoAEsRli4Tp0Stj6dll8QqcXZW+Aqw3wJEptNuZPyCa4N6/hizSJF0Uz2f35IFXyJA==",
+  "success": true,
+  "projectFilePath": "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+>>>>>>> 354c0865fe836792b663845535fc0e3271f66eaa
   "expectedPackageFiles": [
     "C:\\Users\\PHAM LONG\\.nuget\\packages\\automapper\\8.0.0\\automapper.8.0.0.nupkg.sha512",
     "C:\\Users\\PHAM LONG\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\6.0.0\\automapper.extensions.microsoft.dependencyinjection.6.0.0.nupkg.sha512",

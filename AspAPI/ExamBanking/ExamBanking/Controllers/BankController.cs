@@ -62,7 +62,7 @@ namespace ExamBanking.Controllers
 
             if (_context.Banks.Any(b => b.Accid == user.Accid && b.Bankname == request.Bankname))
             {
-                return BadRequest("Bank name already exists ");
+                return BadRequest();
             }
             var bank = new Bank
             {
@@ -73,7 +73,7 @@ namespace ExamBanking.Controllers
 
             _context.Banks.Add(bank);
             await _context.SaveChangesAsync();
-            return Ok("bank has benn created!!");
+            return Ok(bank.Bankid);
         }
         [HttpPut("EditBank")]
         public async Task<IActionResult> EditBank(RenameBank request)
@@ -85,11 +85,11 @@ namespace ExamBanking.Controllers
             var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
             if (edit == null)
             {
-                return BadRequest("not found");
+                return BadRequest();
             }
             edit.Bankname = request.Bankname;
             _context.SaveChangesAsync();
-            return Ok("Edit Succes");
+            return Ok(edit.Bankid);
         }
         [HttpDelete("DeleteBank")]
         public async Task<IActionResult> DeleteBank(DeleteBankRequest request)
@@ -101,12 +101,12 @@ namespace ExamBanking.Controllers
             var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
             if (remove == null)
             {
-                return BadRequest("Bank doesnt exist!!");
+                return BadRequest();
             }
             _rRepositories.DeleteAllRepo(request.Bankid);
             _context.Banks.Remove(remove);
             _context.SaveChangesAsync();
-            return Ok("Delete Succes");
+            return Ok(remove.Bankid);
         }
 
     }

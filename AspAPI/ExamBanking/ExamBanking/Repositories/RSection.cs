@@ -16,7 +16,7 @@ namespace ExamBanking.Repositories
             _rAnswer = rAnswer;
         }
 
-        public void CreateSection(CreateSectionRequest request)
+        public int CreateSection(CreateSectionRequest request)
         {
             var section = new Section
             {
@@ -26,6 +26,7 @@ namespace ExamBanking.Repositories
 
             _context.Sections.Add(section);
             _context.SaveChanges();
+            return section.Secid;
         }
 
         public void EditSection(EditSectionRequest request)

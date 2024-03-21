@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
         "packagesPath": "C:\\Users\\PHAM LONG\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+=======
+    "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
+  },
+  "projects": {
+    "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "projectName": "ExamBanking",
+        "projectPath": "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "packagesPath": "C:\\Users\\viet2\\.nuget\\packages\\",
+        "outputPath": "D:\\hoc\\ki_6\\v6\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+>>>>>>> 354c0865fe836792b663845535fc0e3271f66eaa
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\PHAM LONG\\AppData\\Roaming\\NuGet\\NuGet.Config",

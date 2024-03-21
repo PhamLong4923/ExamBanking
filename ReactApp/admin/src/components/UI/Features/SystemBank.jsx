@@ -2,6 +2,7 @@ import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import AdminRepository from './Repository';
 
 const { Option } = Select;
 
@@ -10,6 +11,14 @@ const SystemBank = () => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [isToastOpen, setIsToastOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState('SystemBank');
+    const [idNewPage, setIdNewPage] = useState('');
+
+    const changePage = (pageName, id) => {
+        setCurrentPage(pageName);
+        setIdNewPage(id);
+    };
+
     const [dataSource, setDataSource] = useState([
         {
             key: '1',
@@ -30,7 +39,7 @@ const SystemBank = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <a href={`/adminrepo/${record.key}`}>{text}</a>,
+            render: (text, record) => <a onClick={() => changePage('AdminRepository', record)}>{text}</a>,
         },
         {
             title: 'Subject',
@@ -143,35 +152,40 @@ const SystemBank = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={showModal}>
-                Add bank
-            </Button>
-            <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
+            {currentPage === 'SystemBank' &&
+                <div>
+                    <Button type="primary" onClick={showModal}>
+                        Add bank
+                    </Button>
+                    <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
-            <Modal
-                title="Add bank"
-                open={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    initialValues={{
-                        // subject: 'Toán',
-                    }}
-                >
-                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Date" name="date">
-                        <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                    <Modal
+                        title="Add bank"
+                        open={visible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                    >
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            initialValues={{
+                                // subject: 'Toán',
+                            }}
+                        >
+                            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Date" name="date">
+                                <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+                </div>
+            }
+            {currentPage === 'AdminRepository' && <AdminRepository />}
         </div>
     );
 };

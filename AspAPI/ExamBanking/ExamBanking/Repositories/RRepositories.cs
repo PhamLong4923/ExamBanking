@@ -15,7 +15,7 @@ namespace ExamBanking.Repositories
             _rSection = rSection;
         }
 
-       public void createRepo(CreateRepoRequest request)
+       public int createRepo(CreateRepoRequest request)
         {
             var repo = new Repo
             {
@@ -26,6 +26,7 @@ namespace ExamBanking.Repositories
             };
             _context.Repos.Add(repo);
             _context.SaveChanges();
+            return repo.Repoid;
         }
         public void editRepo(EditRepoRequest request)
         {
