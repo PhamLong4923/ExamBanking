@@ -61,12 +61,12 @@ const items = [
   {
     key: '6',
     icon: <VideoCameraOutlined />,
-    label: 'Nav 2',
+    label: 'SystemRepo'
   },
   {
     key: '7',
     icon: <UploadOutlined />,
-    label: 'Nav 3',
+    label: 'SystemSection',
   },
 ];
 
@@ -101,9 +101,12 @@ const App = () => {
           onClick={handleMenuClick}
         >
           {items.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon}>
-              {item.label}
-            </Menu.Item>
+            // Check if the key is not '6' or '7' before rendering
+            (item.key !== '6' && item.key !== '7') && (
+              <Menu.Item key={item.key} icon={item.icon}>
+                {item.label}
+              </Menu.Item>
+            )
           ))}
         </Menu>
       </Sider>
