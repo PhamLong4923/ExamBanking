@@ -30,21 +30,21 @@ namespace ExamBanking.Controllers
         [HttpPost("CreateRepo")]
         public IActionResult CreateRepo(CreateRepoRequest request)
         {
-            _rerepo.createRepo(request);
-            return Ok("Create repo success");
+            var repoId = _rerepo.createRepo(request);
+            return Ok(repoId);
         }
 
         [HttpPut("EditRepo")]
         public IActionResult EditRepo(EditRepoRequest request)
         {
             _rerepo.editRepo(request);
-            return Ok("Edit repo success");
+            return Ok(request.Repoid);
         }
         [HttpDelete("DelRepo")]
         public IActionResult DeleteRepo(DeleteRepoRequest request)
         {
             _rerepo.deleteRepo(request);
-            return Ok("Delete repo success");
+            return Ok(request.Repoid);
         }
     }
 }
