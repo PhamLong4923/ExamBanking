@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 const { Option } = Select;
 
-const Section = () => {
+const AdminSection = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
@@ -176,4 +176,4 @@ const Section = () => {
     );
 };
 
-export default Section;
+export default AdminSection;
