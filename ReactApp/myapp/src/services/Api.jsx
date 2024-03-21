@@ -2,6 +2,8 @@ import Http from "./Http";
 
 //account-api
 
+export const useGoogle = (token) => Http.post("/GoogleAuth/save-jwt-data", token);
+
 export const signUp = () => Http.post("");
 
 export const login = () => Http.post("");
@@ -14,7 +16,7 @@ export const getSection = (repoid) => Http.get("/Section/listSection", repoid);
 
 export const getRepository = (bankid) => Http.post("/Repositories/GetRepo", bankid);
 
-export const getQuestions = (secid) => Http.get(`Question/listQuestion?sectionid=${secid}`);
+export const getQuestions = (secid) => Http.get(`/Question/listQuestion?sectionid=${secid}`);
 
 export const getQuestionType = () => Http.get();
 
@@ -42,7 +44,7 @@ export const delQuestions = () => Http.get("");
 
 //update-api
 
-export const updateBank = () => Http.get("");
+export const updateBank = (data) => Http.get("/Bank/EditBank", data);
 
 export const updateSection = () => Http.get("");
 

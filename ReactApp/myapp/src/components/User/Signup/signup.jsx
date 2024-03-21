@@ -1,72 +1,89 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
-import { getLocalStorageItem, setLocalStorageItem } from '../../../services/LocalStorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from '../../../redux/action';
 
+const Signup = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const dispatch = useDispatch();
 
-export const Signup = () => {
+    const handleGoogleLoginSuccess = async (credentialResponse) => {
+        try {
+            //dispatch(setToken(redentialResponse.credential))
+            // Redirect to the desired page after successful login
+            // window.location.href = '/';
+        } catch (error) {
+            console.error('Error processing Google login:', error);
+        }
+    };
 
-    const handleSuccess = (credentialResponse) => {
-        console.log(credentialResponse);
-        const credecode = jwtDecode(credentialResponse.credential);
-        console.log(credecode);
-        const { email, picture } = credecode;
-        setLocalStorageItem("isLoggedIn", true);
-        setLocalStorageItem("uavata", picture);
-        setLocalStorageItem("uemail", email);
-        // window.location.href = '/';
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            console.error('Passwords do not match');
+            return;
+        }
 
-    }
+        try {
+            // Send signup request to server
+            const response = await axios.post('YOUR_SIGNUP_API_ENDPOINT', {
+                email,
+                password
+            });
 
-    // useEffect(() => {
-    //     if (getLocalStorageItem('isLoggedIn')) {
-    //         window.location.href = '/';
-    //     }
-    // });
+            // Process signup response as needed
+            console.log('Signup successful:', response.data);
+
+            // Optionally, you can automatically log the user in after signup
+            // and redirect them to the desired page
+        } catch (error) {
+            console.error('Error signing up:', error);
+            // Handle signup error
+        }
+    };
 
     return (
-        <div className="relative py-16 bg-gradient-to-br from-sky-50 to-gray-200">
-            <div className="relative container m-auto px-6 text-gray-500 md:px-12 xl:px-40">
-                <div className="m-auto md:w-8/12 lg:w-6/12 xl:w-6/12">
-                    <div className="rounded-xl bg-white shadow-xl">
-                        <div className="p-6 sm:p-16">
-                            <div className="space-y-4">
-                                <img src="https://tailus.io/sources/blocks/social/preview/images/icon.svg" loading="lazy" className="w-10" alt="tailus logo" />
-                                <h2 className="mb-8 text-2xl text-cyan-900 font-bold">Sign up to unlock the <br /> best of EB.</h2>
+        <div className="relative pt-16 pb-64 bg-blue-100">
+            <div className="relative container mx-auto px-4">
+                <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div className="p-6 sm:p-8">
+                        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign up</h2>
+                        <form onSubmit={handleSignup}>
+                            <div className="mb-4">
+                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full px-4 py-3 rounded-lg bg-gray-100 border-2 border-gray-200 focus:outline-none focus:border-blue-500" required />
                             </div>
-                            <div className="mt-16 grid space-y-4">
-
-                                <button class="group h-12 px-6 border-2 border-gray-300 rounded-full transition duration-300 
- hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100">
-                                    <div id='signIn' className="relative flex items-center space-x-4 justify-center">
-                                        <img src="https://tailus.io/sources/blocks/social/preview/images/google.svg" class="absolute left-0 w-5" alt="google logo" />
-                                        <span className="block w-max font-semibold tracking-wide text-gray-700 text-sm transition duration-300 group-hover:text-blue-600 sm:text-base">Continue with Google</span>
-                                    </div>
-                                </button>
-
-                                <GoogleLogin
-                                    onSuccess={credentialResponse => {
-                                        handleSuccess(credentialResponse);
-                                    }}
-
-                                    onError={() => {
-                                        console.log('Login Failed');
-                                    }}
-                                />
-
-
+                            <div className="mb-4">
+                                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="w-full px-4 py-3 rounded-lg bg-gray-100 border-2 border-gray-200 focus:outline-none focus:border-blue-500" required />
                             </div>
-
-                            <div className="mt-44 space-y-4 text-gray-600 text-center sm:-mb-8">
-                                {/* <p className="text-xs"> <a href="#" className="underline"></a>  <a href="#" className="underline"></a></p>
-                                <p className="text-xs"> <a href="#" className="underline"></a><a href="#" className="underline"></a> </p> */}
+                            <div className="mb-6">
+                                <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" className="w-full px-4 py-3 rounded-lg bg-gray-100 border-2 border-gray-200 focus:outline-none focus:border-blue-500" required />
                             </div>
+                            <button type="submit" className="w-full px-4 py-3 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition duration-300">Sign up</button>
+                        </form>
+                        <div className="mt-6 text-center">
+                            <p className="text-gray-600">Already have an account? <a href="#" className="text-blue-500 hover:underline">Sign in</a></p>
+                        </div>
+                        <div className="mt-6">
+                            <GoogleLogin
+                                clientId="YOUR_GOOGLE_CLIENT_ID"
+                                onSuccess={handleGoogleLoginSuccess}
+                                onFailure={(err) => console.error('Google login error:', err)}
+                                render={(renderProps) => (
+                                    <button onClick={renderProps.onClick} disabled={renderProps.disabled} className="w-full px-4 py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition duration-300">
+                                        Sign in with Google
+                                    </button>
+                                )}
+                            />
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
-}
+};
+
+export default Signup;

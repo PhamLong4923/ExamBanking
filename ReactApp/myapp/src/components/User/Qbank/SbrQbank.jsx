@@ -1,12 +1,15 @@
 import React from "react";
 import '../Qbank/SbrQbank.css'
 import { NavLink } from "react-router-dom";
-import { setLocalStorageItem } from "../../../services/LocalStorage";
+import { useDispatch, useSelector } from "react-redux";
+import { setBankType } from "../../../redux/action";
 
 export default function SbrQbank() {
+    const dispatch = useDispatch();
 
     const handleSelectBank = (bankType) => {
-        setLocalStorageItem("bankType", bankType);
+
+        dispatch(setBankType(bankType));
     };
 
     return (

@@ -18,16 +18,16 @@ namespace ExamBanking.Controllers
     [Authorize(Roles = "User")]
     public class BankController : ControllerBase
     {
-        private ExamBankingContext eContext = new ExamBankingContext();
+
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
-        private readonly RAccount _rAccount;
+     
     
         public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount)
         {
             _context = context;
             _rRepositories = rRepositories;
-            _rAccount = rAccount;          
+          
         }
 
 

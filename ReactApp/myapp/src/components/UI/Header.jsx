@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import '../UI/UIStyle/Header.css';
-import { getLocalStorageItem } from '../../services/LocalStorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from '../../redux/action';
+import { setBankType } from '../../redux/action';
+import { setBankId } from '../../redux/action';
+import { setRepoId } from '../../redux/action';
+import { jwtDecode } from 'jwt-decode';
+
 
 const Header = React.memo(() => {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [avatar, setAvatar] = useState();
     const [email, setEmail] = useState();
+    const token = useSelector(state => state.token);
     const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        const storedLoginStatus = localStorage.getItem('isLoggedIn');
-        return storedLoginStatus ? JSON.parse(storedLoginStatus) : false;
+
+        return token !== null ? true : false;
     });
+    const dispatch = useDispatch();
 
     const handleAccountClick = () => {
         setDropdownVisible(!isDropdownVisible);
@@ -18,10 +26,12 @@ const Header = React.memo(() => {
 
     const handleLogout = () => {
         setDropdownVisible(!isDropdownVisible);
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userData');
+        dispatch(setToken(null));
+        dispatch(setBankId(null));
+        dispatch(setBankType(null));
+        dispatch(setRepoId(null));
         setIsLoggedIn(false);
-        window.location.href = "/";
+        window.location.href = "/login";
     };
 
     useEffect(() => {
@@ -50,10 +60,13 @@ const Header = React.memo(() => {
 
     // Sử dụng useEffect để theo dõi thay đổi avatar và email
     useEffect(() => {
-        const avatarUrl = getLocalStorageItem('uavate');
-        const email = getLocalStorageItem('uemail');
-        setAvatar(avatarUrl)
-        setEmail(email);
+        // if (isLoggedIn) {
+        //     const decode = jwtDecode(token);
+
+        //     setAvatar(decode.picture)
+        //     setEmail(decode.email);
+        // }
+
     }, []);
 
     return (

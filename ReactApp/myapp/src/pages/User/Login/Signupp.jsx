@@ -1,5 +1,5 @@
 import Body from "../../../components/UI/Body.jsx";
-import { Signup } from "../../../components/User/Signup/signup.jsx";
+import Signup from "../../../components/User/Signup/signup.jsx";
 import Header from "../../../components/UI/Header.jsx";
 import Footer from "../../../components/UI/Footer.jsx";
 

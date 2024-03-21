@@ -408,3 +408,8 @@ D:\hoc\ki_6\v4\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamB
 D:\hoc\ki_6\v4\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.genruntimeconfig.cache
 D:\hoc\ki_6\v4\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\ExamBanking.dll
 D:\hoc\ki_6\v4\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\PHAM LONG\Desktop\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\PHAM LONG\Desktop\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\PHAM LONG\Desktop\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Scrutor.dll
+C:\Users\PHAM LONG\Desktop\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\PHAM LONG\Desktop\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

@@ -3,7 +3,7 @@ import { HiDotsVertical } from 'react-icons/hi';
 import { IoIosArrowForward } from 'react-icons/io';
 import { NavLink } from "react-router-dom";
 import Dropdown from '../../../common/dropdown';
-import { addBank, getBank } from '../../../services/Api';
+import { addBank, delBank, getBank, updateBank } from '../../../services/Api';
 import '../PersonalBank/PBank.css';
 import ToastMessage from '../../Toast/toast';
 import MoonLoader from "react-spinners/MoonLoader";
@@ -12,12 +12,18 @@ import PopupCreateModel from '../../EditPopup/popupcreate';
 import { GoInbox } from "react-icons/go";
 import { FaPlus } from 'react-icons/fa';
 import checkLimit from '../../../share/ultils/checklimit';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBankId } from '../../../redux/action';
 
 const PBank = () => {
     const [isactive, setIsactive] = useState(false);
     const [islimit, setIslimit] = useState(false);
 
-    const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
+    const dispatch = useDispatch();
+
+    const banktype = useSelector(state => state.bankType);
+    const [bankType, setBankType] = useState(banktype || '-1');
     const [editingBankId, setEditingBankId] = useState(null);
     const [isDropdownVisible, setDropdownVisible] = useState();
     const [banks, setBanks] = useState([]);
@@ -33,35 +39,50 @@ const PBank = () => {
             try {
                 const response = await getBank();
                 setBanks(response.data);
-                setIslimit(checkLimit('bank', banks.length))
-                setLoading(false);
+                setIslimit(checkLimit('bank', banks.length));
                 setIsactive(true);
+
+
+                setLoading(false);
+
             } catch (error) {
-                console.error('Error fetching banks:', error);
-                // Handle error here
+                if (error.response && error.response.status === 401) {
+                    setBanks([]);
+                    setLoading(false);
+                    toast.error("Chưa xác thực tài khoản");
+                } else {
+                    toast.error("Lỗi hệ thống");
+                    console.log(error);
+                }
             }
         };
 
         fetchData();
-    }, [bankType]);
+    }, []);
 
     //End Load Bank
 
 
     //Add bank
     const handleAddBank = (value) => {
-        console.log(value);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
-        // setBanks([
-        //     ...banks,
-        //     {
-        //         bankid: newid,
-        //         bankname: value,
+        try {
+            const response = addBank({ Bankname: value }) // call addBank api
 
-        //     },
-        // ]);
-        ToastMessage("Thêm thành công");
+            var newid = response.data;
+            setBanks([
+                ...banks,
+                {
+                    bankid: newid,
+                    bankname: value,
+                },
+            ]);
+            toast.success("Thêm thành công");
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                toast.error("Thực hiện thất bại");
+            }
+        }
+
 
     };
 
@@ -69,13 +90,12 @@ const PBank = () => {
 
     //Del Bank
     const handleDelBank = (bid) => {
-        console.log(bid);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
+        const response = delBank();
+        var bid = response.data;
         setBanks([
             banks.filter(b => b.bankid === bid)
         ]);
-        ToastMessage("Thêm thành công");
+        ToastMessage("Xóa thành công");
 
     };
     //End Del Bank
@@ -91,12 +111,23 @@ const PBank = () => {
 
     //Update Bank
     const handleUpdateBank = (bid, newname) => {
-        console.log(bid);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
-        setBanks((prev) =>
-            prev.map((bank) => bank.bankid === bid ? { ...bank, bankname: newname } : bank));
-        ToastMessage("Thêm thành công");
+        try {
+            const data = { Bankid: bid, Bankname: newname };
+
+            const response = updateBank(data);
+
+            if (response.status === 200) {
+                setBanks(prev =>
+                    prev.map(bank => bank.bankid === bid ? { ...bank, bankname: newname } : bank)
+                );
+                toast.success("Chỉnh sửa thành công");
+            } else {
+                toast.error("Có lỗi xảy ra khi cập nhật ngân hàng");
+            }
+        } catch (error) {
+            console.error("Đã xảy ra lỗi:", error);
+            toast.error("Lỗi hệ thống");
+        }
 
     };
     //End Update Bank
@@ -106,7 +137,7 @@ const PBank = () => {
     //End Popup model function
 
     const handleSeclectBank = (bankId) => {
-        setLocalStorageItem("bankId", bankId);
+        dispatch(setBankId(bankId));
     }
 
     return (

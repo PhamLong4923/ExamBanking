@@ -56,7 +56,7 @@ namespace ExamBanking.Controllers
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
 
-                return Ok(new { message = "Data saved successfully" } + token);
+                return Ok(token);
             }
 
             return BadRequest(new { message = "Invalid JWT format" });

@@ -48,9 +48,9 @@ namespace ExamBanking.Utils
         public string CreateJWTToken(Account user)
         {
             List<Claim> claims = new List<Claim> {
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.Role, "User")
-        };
+                new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", user.Email),
+                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User")
+            };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSetting:Token").Value!));
@@ -58,10 +58,11 @@ namespace ExamBanking.Utils
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds
-            );
+
+                    claims: claims,
+                    expires: DateTime.Now.AddMinutes(30),
+                    signingCredentials: creds
+                );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 

@@ -1,17 +1,47 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
+import axios from 'axios';
+import { setLocalStorageItem } from '../../../services/LocalStorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken } from '../../../redux/action.jsx';
+import { useGoogle } from '../../../services/Api.jsx';
 
-export const Login = () => {
-    const responseGoogle = async (credentialResponse) => {
+
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const token = useSelector(state => state.token);
+    const dispatch = useDispatch();
+
+    const updateToken = (newToken) => {
+        dispatch(setToken(newToken));
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
-            const decoded = jwtDecode(credentialResponse?.credential);
+            // Gửi yêu cầu đăng nhập lên server
+            const response = await axios.post('https://localhost:7064/api/login', {
+                email,
+                password
+            });
 
-            console.log(decoded);
+            // Lưu token vào localStorage
+            updateToken(response.data);
 
+            // Đăng nhập thành công, chuyển hướng đến trang chính
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Đăng nhập thất bại:', error);
+            // Xử lý lỗi đăng nhập, hiển thị thông báo cho người dùng
+        }
+    };
+
+    const HandleGoogleLoginSuccess = async (credentialResponse) => {
+
+        try {
             // Gửi JWT lên server để lưu vào cơ sở dữ liệu
-            const response = await axios.post('https://localhost:7064/api/GoogleAuth/save-jwt-data', {
+            const response = await useGoogle({
                 jwt: credentialResponse?.credential,
             }, {
                 headers: {
@@ -19,58 +49,48 @@ export const Login = () => {
                 },
             });
 
-
+            // Lưu token vào localStorage
             console.log(response.data);
+            dispatch(setToken(response.data));
+
+            // Đăng nhập thành công, chuyển hướng đến trang chính
+            // window.location.href = '/home';
         } catch (error) {
-            console.error('Error processing JWT:', error);
+            console.error('Lỗi khi xử lý JWT:', error);
+            // Xử lý lỗi đăng nhập, hiển thị thông báo cho người dùng
         }
     };
+
     return (
-        <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
-            </div>
-
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
-                    <div>
-                        <label for="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-                        <div class="mt-2">
-                            <input id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                        </div>
+        <div className="min-h-screen flex justify-center items-center bg-blue-100">
+            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">Đăng nhập</h2>
+                <form onSubmit={handleLogin}>
+                    <div className="mb-4">
+                        <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+                        <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
                     </div>
-
-                    <div>
-                        <div class="flex items-center justify-between">
-                            <label for="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
-                            <div class="text-sm">
-                                <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Quên mật khẩu?</a>
-                            </div>
-                        </div>
-                        <div className="mt-2">
-                            <input id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                        </div>
+                    <div className="mb-6">
+                        <label htmlFor="password" className="block text-sm font-semibold text-gray-700">Mật khẩu</label>
+                        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
                     </div>
-
-                    <div>
-                        <button type="submit" className="flex w-full justify-center ml-0 mt-4 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Đăng nhập</button>
-                    </div>
+                    <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">Đăng nhập</button>
                 </form>
-                <p class="mt-10 ml-0 text-center text-sm text-gray-500 ">
-                    or
-
-                </p>
+                <div className="mt-6">
+                    <p className="text-center text-gray-600">Hoặc đăng nhập bằng:</p>
+                    <div className="mt-2">
+                        <GoogleLogin
+                            onSuccess={HandleGoogleLoginSuccess}
+                            onError={() => console.log('Đăng nhập bằng Google thất bại')}
+                            render={({ onClick }) => (
+                                <button onClick={onClick} className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition duration-300">Google</button>
+                            )}
+                        />
+                    </div>
+                </div>
             </div>
-
-            <span style={{ display: 'flex', justifyContent: 'center' }}>
-                <GoogleLogin
-                    onSuccess={responseGoogle}
-                    onError={() => {
-                        console.log('Login Failed');
-                    }}
-                />
-            </span>
         </div>
     );
-}
+};
+
+export default Login;
