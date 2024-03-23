@@ -41,10 +41,10 @@ namespace ExamBanking.Controllers
             return Ok(request.Repoid);
         }
         [HttpDelete("DelRepo")]
-        public IActionResult DeleteRepo(DeleteRepoRequest request)
+        public IActionResult DeleteRepo(int Repoid)
         {
-            _rerepo.deleteRepo(request);
-            return Ok(request.Repoid);
+            var repo = _rerepo.deleteRepo(Repoid);
+            return Ok(repo);
         }
     }
 }

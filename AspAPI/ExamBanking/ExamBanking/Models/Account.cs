@@ -24,6 +24,7 @@ namespace ExamBanking.Models
         public string? PasswordResetToken { get; set; }
         public DateTime? ResetTokenExpires { get; set; }
         public int? Roleid { get; set; }
+        public int? Bankmode { get; set; }
 
         public virtual Role? Role { get; set; }
         public virtual ICollection<Access> AccessFroms { get; set; }
@@ -31,10 +32,5 @@ namespace ExamBanking.Models
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Repo> Repos { get; set; }
-
-        public override string? ToString()
-        {
-            return $"Account ID: {Accid}, Email: {Email}, Name: {Accname}, Role: {Roleid}";
-        }
     }
 }

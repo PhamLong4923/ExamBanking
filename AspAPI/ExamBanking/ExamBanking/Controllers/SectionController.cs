@@ -36,10 +36,10 @@ namespace ExamBanking.Controllers
             return Ok(section.Secid);
         }
         [HttpDelete("DeleteSection")]
-        public IActionResult DeleteSection(DeleteSectionRequest section)
+        public IActionResult DeleteSection(int Secid)
         {
-            _rsection.DeleteSection(section);
-            return Ok(section.Secid);
+            var section = _rsection.DeleteSection(Secid);
+            return Ok(section);
         }
     }
 }

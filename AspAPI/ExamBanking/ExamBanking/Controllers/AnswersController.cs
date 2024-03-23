@@ -61,9 +61,9 @@ namespace ExamBanking.Controllers
 
         // delete answer using ranswer
         [HttpDelete("DeleteAnswer")]
-        public async Task<ActionResult<Answer>> DeleteAnswer(DeleteAnswerRequest request)
+        public async Task<ActionResult<Answer>> DeleteAnswer(int answerid)
         {
-            var answer = await _ranswer.DeleteAnswer(request);
+            var answer = await _ranswer.DeleteAnswer(answerid);
             if (answer == null)
             {
                 return NotFound();

@@ -31,8 +31,8 @@ namespace ExamBanking.Controllers
         [HttpPost("CreateQuestion")]
         public IActionResult CreateQuestion(CreateQuestionRequest question)
         {
-            _rquestion.CreateQuestion(question);
-            return Ok(question.Quesid);
+            var questionid = _rquestion.CreateQuestion(question);
+            return Ok(questionid);
         }
         
         [HttpPut("EditQuestion")]
@@ -43,11 +43,11 @@ namespace ExamBanking.Controllers
         }
         
         [HttpDelete("DeleteQuestion")]
-        public IActionResult DeleteQuestion(DeleteQuestionRequest question)
+        public IActionResult DeleteQuestion(int Quesid)
         {
            
-            _rquestion.DeleteQuestion(question);
-            return Ok(question.Quesid);
+            var question = _rquestion.DeleteQuestion(Quesid);
+            return Ok(question);
         }
 
     }

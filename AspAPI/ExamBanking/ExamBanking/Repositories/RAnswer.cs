@@ -22,9 +22,9 @@ namespace ExamBanking.Repositories
 
             return list;
         }
-        public async Task<Answer> DeleteAnswer(DeleteAnswerRequest request)
+        public async Task<Answer> DeleteAnswer(int Answerid)
         {
-            var answer = await _context.Answers.FindAsync(request.Answerid);
+            var answer = await _context.Answers.FindAsync(Answerid);
             if (answer == null)
             {
                 return null;

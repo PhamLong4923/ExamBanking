@@ -40,18 +40,16 @@ namespace ExamBanking.Repositories
             _context.SaveChanges();
         }
 
-        public void DeleteSection(DeleteSectionRequest request)
+        public int DeleteSection(int Secid)
         {
-            var section = _context.Sections.Find(request.Secid);
+            var section = _context.Sections.Find(Secid);
             
-            if (section == null)
-            {
-                return;
-            }
-            _rQuestion.DeleteAllQuestion(request.Secid);
-            _rAnswer.DeleteAllAnswer(request.Secid);
+            
+            _rQuestion.DeleteAllQuestion(Secid);
+            _rAnswer.DeleteAllAnswer(Secid);
             _context.Sections.Remove(section);
             _context.SaveChanges();
+            return Secid;
         }
         public void DeleteAllSection(int repoid)
         {
