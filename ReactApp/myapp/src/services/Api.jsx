@@ -34,7 +34,7 @@ export const addQuestion = () => Http.get("");
 
 //delete-api
 
-export const delBank = () => Http.get("");
+export const delBank = (bankid) => Http.delete(`/Bank/DeleteBank?bankid=${bankid}`);
 
 export const delSection = () => Http.get("");
 
@@ -44,7 +44,7 @@ export const delQuestions = () => Http.get("");
 
 //update-api
 
-export const updateBank = (data) => Http.get("/Bank/EditBank", data);
+export const updateBank = (bankid, newname) => Http.put(`/Bank/EditBank?bankid=${bankid}&newname=${newname}`);
 
 export const updateSection = () => Http.get("");
 

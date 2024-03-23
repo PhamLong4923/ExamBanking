@@ -76,36 +76,36 @@ namespace ExamBanking.Controllers
             return Ok(bank.Bankid);
         }
         [HttpPut("EditBank")]
-        public async Task<IActionResult> EditBank(RenameBank request)
+        public async Task<IActionResult> EditBank(int bankid, string newname)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
 
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
-            var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
+            var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
             if (edit == null)
             {
                 return BadRequest();
             }
-            edit.Bankname = request.Bankname;
+            edit.Bankname = newname;
             _context.SaveChangesAsync();
             return Ok(edit.Bankid);
         }
         [HttpDelete("DeleteBank")]
-        public async Task<IActionResult> DeleteBank(DeleteBankRequest request)
+        public async Task<IActionResult> DeleteBank(int bankid)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
 
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
-            var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
+            var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
             if (remove == null)
             {
                 return BadRequest();
             }
-            _rRepositories.DeleteAllRepo(request.Bankid);
+            _rRepositories.DeleteAllRepo(bankid);
             _context.Banks.Remove(remove);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return Ok(remove.Bankid);
         }
 

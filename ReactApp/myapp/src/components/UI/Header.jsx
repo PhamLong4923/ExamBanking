@@ -6,18 +6,14 @@ import { setToken } from '../../redux/action';
 import { setBankType } from '../../redux/action';
 import { setBankId } from '../../redux/action';
 import { setRepoId } from '../../redux/action';
-import { jwtDecode } from 'jwt-decode';
 
 
-const Header = React.memo(() => {
+const Header = (() => {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [avatar, setAvatar] = useState();
     const [email, setEmail] = useState();
     const token = useSelector(state => state.token);
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-
-        return token !== null ? true : false;
-    });
+    const isLoggedIn = !!token;
     const dispatch = useDispatch();
 
     const handleAccountClick = () => {
@@ -30,7 +26,6 @@ const Header = React.memo(() => {
         dispatch(setBankId(null));
         dispatch(setBankType(null));
         dispatch(setRepoId(null));
-        setIsLoggedIn(false);
         window.location.href = "/login";
     };
 

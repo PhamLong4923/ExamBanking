@@ -31,8 +31,8 @@ namespace ExamBanking.Controllers
         [HttpPost("CreateQuestion")]
         public IActionResult CreateQuestion(CreateQuestionRequest question)
         {
-            _rquestion.CreateQuestion(question);
-            return Ok(question.Quesid);
+            int qid = _rquestion.CreateQuestion(question);
+            return Ok(qid);
         }
         
         [HttpPut("EditQuestion")]

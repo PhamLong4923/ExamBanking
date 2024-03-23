@@ -25,7 +25,7 @@ const PBank = () => {
     const banktype = useSelector(state => state.bankType);
     const [bankType, setBankType] = useState(banktype || '-1');
     const [editingBankId, setEditingBankId] = useState(null);
-    const [isDropdownVisible, setDropdownVisible] = useState();
+    const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [banks, setBanks] = useState([]);
     const [loading, setLoading] = useState(true);
     const handleMenuClick = (repoId) => {
@@ -64,9 +64,9 @@ const PBank = () => {
 
 
     //Add bank
-    const handleAddBank = (value) => {
+    const handleAddBank = async (value) => {
         try {
-            const response = addBank({ Bankname: value }) // call addBank api
+            const response = await addBank({ Bankname: value }) // call addBank api
 
             var newid = response.data;
             setBanks([
@@ -89,15 +89,20 @@ const PBank = () => {
     //End Add Bank
 
     //Del Bank
-    const handleDelBank = (bid) => {
-        const response = delBank();
-        var bid = response.data;
-        setBanks([
-            banks.filter(b => b.bankid === bid)
-        ]);
-        ToastMessage("Xóa thành công");
-
+    const handleDelBank = async (bid) => {
+        try {
+            const response = await delBank(bid);
+            var bid = response.data;
+            setBanks([
+                banks.filter(b => b.bankid === bid)
+            ]);
+            toast.success("Xóa thành công");
+        } catch (error) {
+            toast.error("Xóa không thành công");
+            console.log(error);
+        }
     };
+
     //End Del Bank
 
     const handleEditTitle = (repoId, newTitle) => {
@@ -110,11 +115,10 @@ const PBank = () => {
 
 
     //Update Bank
-    const handleUpdateBank = (bid, newname) => {
+    const handleUpdateBank = async (bid, newname) => {
         try {
-            const data = { Bankid: bid, Bankname: newname };
 
-            const response = updateBank(data);
+            const response = await updateBank(bid, newname);
 
             if (response.status === 200) {
                 setBanks(prev =>
@@ -142,6 +146,7 @@ const PBank = () => {
 
     return (
         <>
+            {/*Thêm thẻ loader (spinner) sẽ bắt đầu khi 1 api được gọi và kết thúc khi api đó trả về response ( cho các phần CUD)*/}
             {bankType === '0' ? (
                 <div className='wrapper'>
                     <div className="pathlink">
@@ -168,7 +173,7 @@ const PBank = () => {
                                 </div>
                             ) : (
                                 banks.map(bank => (
-                                    <NavLink key={bank.bankid} to={`/repo`} className="pitem titem" onClick={() => handleSeclectBank(bank.bankid)}>
+                                    <NavLink key={bank.id} to={`/repo`} className="pitem titem">
                                         <span className="td">{bank.bankname}</span>
                                     </NavLink>
                                 ))
@@ -191,6 +196,7 @@ const PBank = () => {
                     <div className="pitem-containers">
                         <div className="pitem">
                             <span className="thead">Tên</span>
+
                         </div>
                         {loading ? (
                             <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
@@ -201,13 +207,18 @@ const PBank = () => {
                                 <div style={{ marginTop: '30px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}><GoInbox /><span>Không có dữ liệu</span></div>
                             ) : (
                                 banks.map(bank => (
-                                    <NavLink key={bank.bankid} to={`/repo`} className="pitem titem" onClick={() => handleSeclectBank(bank.bankid)}>
-                                        <span className="td">{bank.bankname}</span>
-                                        <NavLink as="span" className="ta" onClick={() => handleMenuClick(bank.bankid)}>
-                                            <i><HiDotsVertical /></i>
+                                    <>
+                                        <NavLink key={bank.id} to={`/repo`} className="pitem titem" onClick={() => handleSeclectBank(bank.id)}>
+                                            <span className="td">{bank.name}</span>
+                                            <NavLink as="span" className="ta" onClick={() => handleMenuClick(bank.id)}>
+                                                <i><HiDotsVertical /></i>
+                                            </NavLink>
                                         </NavLink>
-                                        <Dropdown id={bank.bankid} visible={isDropdownVisible === bank.bankid} onClose={() => setDropdownVisible(null)} />
-                                    </NavLink>
+                                        <Dropdown id={bank.id} visible={isDropdownVisible === bank.id} onClose={() => setDropdownVisible(null)} onDelete={() => handleDelBank(bank.id)} onEdit={handleUpdateBank(bank.id,)} />
+
+                                    </>
+
+
                                 ))
                             )
                         )}

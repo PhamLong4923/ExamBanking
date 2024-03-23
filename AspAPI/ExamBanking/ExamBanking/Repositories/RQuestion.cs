@@ -20,7 +20,6 @@ namespace ExamBanking.Repositories
 
             Question question = new Question
             {
-                Quesid = request.Quesid,
                 Quescontent = request.Quescontent,
                 Type = request.Type,
                 Solution = request.Solution,
