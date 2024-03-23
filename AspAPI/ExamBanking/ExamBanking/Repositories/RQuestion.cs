@@ -46,15 +46,16 @@ namespace ExamBanking.Repositories
         }
         //delete question and all answer which have quesid
         
-        public void DeleteQuestion(DeleteQuestionRequest request)
+        public int DeleteQuestion(int Quesid)
         {
-            var question = _context.Questions.Find(request.Quesid);
+            var question = _context.Questions.Find(Quesid);
             if (question != null)
             {
-                _ranswer.DeleteAllAnswer(request.Quesid);
+                _ranswer.DeleteAllAnswer(Quesid);
                 _context.Questions.Remove(question);
                 _context.SaveChanges();
             }
+            return Quesid;
         }
         public void DeleteAllQuestion(int Secid)
         {

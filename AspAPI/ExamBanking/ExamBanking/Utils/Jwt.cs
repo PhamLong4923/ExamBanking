@@ -49,7 +49,8 @@ namespace ExamBanking.Utils
         {
             List<Claim> claims = new List<Claim> {
                 new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", user.Email),
-                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User")
+                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User"),
+                new Claim("bankmode", user.Bankmode.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
