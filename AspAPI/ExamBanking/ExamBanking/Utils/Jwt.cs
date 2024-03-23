@@ -48,8 +48,9 @@ namespace ExamBanking.Utils
         public string CreateJWTToken(Account user)
         {
             List<Claim> claims = new List<Claim> {
-        new Claim(ClaimTypes.Email, user.Email),
-        new Claim(ClaimTypes.Role, "User")
+             new Claim(ClaimTypes.Email, user.Email),
+             new Claim(ClaimTypes.Role, "User"),
+             new Claim("bankmode", user.Bankmode.ToString())
         };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(

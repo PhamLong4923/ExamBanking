@@ -38,16 +38,14 @@ namespace ExamBanking.Repositories
             repo.Reponame = request.Reponame;
             _context.SaveChanges();
         }
-        public void deleteRepo(DeleteRepoRequest request)
+        public int deleteRepo(int Repoid)
         {
-            var repo = _context.Repos.Find(request.Repoid);
-            if (repo == null)
-            {
-                return;
-            }
-            _rSection.DeleteAllSection(request.Repoid);
+            var repo = _context.Repos.Find(Repoid);
+            
+            _rSection.DeleteAllSection(Repoid);
             _context.Repos.Remove(repo);
             _context.SaveChanges();
+            return Repoid;
         }
         public void DeleteAllRepo(int bankid)
         {

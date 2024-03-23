@@ -60,9 +60,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AnswerDto.DeleteAnswerRequest",
-        "IsRequired": true
+        "Name": "answerid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -208,9 +208,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.BankDto.DeleteBankRequest",
-        "IsRequired": true
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -282,9 +282,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "question",
-        "Type": "ExamBanking.DTO.QuestionDto.DeleteQuestionRequest",
-        "IsRequired": true
+        "Name": "Quesid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

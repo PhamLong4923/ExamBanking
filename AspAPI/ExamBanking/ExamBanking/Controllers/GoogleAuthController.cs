@@ -50,13 +50,13 @@ namespace ExamBanking.Controllers
                 var checkExist = _context.Accounts.FirstOrDefault(a => a.Email == account.Email);
                 if (checkExist != null)
                 {
-                    return BadRequest("already exist");
+                    return BadRequest();
                 }
                 var token = _jwt.CreateJWTToken(account);
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
 
-                return Ok(new { message = "Data saved successfully" } + token);
+                return Ok(token);
             }
 
             return BadRequest(new { message = "Invalid JWT format" });

@@ -32,7 +32,7 @@ namespace ExamBanking.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server = exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@");
+                optionsBuilder.UseSqlServer("server =exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@;");
             }
         }
 
@@ -94,6 +94,10 @@ namespace ExamBanking.Models
                     .HasColumnType("decimal(38, 0)")
                     .HasColumnName("accid");
 
+                entity.Property(e => e.Bankmode)
+                    .HasColumnName("bankmode")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.Datejoin).HasColumnType("datetime");
 
                 entity.Property(e => e.ResetTokenExpires).HasColumnType("datetime");
@@ -141,6 +145,10 @@ namespace ExamBanking.Models
                 entity.Property(e => e.Accid)
                     .HasColumnType("decimal(38, 0)")
                     .HasColumnName("accid");
+
+                entity.Property(e => e.Bankmode)
+                    .HasColumnName("bankmode")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Bankname)
                     .HasMaxLength(255)

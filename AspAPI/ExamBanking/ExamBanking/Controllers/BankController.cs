@@ -92,18 +92,18 @@ namespace ExamBanking.Controllers
             return Ok(edit.Bankid);
         }
         [HttpDelete("DeleteBank")]
-        public async Task<IActionResult> DeleteBank(DeleteBankRequest request)
+        public async Task<IActionResult> DeleteBank(int bankid)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
 
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
-            var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == request.Bankid);
+            var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
             if (remove == null)
             {
                 return BadRequest();
             }
-            _rRepositories.DeleteAllRepo(request.Bankid);
+            _rRepositories.DeleteAllRepo(bankid);
             _context.Banks.Remove(remove);
             _context.SaveChangesAsync();
             return Ok(remove.Bankid);
