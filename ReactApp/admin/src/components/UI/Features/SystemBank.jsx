@@ -12,11 +12,11 @@ const SystemBank = () => {
     const [editingKey, setEditingKey] = useState('');
     const [isToastOpen, setIsToastOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('SystemBank');
-    const [idNewPage, setIdNewPage] = useState('');
+    const [idCurrentPage, setIdCurrentPage] = useState('');
 
     const changePage = (pageName, id) => {
         setCurrentPage(pageName);
-        setIdNewPage(id);
+        setIdCurrentPage(id);
     };
 
     const [dataSource, setDataSource] = useState([

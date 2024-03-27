@@ -2,6 +2,8 @@ import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import AdminSection from './AdminSection';
+import SystemBank from './SystemBank';
 
 const { Option } = Select;
 
@@ -10,6 +12,14 @@ const AdminRepository = () => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [isToastOpen, setIsToastOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState('AdminRepository');
+    const [idCurrentPage, setIdCurrentPage] = useState('');
+
+    const changePage = (pageName, id) => {
+        setCurrentPage(pageName);
+        setIdCurrentPage(id);
+    };
+
     const [dataSource, setDataSource] = useState([
         {
             key: '1',
@@ -30,7 +40,7 @@ const AdminRepository = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <a href={`/bank/${record.key}`}>{text}</a>,
+            render: (text, record) => <a onClick={() => changePage('AdminSection', record)}>{text}</a>,
         },
         {
             title: 'Description',
@@ -143,35 +153,42 @@ const AdminRepository = () => {
 
     return (
         <div>
-            <Button type="primary" onClick={showModal}>
-                Add repository
-            </Button>
-            <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
+            {currentPage === 'AdminRepository' &&
+                <div>
+                    <a onClick={() => changePage('SystemBank', null)}>Back</a>
+                    <Button type="primary" onClick={showModal}>
+                        Add repository
+                    </Button>
+                    <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
-            <Modal
-                title="Add repository"
-                open={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Form
-                    form={form}
-                    layout="vertical"
-                    initialValues={{
-                        // description: 'abc',
-                    }}
-                >
-                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Description" name="description">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Date" name="date">
-                        <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                    <Modal
+                        title="Add repository"
+                        open={visible}
+                        onOk={handleOk}
+                        onCancel={handleCancel}
+                    >
+                        <Form
+                            form={form}
+                            layout="vertical"
+                            initialValues={{
+                                // description: 'abc',
+                            }}
+                        >
+                            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Description" name="description">
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Date" name="date">
+                                <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
+                            </Form.Item>
+                        </Form>
+                    </Modal>
+                </div>
+            }
+            {currentPage === 'SystemBank' && <SystemBank />}
+            {currentPage === 'AdminSection' && <AdminSection />}
         </div>
     );
 };
