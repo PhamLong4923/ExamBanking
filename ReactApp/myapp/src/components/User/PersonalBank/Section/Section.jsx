@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
 import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
-import { TiWarningOutline } from "react-icons/ti";
+import { GoInbox } from "react-icons/go";
 import { IoIosArrowForward } from 'react-icons/io';
+import { TiWarningOutline } from "react-icons/ti";
 import { NavLink } from 'react-router-dom';
+import { MoonLoader } from 'react-spinners';
+import HashLoader from "react-spinners/HashLoader";
+import { toast } from 'react-toastify';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
+import ToastMessage from '../../../Toast/toast';
 import HashLoader from "react-spinners/HashLoader";
 import { MoonLoader } from 'react-spinners';
+import { getLocalStorageItem } from '../../../../services/LocalStorage';
 import { GoInbox } from "react-icons/go";
-import { addQuestion, addSection, delSection, getQuestions, getSection, updateSection } from '../../../../services/Api';
+import { getQuestions, getSection } from '../../../../services/Api';
 import PopupCreateModel from '../../../EditPopup/popupcreate';
 import checkLimit from '../../../../share/ultils/checklimit';
 import { toast } from 'react-toastify';
@@ -301,6 +307,8 @@ const Section = (props) => {
 
   const handleSaveEdit = () => {
     setEditingQuestionId(null);
+    setModalIsOpen(false);
+    setIsAddQuestion(false);
   };
 
 
