@@ -20,7 +20,6 @@ namespace ExamBanking.Repositories
             var repo = new Repo
             {
                 Bankid = request.Bankid,
-                Secondeditor = request.Sectionid,
                 Reponame = request.Repocontent,
                 
             };
@@ -28,14 +27,14 @@ namespace ExamBanking.Repositories
             _context.SaveChanges();
             return repo.Repoid;
         }
-        public void editRepo(EditRepoRequest request)
+        public void editRepo(int repoid, string newname)
         {
-            var repo = _context.Repos.Find(request.Repoid);
+            var repo = _context.Repos.Find(repoid);
             if (repo == null)
             {
                 return;
             }
-            repo.Reponame = request.Reponame;
+            repo.Reponame = newname;
             _context.SaveChanges();
         }
         public int deleteRepo(int Repoid)

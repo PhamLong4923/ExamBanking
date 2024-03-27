@@ -3,23 +3,24 @@ import { FaEdit, FaRegFileExcel, FaRegFileWord } from "react-icons/fa";
 import { FaPlus, FaRegTrashCan, FaXmark } from "react-icons/fa6";
 import { TiWarningOutline } from "react-icons/ti";
 import { IoIosArrowForward } from 'react-icons/io';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import ImportModal from '../../../../common/importModal';
 import Question from '../../../../common/question';
 import '../Section/Section.css';
-import ToastMessage from '../../../Toast/toast';
 import HashLoader from "react-spinners/HashLoader";
 import { MoonLoader } from 'react-spinners';
-import { getLocalStorageItem } from '../../../../services/LocalStorage';
 import { GoInbox } from "react-icons/go";
-import { getQuestions, getSection } from '../../../../services/Api';
+import { addQuestion, addSection, delSection, getQuestions, getSection, updateSection } from '../../../../services/Api';
 import PopupCreateModel from '../../../EditPopup/popupcreate';
 import checkLimit from '../../../../share/ultils/checklimit';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { IoClose } from "react-icons/io5";
 
 const Section = (props) => {
-  const [bankType, setBankType] = useState(getLocalStorageItem('bankType') || '-1');
-  const repoid = getLocalStorageItem('repoid') || -1;
+  const [openconfirm, setOpenConfirm] = useState(false);
+  const [bankType, setBankType] = useState(useSelector(state => state.bankType));
+  const repoid = useSelector(state => state.repoId);
 
   const [loading, setLoading] = useState(true);
   const [qloading, setQloading] = useState(true);
@@ -41,6 +42,7 @@ const Section = (props) => {
   const [isAddQuestion, setIsAddQuestion] = useState(false);
 
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+
   const [questions, setQuestions] = useState([
     // {
     //   id: 1,
@@ -58,15 +60,32 @@ const Section = (props) => {
 
   ]);
 
+  const [intitle, setIntitle] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const handleSuccess = (itemid, value) => {
+    handleUpdateSecion(itemid, value);
+    setOpen(false);
+  }
+
+
+  const handleOpen = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpenConfirm(false);
+  }
+
   //Section handle
   //load section
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getSection({ repoid });
+        const response = await getSection(repoid);
         setSection(response.data);
         if (section.length !== 0) {
-          setSecid(section[0].id)
+          setSecid(section[0].secid);
         } else {
           setSecid(-1);
         }
@@ -82,55 +101,67 @@ const Section = (props) => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setIslimit(checkLimit('sec', section.length));
+  }, [section]);
   //end load section
   //add section
-  const handleAddSecion = (value) => {
-    console.log(value);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
-        // setBanks([
-        //     ...banks,
-        //     {
-        //         bankid: newid,
-        //         bankname: value,
-
-        //     },
-        // ]);
-        toast.success("Thêm thành công");
+  const handleAddSecion = async (value) => {
+    try {
+      console.log(repoid);
+      const response = await addSection({ secname: value, repoid: repoid });
+      var newid = response.data;
+      setSection([
+        ...section,
+        {
+          secid: newid,
+          secname: value,
+        },
+      ]);
+      toast.success("Thêm thành công");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error("Thực hiện thất bại");
+      }
+    }
   }
   //end add section
 
   //del section
-  const handleDelSecion = (value) => {
-    console.log(value);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
-        // setBanks([
-        //     ...banks,
-        //     {
-        //         bankid: newid,
-        //         bankname: value,
-
-        //     },
-        // ]);
-        
+  const handleDelSecion = async (secid) => {
+    try {
+      const response = await delSection(secid);
+      setOpenConfirm(false);
+      var dsid = response.data;
+      const updatedSec = section.filter(s => s.secid !== dsid);
+      setSection(updatedSec);
+      toast.success("Xóa thành công");
+    } catch (error) {
+      toast.error("Xóa không thành công");
+      console.log(error);
+    }
   }
   //end del section
 
   //edit section
-  const handleEditSecion = (value) => {
-    console.log(value);
-        // const response = addBank({ Bankname: value }) // call addBank api
-        // var newid = response.data;
-        // setBanks([
-        //     ...banks,
-        //     {
-        //         bankid: newid,
-        //         bankname: value,
+  const handleUpdateSecion = async (secid, newname) => {
+    try {
 
-        //     },
-        // ]);
-        toast.success("Sửa thành công");
+      const response = await updateSection(secid, newname);
+
+      if (response.data === secid) {
+        setSection(prev =>
+          prev.map(section => section.secid === secid ? { ...section, secname: newname } : section)
+        );
+        toast.success("Chỉnh sửa thành công");
+      } else {
+        toast.error("Có lỗi xảy ra khi cập nhật ngân hàng");
+      }
+    } catch (error) {
+      console.error("Đã xảy ra lỗi:", error);
+      toast.error("Lỗi hệ thống");
+    }
   }
   //end edit section
 
@@ -140,7 +171,7 @@ const Section = (props) => {
   }
 
   const handleSelectSection = (secid) => {
-    // useState, set selectSection
+    setSecid(secid);
   }
   //End section tool
   //End Section handle
@@ -220,11 +251,11 @@ const Section = (props) => {
     }
   };
 
-  const handleAddQuestion = () => {
+  const handleAddQuestion = async () => {
     if (isqueslimit) {
       toast.error("Đã đạt giới hạn");
     } else {
-      const newId = (questions.length + 1).toString();
+      const newId = await addQuestion();
       setQuestions([
         ...questions,
         {
@@ -593,9 +624,49 @@ const Section = (props) => {
                 (<><span style={{ textAlign: 'center', width: '100%', fontWeight: '600' }}>Bạn không có quyền chỉnh sửa nội dung này</span></>) :
                 (
                   <>
-                    <PopupCreateModel isactive={isactive} islimit={islimit} title={'Thêm bài'} buttonstyle={<span className='tool-item'><FaPlus></FaPlus></span>}></PopupCreateModel>
-                    <span className='tool-item'><FaEdit></FaEdit></span>
-                    <span className='tool-item' onClick={deleteQuestions}><FaRegTrashCan></FaRegTrashCan></span>
+                    <PopupCreateModel isactive={isactive} islimit={islimit} title={'Thêm bài'} handlesuccess={handleAddSecion} buttonstyle={<span className='tool-item'><FaPlus></FaPlus></span>}></PopupCreateModel>
+                    <span className='tool-item' onClick={() => handleOpen()}><FaEdit></FaEdit></span>
+                    {open && (
+                      <div className="popup-model">
+                        <div className="popup-container">
+
+                          <div className="popup-title">
+                            <span className="title">Chỉnh sửa tên hiển thị</span>
+                            <div className="popup-close" onClick={() => setOpen(false)}><IoClose /></div>
+                          </div>
+
+                          <div className="popup-edit">
+                            <span className="popup-edit-title"><span style={{ color: "red" }}>*</span>Tên hiển thị</span>
+                            <input type="text" className="popup-edit-input" required onChange={(e) => setIntitle(e.target.value)} />
+                          </div>
+                          <div className="popup-finish">
+                            <div className="popup-cancel" onClick={() => handleClose()}>Hủy</div>
+                            {
+                              intitle.length !== 0
+                                ? (<div className="popup-success" onClick={() => handleSuccess(secid, intitle)}>Thêm</div>)
+                                : (<div className="popup-success" style={{ backgroundColor: 'rgb(156, 161, 165)' }}>Thêm</div>)
+                            }
+
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <span className='tool-item' onClick={() => setOpenConfirm(true)}><FaRegTrashCan></FaRegTrashCan></span>
+                    {
+                      openconfirm &&
+                      <div className="fixed z-9 inset-0 flex items-center justify-center">
+                        <div className="absolute rounded-lg p-8 border border-gray-300 shadow-md" style={{ backgroundColor: '#f3f4f6', backdropFilter: 'blur(4px)' }}>
+                          <p>Bạn có muốn tiếp tục ? Tất cả dữ liệu liên quan sẽ bị xóa !</p>
+                          <div className="mt-4 flex justify-center">
+                            <button className="mr-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
+                              handleDelSecion(secid);
+                            }}>Có</button>
+                            <button className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400" onClick={() => handleClose()}>Không</button>
+                          </div>
+                        </div>
+                      </div>
+                    }
                   </>
                 )}
 
@@ -614,8 +685,8 @@ const Section = (props) => {
                   </div>
                 ) : (
                   section.map((sec) => (
-                    <div key={sec.sectionId} className={`sectionitem ${secid === sec.sectionId ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.sectionId)}>
-                      {sec.secTitle}
+                    <div key={sec.secid} className={`sectionitem ${secid === sec.secid ? 'selected' : ''}`} onClick={() => handleSelectSection(sec.secid)}>
+                      {sec.secname}
                     </div>
                   ))
                 )

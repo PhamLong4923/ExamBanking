@@ -5,9 +5,7 @@ import { NavLink } from "react-router-dom";
 import Dropdown from '../../../common/dropdown';
 import { addBank, delBank, getBank, updateBank } from '../../../services/Api';
 import '../PersonalBank/PBank.css';
-import ToastMessage from '../../Toast/toast';
 import MoonLoader from "react-spinners/MoonLoader";
-import { getLocalStorageItem, setLocalStorageItem } from '../../../services/LocalStorage';
 import PopupCreateModel from '../../EditPopup/popupcreate';
 import { GoInbox } from "react-icons/go";
 import { FaPlus } from 'react-icons/fa';
@@ -39,7 +37,7 @@ const PBank = () => {
             try {
                 const response = await getBank();
                 setBanks(response.data);
-                setIslimit(checkLimit('bank', banks.length));
+                setIslimit(checkLimit('bank', response.data.length));
                 setIsactive(true);
 
 
@@ -60,6 +58,13 @@ const PBank = () => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        setIslimit(checkLimit('bank', banks.length));
+    }, [banks]);
+
+
+
+
     //End Load Bank
 
 
@@ -72,8 +77,8 @@ const PBank = () => {
             setBanks([
                 ...banks,
                 {
-                    bankid: newid,
-                    bankname: value,
+                    id: newid,
+                    name: value,
                 },
             ]);
             toast.success("Thêm thành công");
@@ -92,10 +97,9 @@ const PBank = () => {
     const handleDelBank = async (bid) => {
         try {
             const response = await delBank(bid);
-            var bid = response.data;
-            setBanks([
-                banks.filter(b => b.bankid === bid)
-            ]);
+            var dbid = response.data;
+            const updatedBanks = banks.filter(b => b.id !== dbid);
+            setBanks(updatedBanks);
             toast.success("Xóa thành công");
         } catch (error) {
             toast.error("Xóa không thành công");
@@ -105,24 +109,16 @@ const PBank = () => {
 
     //End Del Bank
 
-    const handleEditTitle = (repoId, newTitle) => {
-        // setRepos((prevRepos) =>
-        //     prevRepos.map((repo) =>
-        //         repo.id === repoId ? { ...repo, title: newTitle } : repo
-        //     )
-        // );
-    };
-
 
     //Update Bank
-    const handleUpdateBank = async (bid, newname) => {
+    const handleUpdateBank = async (bankid, newname) => {
         try {
 
-            const response = await updateBank(bid, newname);
+            const response = await updateBank(bankid, newname);
 
-            if (response.status === 200) {
+            if (response.data === bankid) {
                 setBanks(prev =>
-                    prev.map(bank => bank.bankid === bid ? { ...bank, bankname: newname } : bank)
+                    prev.map(bank => bank.id === bankid ? { ...bank, name: newname } : bank)
                 );
                 toast.success("Chỉnh sửa thành công");
             } else {
@@ -214,7 +210,7 @@ const PBank = () => {
                                                 <i><HiDotsVertical /></i>
                                             </NavLink>
                                         </NavLink>
-                                        <Dropdown id={bank.id} visible={isDropdownVisible === bank.id} onClose={() => setDropdownVisible(null)} onDelete={() => handleDelBank(bank.id)} onEdit={handleUpdateBank(bank.id,)} />
+                                        <Dropdown id={bank.id} visible={isDropdownVisible === bank.id} onClose={() => setDropdownVisible(null)} onDelete={handleDelBank} onEdit={handleUpdateBank} />
 
                                     </>
 

@@ -67,7 +67,6 @@ namespace ExamBanking.Controllers
             var bank = new Bank
             {
                 Bankname = request.Bankname,
-                Bankstatus = request.Bankstatus,
                 Accid = user.Accid,
             };
 

@@ -29,14 +29,14 @@ namespace ExamBanking.Repositories
             return section.Secid;
         }
 
-        public void EditSection(EditSectionRequest request)
+        public void EditSection(int secid, string newname)
         {
-            var section = _context.Sections.Find(request.Secid);
+            var section = _context.Sections.Find(secid);
             if (section == null)
             {
                 return;
             }
-            section.Secname = request.Secname;
+            section.Secname = newname;
             _context.SaveChanges();
         }
 

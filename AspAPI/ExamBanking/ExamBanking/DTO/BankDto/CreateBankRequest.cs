@@ -6,7 +6,7 @@ namespace ExamBanking.DTO.BankDto
     {
         [Required]
         public string? Bankname { get; set; }
-        public byte? Bankstatus { get; set; }
+
         
     }
 }

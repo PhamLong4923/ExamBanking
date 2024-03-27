@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Style/dropdown.css';
 import PopupUpdateModel from '../components/EditPopup/popupupdate';
 
-const Dropdown = ({ visible, onDelete, onEdit }) => {
+const Dropdown = ({ id, visible, onDelete, onEdit }) => {
     const [openconfirm, setOpenConfirm] = useState(false);
 
     const handleDelete = () => {
@@ -10,7 +10,8 @@ const Dropdown = ({ visible, onDelete, onEdit }) => {
     }
 
     const handleConfirm = () => {
-        onDelete();
+        onDelete(id);
+        setOpenConfirm(false);
     }
 
     const handleClose = () => {
@@ -24,6 +25,7 @@ const Dropdown = ({ visible, onDelete, onEdit }) => {
                 <span className='menu-choice'>Xóa</span>
             </div>
             <PopupUpdateModel
+                itemid={id}
                 buttonstyle={
 
                     <span className='menu-choice'>Chỉnh sửa</span>

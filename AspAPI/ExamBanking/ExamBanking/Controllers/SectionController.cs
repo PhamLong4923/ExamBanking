@@ -30,10 +30,10 @@ namespace ExamBanking.Controllers
             return Ok(sectionid);
         }
         [HttpPut("EditSection")]
-        public IActionResult EditSection(EditSectionRequest section)
+        public IActionResult EditSection(int secid, string newname)
         {
-            _rsection.EditSection(section);
-            return Ok(section.Secid);
+            _rsection.EditSection(secid, newname);
+            return Ok(secid);
         }
         [HttpDelete("DeleteSection")]
         public IActionResult DeleteSection(int Secid)

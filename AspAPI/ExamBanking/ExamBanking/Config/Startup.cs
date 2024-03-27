@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -57,6 +58,7 @@ namespace ExamBanking.Config
                     };
                 });
 
+
             // Đăng ký các dịch vụ bằng cách sử dụng lớp mở rộng ServiceExtensions
             services.AddCustomServices();
         }
@@ -68,6 +70,7 @@ namespace ExamBanking.Config
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            
 
             app.UseHttpsRedirection();
 

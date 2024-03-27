@@ -11,11 +11,11 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("e503ff4a-9f2f-48b2-b052-1a92c8434ec4")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("bfbad702-0db3-4044-8201-d623017fcd2b")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fd7d8d12893f6a90463afc9e33f6faafb776a16")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

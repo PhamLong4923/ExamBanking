@@ -35,10 +35,10 @@ namespace ExamBanking.Controllers
         }
 
         [HttpPut("EditRepo")]
-        public IActionResult EditRepo(EditRepoRequest request)
+        public IActionResult EditRepo(int repoid, string newname)
         {
-            _rerepo.editRepo(request);
-            return Ok(request.Repoid);
+            _rerepo.editRepo(repoid, newname);
+            return Ok(repoid);
         }
         [HttpDelete("DelRepo")]
         public IActionResult DeleteRepo(int Repoid)

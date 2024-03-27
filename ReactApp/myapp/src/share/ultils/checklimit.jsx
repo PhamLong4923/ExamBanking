@@ -1,9 +1,9 @@
 import modeconfig from "../constrants/bankmode";
 import { jwtDecode } from "jwt-decode";
-import { getLocalStorageItem } from "../../services/LocalStorage";
+import store from "../../redux/store";
 
 function checkLimit(type, number) {
-    const token = getLocalStorageItem('token');
+    const token = store.getState().token;
 
     if (!token) {
         return true;
@@ -13,6 +13,7 @@ function checkLimit(type, number) {
     const bankMode = decodedToken.bankmode;
 
     const limit = bankMode ? modeconfig.bankMode[bankMode][type + 'Limit'] : null;
+    console.log(limit);
     return number >= limit;
 }
 

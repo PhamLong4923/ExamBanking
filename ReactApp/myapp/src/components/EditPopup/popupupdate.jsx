@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./popupstyle/popupcreate.css";
 import { IoClose } from "react-icons/io5";
 
-const PopupUpdateModel = ({ title, handlesuccess, buttonstyle, isactive }) => {
+const PopupUpdateModel = ({ title, handlesuccess, buttonstyle, isactive, itemid }) => {
     const [intitle, setIntitle] = useState('');
     const [open, setOpen] = useState(false);
     // const [banks, setBanks] = useState(banklist);
@@ -17,8 +17,8 @@ const PopupUpdateModel = ({ title, handlesuccess, buttonstyle, isactive }) => {
         setIntitle('');
     }
 
-    const handleSuccess = (value) => {
-        handlesuccess(value);
+    const handleSuccess = (itemid, value) => {
+        handlesuccess(itemid, value);
         setOpen(false);
     }
 
@@ -47,7 +47,7 @@ const PopupUpdateModel = ({ title, handlesuccess, buttonstyle, isactive }) => {
                             <div className="popup-cancel" onClick={() => handleClose()}>Hủy</div>
                             {
                                 intitle.length !== 0
-                                    ? (<div className="popup-success" onClick={() => handleSuccess(intitle)}>Thêm</div>)
+                                    ? (<div className="popup-success" onClick={() => handleSuccess(itemid, intitle)}>Thêm</div>)
                                     : (<div className="popup-success" style={{ backgroundColor: 'rgb(156, 161, 165)' }}>Thêm</div>)
                             }
 

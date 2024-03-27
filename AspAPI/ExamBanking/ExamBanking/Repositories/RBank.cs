@@ -17,7 +17,6 @@ namespace ExamBanking.Repositories
             var bank = new Bank
             {
                 Bankname = request.Bankname,
-                Bankstatus = request.Bankstatus,
             };
 
             _context.Banks.Add(bank);
