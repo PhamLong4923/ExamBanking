@@ -19,10 +19,10 @@ namespace ExamBanking.Controllers
         }
 
         
-        [HttpPost("GetRepo")]
-        public IActionResult GetRepo(ListRepoRequest request)
+        [HttpGet("GetRepo")]
+        public IActionResult GetRepo(int bankid)
         {
-            var list = _context.Repos.Where(a => a.Bankid == request.Bankid).ToList();
+            var list = _context.Repos.Where(a => a.Bankid == bankid).ToList();
             return Ok(list);
 
         }

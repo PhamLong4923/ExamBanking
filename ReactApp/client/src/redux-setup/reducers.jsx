@@ -1,6 +1,6 @@
 // reducers.js
 import { combineReducers } from 'redux';
-import { SET_TOKEN, SET_BANK_TYPE, SET_BANK_ID, SET_REPO_ID } from './action.jsx';
+import { SET_TOKEN, SET_BANK_TYPE, SET_BANK_ID, SET_REPO_ID, SET_EX_BANK, SET_EX_BANKTYPE } from '../redux-setup/action.jsx';
 
 const tokenReducer = (state = null, action) => {
     switch (action.type) {
@@ -38,11 +38,31 @@ const repoIdReducer = (state = null, action) => {
     }
 };
 
+const exBankTypeReducer = (state = null, action) => {
+    switch (action.type) {
+        case SET_EX_BANKTYPE:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
+const exBankReducer = (state = null, action) => {
+    switch (action.type) {
+        case SET_EX_BANK:
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
 const rootReducer = combineReducers({
     token: tokenReducer,
     bankType: bankTypeReducer,
     bankId: bankIdReducer,
     repoId: repoIdReducer,
+    exBank: exBankReducer,
+    exBankType: exBankTypeReducer,
 });
 
 export default rootReducer;
