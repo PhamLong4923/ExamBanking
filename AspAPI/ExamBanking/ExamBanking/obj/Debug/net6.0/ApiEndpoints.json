@@ -414,14 +414,14 @@
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "GetRepo",
     "RelativePath": "api/Repositories/GetRepo",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
-        "IsRequired": true
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
