@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "getIsnewbie",
+    "RelativePath": "api/Account/NewBie",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.AnswersController",
     "Method": "GetAnswers",
     "RelativePath": "api/Answers",

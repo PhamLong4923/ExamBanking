@@ -1,7 +1,7 @@
 ﻿using ExamBanking.DTO.TicketDto;
 using ExamBanking.Models;
 using ExamBanking.Utils;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamBanking.Controllers
