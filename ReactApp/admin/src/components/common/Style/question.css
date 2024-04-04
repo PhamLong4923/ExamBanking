@@ -288,3 +288,7 @@ td.row-head {
     flex-direction: row;
     justify-content: right;
 }
+
+.hidden{
+    display: none;
+}
