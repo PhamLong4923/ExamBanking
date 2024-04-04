@@ -26,15 +26,15 @@ namespace ExamBanking.Models
         public virtual DbSet<Repo> Repos { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Section> Sections { get; set; } = null!;
+        public virtual DbSet<Ticket> Tickets { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                              .SetBasePath(Directory.GetCurrentDirectory())
-                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
-
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server = exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -101,9 +101,17 @@ namespace ExamBanking.Models
 
                 entity.Property(e => e.Datejoin).HasColumnType("datetime");
 
+                entity.Property(e => e.Isnewbie)
+                    .HasColumnName("isnewbie")
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ResetTokenExpires).HasColumnType("datetime");
 
                 entity.Property(e => e.Roleid).HasColumnName("roleid");
+
+                entity.Property(e => e.Ticketmode)
+                    .HasColumnName("ticketmode")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Userpass)
                     .HasMaxLength(255)
@@ -288,6 +296,35 @@ namespace ExamBanking.Models
                     .WithMany(p => p.Sections)
                     .HasForeignKey(d => d.Repoid)
                     .HasConstraintName("FK__Section__repoid__797309D9");
+            });
+
+            modelBuilder.Entity<Ticket>(entity =>
+            {
+                entity.ToTable("Ticket");
+
+                entity.Property(e => e.Ticketid).HasColumnName("ticketid");
+
+                entity.Property(e => e.Accid)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("accid");
+
+                entity.Property(e => e.Bankid).HasColumnName("bankid");
+
+                entity.Property(e => e.Expire)
+                    .HasColumnType("datetime")
+                    .HasColumnName("expire");
+
+                entity.Property(e => e.Ticketmode).HasColumnName("ticketmode");
+
+                entity.HasOne(d => d.Acc)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.Accid)
+                    .HasConstraintName("FK__Ticket__accid__18EBB532");
+
+                entity.HasOne(d => d.Bank)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.Bankid)
+                    .HasConstraintName("FK__Ticket__bankid__19DFD96B");
             });
 
             OnModelCreatingPartial(modelBuilder);

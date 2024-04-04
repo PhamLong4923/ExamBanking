@@ -17,6 +17,7 @@ namespace ExamBanking.Config
             services.AddScoped<RQuestion>();
             services.AddScoped<RRepositories>();
             services.AddScoped<RSection>();
+            services.AddScoped<RTicket>();
             services.AddScoped<Jwt>();
             services.AddCors(options =>
             {

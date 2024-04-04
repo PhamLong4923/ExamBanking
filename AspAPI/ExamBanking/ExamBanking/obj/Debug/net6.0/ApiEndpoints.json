@@ -247,6 +247,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "UpdateBankMode",
+    "RelativePath": "api/Bank/Update_bankMode",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "mode",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.ExamController",
     "Method": "CreateExam",
     "RelativePath": "api/Exam/CreateExam",
@@ -491,6 +512,38 @@
         "Name": "repoid",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "CreateTicket",
+    "RelativePath": "api/Ticket",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.TicketDto.CreateTicketRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "DeleteTicket",
+    "RelativePath": "api/Ticket",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.TicketDto.DeleteTicketRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

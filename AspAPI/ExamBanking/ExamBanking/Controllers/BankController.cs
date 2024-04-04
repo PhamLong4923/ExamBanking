@@ -90,6 +90,22 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok(edit.Bankid);
         }
+        [HttpPut("Update_bankMode")]
+        public async Task<IActionResult> UpdateBankMode(int bankid, int mode)
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
+            if (edit == null)
+            {
+                return BadRequest("dont exist");
+            }
+            edit.Bankmode = mode;
+            _context.SaveChangesAsync();
+            return Ok(edit.Bankid);
+        }
         [HttpDelete("DeleteBank")]
         public async Task<IActionResult> DeleteBank(int bankid)
         {
@@ -108,5 +124,6 @@ namespace ExamBanking.Controllers
             return Ok(remove.Bankid);
         }
 
+       
     }
 }

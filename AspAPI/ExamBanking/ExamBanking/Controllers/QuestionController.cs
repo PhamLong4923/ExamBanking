@@ -26,7 +26,7 @@ namespace ExamBanking.Controllers
         public IActionResult GetQuestion(int sectionid)
         {
             var listQuestion = _context.Questions
-                        .Include(q => q.Answers) // Kết hợp thông tin câu trả lời
+                        .Include(q => q.Answers)
                         .Where(a => a.Secid == sectionid)
                         .ToList();
 
