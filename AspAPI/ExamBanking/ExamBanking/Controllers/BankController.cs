@@ -1,15 +1,10 @@
-﻿using ExamBanking.DTO.AccountDto;
-using ExamBanking.DTO.BankDto;
+﻿using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
 using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 namespace ExamBanking.Controllers
 {
@@ -18,7 +13,7 @@ namespace ExamBanking.Controllers
     [Authorize(Roles = "User")]
     public class BankController : ControllerBase
     {
-        private ExamBankingContext eContext = new ExamBankingContext();
+        
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
