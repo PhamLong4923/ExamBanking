@@ -20,6 +20,39 @@ const AdminSection = () => {
     const [isAddQuestion, setIsAddQuestion] = useState(false);
     const [editingQuestionId, setEditingQuestionId] = useState('');
     const [editingSectionID, setEditingSectionId] = useState(null);
+    const [questions, setQuestions] = useState([
+        // {
+        //   id: 1,
+        //   title: 'Đề ở đây',
+        //   answers: [
+        //     // { id: 'answer1', content: 'Đáp án ở đây' },
+        //     // { id: 'answer2', content: 'Đáp án ở đây' },
+        //     // { id: 'answer3', content: 'Đáp án ở đây' },
+        //     // { id: 'answer4', content: 'Đáp án ở đây' }
+        //   ],
+        //   type: 1,
+        //   solution: 'Hướng dẫn giải',
+        //   mode: 2,
+        // }
+    ]);
+    const [sections, setSections] = useState([
+        {
+            key: 1,
+            name: "bài 1: dfghjfghj",
+            questions: [],
+        },
+        {
+            key: 2,
+            name: "bài 2: dfghjdvfwsdffghj",
+            questions: [],
+        },
+    ])
+
+    let questionsList = [];
+
+    if (selectedSectionId !== null && selectedSectionId !== "" && selectedSectionId <= sections.length) {
+        questionsList = questions.filter(questions => questions.sectionID === selectedSectionId);
+    }
 
     const showModal = () => {
         form.resetFields();
@@ -51,41 +84,12 @@ const AdminSection = () => {
         setSelectedQuestions([]);
     };
 
-    const [questions, setQuestions] = useState([
-        // {
-        //   id: 1,
-        //   title: 'Đề ở đây',
-        //   answers: [
-        //     // { id: 'answer1', content: 'Đáp án ở đây' },
-        //     // { id: 'answer2', content: 'Đáp án ở đây' },
-        //     // { id: 'answer3', content: 'Đáp án ở đây' },
-        //     // { id: 'answer4', content: 'Đáp án ở đây' }
-        //   ],
-        //   type: 1,
-        //   solution: 'Hướng dẫn giải',
-        //   mode: 2,
-        // }
-    ]);
-
-    const [sections, setSections] = useState([
-        {
-            key: 1,
-            name: "bài 1: dfghjfghj",
-            questions: [],
-        },
-        {
-            key: 2,
-            name: "bài 2: dfghjdvfwsdffghj",
-            questions: [],
-        },
-    ])
-
     const handleOk = () => {
         form
             .validateFields()
             .then((values) => {
                 form.resetFields();
-                if (editingSectionID !== "" || editingSectionID !== null) { // Nếu đang chỉnh sửa
+                if (editingSectionID !== "" && editingSectionID !== null) { // Nếu đang chỉnh sửa
                     const newData = [...sections];
                     const index = newData.findIndex((item) => editingSectionID === item.key);
                     if (index > -1) {
@@ -97,8 +101,8 @@ const AdminSection = () => {
                     }
                 } else { // Nếu thêm mới
                     const newSection = {
-                        id: sections.length + 1,
-                        title: values.name,
+                        key: sections.length + 1,
+                        name: values.name,
                         questions: [],
                     };
                     setSections([...sections, newSection]);
@@ -114,21 +118,6 @@ const AdminSection = () => {
         form.resetFields();
         setEditingSectionId(null);
         setVisible(false);
-    };
-
-    const handleAddSection = () => {
-        const newId = (sections.length + 1).toString();
-        const newSection = {
-            id: newId,
-            title: "",
-            questions: [],
-        };
-
-        setSections([...sections, newSection]);
-
-        setEditingQuestionId(newId);
-        setModalIsOpen(true);
-        setIsAddQuestion(true);
     };
 
     const handleEdit = (record) => {
@@ -206,7 +195,7 @@ const AdminSection = () => {
                 type: "1",
                 solution: 'hướng dẫn giải',
                 mode: "1",
-                section: selectedSectionId,
+                sectionID: selectedSectionId,
             };
 
             setQuestions([...questions, newQuestion]);
@@ -328,13 +317,13 @@ const AdminSection = () => {
     const handleQuestionTypeChange = (questionId, selectedType) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, type: selectedType } : question
+                question.id === questionId ? { ...question, type: selectedType, mode: "1" } : question
             )
         );
-        if (selectedType === '2') {
+        if (selectedType === "2") {
             setQuestions((prevQuestions) =>
                 prevQuestions.map((question) =>
-                    question.id === questionId ? { ...question, answers: [] } : question
+                    question.id === questionId ? { ...question, answers: [], mode: "5" } : question //cho mảng question thành null
                 )
             );
         }
@@ -399,11 +388,10 @@ const AdminSection = () => {
                     )}
                 </div>
                 {/* Render the SystemQuestion component */}
-                {questions.map((question, index) => (
+                {questionsList.map((question, index) => (
                     <SystemQuestion
                         key={index}
                         question={question}
-                        questions={questions}
                         handleEditQuestion={handleEditQuestion}
                         deleteQuestion={handleDeleteQuestion}
                         handleEditAnswer={handleEditAnswer}
