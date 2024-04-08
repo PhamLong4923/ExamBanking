@@ -319,6 +319,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ExamBanking.Controllers.ExamController",
+    "Method": "CreateExam",
+    "RelativePath": "api/Exam/ShowExam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "repoId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.GoogleAuthController",
     "Method": "SaveJwtData",
     "RelativePath": "api/GoogleAuth/save-jwt-data",
