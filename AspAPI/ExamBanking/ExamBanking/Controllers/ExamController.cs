@@ -40,27 +40,40 @@ namespace ExamBanking.Controllers
                 {
                     secid = sec.Secid,
                     secname = sec.Secname,
-                    count = new List<object>()
+                    level = new List<object>()
                 };
 
-                var modeCounts = new List<object>();
+                var modeCountsType1 = new List<object>();
+                var modeCountsType2 = new List<object>();
 
-                // Lấy danh sách các modeid và tên mode tương ứng trong cơ sở dữ liệu
-                var modes = _context.Questions
-                                   .Where(q => q.Secid == sec.Secid)
-                                   .Select(q => new { q.Modeid, q.Mode.Qmode })
-                                   .Distinct()
-                                   .ToList();
+                // Đếm số lượng câu hỏi cho từng modeid của type 1 trong mỗi section
+                var modesType1 = _context.Questions
+                                    .Where(q => q.Secid == sec.Secid && q.Type == 1)
+                                    .Select(q => new { q.Modeid, q.Mode.Qmode })
+                                    .Distinct()
+                                    .ToList();
 
-                foreach (var mode in modes)
+                foreach (var mode in modesType1)
                 {
-                    // Đếm số lượng câu hỏi cho từng modeid trong mỗi section
                     var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
-
-                    modeCounts.Add(new { modename = mode.Qmode, count = questionCount });
+                    modeCountsType1.Add(new { modename = mode.Qmode, count = questionCount });
                 }
 
-                sectionObject.count.Add(new { mcq = modeCounts });
+                // Đếm số lượng câu hỏi cho từng modeid của type 2 trong mỗi section
+                var modesType2 = _context.Questions
+                                    .Where(q => q.Secid == sec.Secid && q.Type == 2)
+                                    .Select(q => new { q.Modeid, q.Mode.Qmode })
+                                    .Distinct()
+                                    .ToList();
+
+                foreach (var mode in modesType2)
+                {
+                    var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
+                    modeCountsType2.Add(new { modename = mode.Qmode, count = questionCount });
+                }
+
+                sectionObject.level.Add(new { multi = modeCountsType1 });
+                sectionObject.level.Add(new { text = modeCountsType2 });
 
                 selectedQuestions.Add(sectionObject);
             }
@@ -72,6 +85,7 @@ namespace ExamBanking.Controllers
                 secs = selectedQuestions
             });
         }
+
 
 
 
