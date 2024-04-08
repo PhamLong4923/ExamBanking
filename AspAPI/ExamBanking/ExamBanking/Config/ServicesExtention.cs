@@ -23,9 +23,14 @@ namespace ExamBanking.Config
             {
                 options.AddPolicy("CorsPolicy", builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000")
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
+                    builder.WithOrigins(
+                        "http://localhost:3000",
+                        "https://exambankingv1.azurewebsites.net",
+                        "https://exambanking-81cef.web.app",
+                        "https://exambanking-81cef.firebaseapp.com"
+                    )
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
                 });
             });
 

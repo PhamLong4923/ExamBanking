@@ -3,6 +3,16 @@
     "ContainingType": "ExamBanking.Controllers.AccountController",
     "Method": "getIsnewbie",
     "RelativePath": "api/Account/NewBie",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "UpdateIsnewUser",
+    "RelativePath": "api/Account/UpdateIsnewUser",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -302,6 +312,22 @@
       },
       {
         "Name": "applyCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.ExamController",
+    "Method": "CreateExam",
+    "RelativePath": "api/Exam/ShowExam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "repoId",
         "Type": "System.Int32",
         "IsRequired": false
       }
