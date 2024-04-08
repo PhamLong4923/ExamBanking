@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Select, Button, Space, Collapse, Typography, List, Spin, Empty } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined, BulbOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined, BulbOutlined, CloseOutlined } from '@ant-design/icons';
 import ConfirmationModal from '../../../components/ui/confirmModel';
 import MyBreadCrumb from '../../../components/ui/breadcrumb';
 import setLimit from '../../../ultils/setlimit';
@@ -9,6 +9,7 @@ import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_
 import { success, errors, warning } from '../../../components/ui/notifications';
 import { getSection, addSection, updateSection, delSection, getQuestions } from '../../../services/api';
 import EditModal from '../../../components/ui/editNameModel';
+import QuestionModal from '../../../components/ui/createquestionmodal.jsx'
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -187,6 +188,24 @@ const Section = () => {
         loadQuestions();
     }, [selectSec]);
 
+    const handleOpenQuesModal = () => {
+        // if (selectSec !== null) {
+        //     setAddQuesModal(true);
+        // } else {
+        //     warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
+        // }
+        setAddQuesModal(true);
+
+    }
+
+    const handleCancelQuesModal = () => {
+        setAddQuesModal(false);
+    }
+
+    const handleOnSaveQues = (data) => {
+
+    }
+
 
     //==========================End Question Tool Area==========================//
 
@@ -196,6 +215,8 @@ const Section = () => {
             question: 'What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color?',
             answers: ['Red', 'Blue', 'Green'],
             solution: 'The solution for the favorite color question is to choose the color that you like the most.',
+            qtype: 0,
+            qmode: 2,
         },
         {
             id: 2,
@@ -299,32 +320,36 @@ const Section = () => {
                     <div style={{ marginBottom: '20px' }}>
                         <Input placeholder="Search" style={{ width: '200px', marginRight: '10px' }} />
                         <Select value={filter1} onChange={handleFilter1Change} style={{ width: '120px', marginRight: '10px' }}>
-                            <Option value="1">Filter 1A</Option>
-                            <Option value="2">Filter 1B</Option>
-                            <Option value="3">All</Option>
+                            <Option value="1">Trắc nghiệm</Option>
+                            <Option value="2">Tự luận</Option>
+                            <Option value="3">Tất cả</Option>
                         </Select>
                         {filter1 === '1' && (
                             <Select value={filter2} onChange={handleFilter2Change} style={{ width: '120px', marginRight: '10px' }}>
-                                <Option value="A">Filter 2A</Option>
-                                <Option value="B">Filter 2B</Option>
+                                <Option value="1">Nhận biết</Option>
+                                <Option value="2">Thông hiểu</Option>
+                                <Option value="3">Vận dụng</Option>
+                                <Option value="4">Vận dụng cao</Option>
                             </Select>
                         )}
                         {filter1 === '2' && (
                             <Select value={filter3} onChange={handleFilter3Change} style={{ width: '120px', marginRight: '10px' }}>
-                                <Option value="X">Filter 3X</Option>
-                                <Option value="Y">Filter 3Y</Option>
+                                <Option value="5">Dễ</Option>
+                                <Option value="6">Trung bình</Option>
+                                <Option value="7">Khó</Option>
+                                <Option value="8">Nâng cao</Option>
                             </Select>
                         )}
                     </div>
-                    {/* <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
-                    <Space>
-                        <Button type="text" icon={<CloseOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                        <Tag color="blue" style={{ fontSize: '16px' }}>{selectedCount} selected</Tag>
-                        <Button type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                        <Button type="text" icon={<DeleteOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                    </Space>
-                </div> */}
-                    <div style={{ height: '100%', overflowY: 'auto' }}>
+                    <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
+                        <Space>
+
+                            <Button onClick={() => handleOpenQuesModal()} type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+
+                        </Space>
+                        <QuestionModal open={addquesmodal} onSave={handleOnSaveQues} onCancel={handleCancelQuesModal} secid={selectSec} ></QuestionModal>
+                    </div>
+                    <div style={{ height: '90%', overflowY: 'auto' }}>
                         {questions.map((question) => (
                             <Collapse key={question.id} style={{ marginBottom: '10px' }}>
                                 <Panel
@@ -408,8 +433,8 @@ const Section = () => {
                     <div style={{ marginBottom: '20px', overflowY: 'auto', height: '98%' }}>
                         <List
                             dataSource={sections}
-                            loading={false} // Hiển thị Spin khi đang tải dữ liệu
-                            locale={{ emptyText: <Empty description="Không có dữ liệu" /> }} // Hiển thị thông báo khi không có dữ liệu
+                            loading={false}
+                            locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
                             renderItem={item => (
                                 <Button
                                     type={selectSec === item.secid ? 'primary' : 'default'}

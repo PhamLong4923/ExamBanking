@@ -52,7 +52,7 @@ const ExRepo = () => {
         return (
             <div>
                 <Button type="text" icon={<ArrowLeftOutlined />} onClick={handleBack}>Back</Button>
-                <ExConfig selectedIds={selectedIds} onBack={handleBack} />
+                <ExConfig selectedIds={selectedIds} />
             </div>
         );
     }

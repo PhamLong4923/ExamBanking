@@ -11,8 +11,8 @@ const Services = () => {
     const [currentPage, setCurrentPage] = useState(null);
 
     const services = [
-        { icon: <BankOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ngân hàng', component: BankManager },
-        { icon: <SolutionOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ticket', component: TicketManager },
+        { icon: <BankOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ngân hàng', component: <BankManager></BankManager> },
+        { icon: <SolutionOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ticket', component: <TicketManager></TicketManager> },
         { icon: <LockOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí truy cập', component: AccessManager },
     ];
 
@@ -28,7 +28,7 @@ const Services = () => {
         return (
             <div>
                 <Button onClick={handleBack}>Back</Button>
-                <currentPage />
+                {currentPage}
             </div>
         );
     }

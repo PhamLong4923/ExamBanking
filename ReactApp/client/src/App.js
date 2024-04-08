@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Services from './pages/Services';
 import ExamPage from './pages/Exam';
 
+
 const { Sider, Content } = Layout;
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/services" element={<Services />} />
                     <Route path="/bank" element={<BankPage />} />
                     <Route path="/exam-creator" element={<ExamPage />} />
+                    <Route path="/ck" element={<></>} />
                   </Routes>
 
                 </div>

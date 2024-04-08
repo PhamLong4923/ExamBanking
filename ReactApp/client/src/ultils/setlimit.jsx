@@ -13,6 +13,7 @@ function setLimit(type, number) {
     const bankMode = decodedToken.bankmode;
 
     const islimit = bankMode ? limit.bankMode[bankMode][type + 'Limit'] : null;
+    console.log(islimit + ':' + bankMode + ':' + token);
     return number >= islimit;
 }
 

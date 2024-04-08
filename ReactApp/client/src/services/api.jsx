@@ -30,7 +30,7 @@ export const addSection = (data) => Http.post("/Section/CreateSection", data);
 
 export const addRepository = (data) => Http.post("/Repositories/CreateRepo", data);
 
-export const addQuestion = (data) => Http.post("Question/CreateQuestion", data);
+export const addQuestion = (data, sid) => Http.post("Question/CreateQuestion", data, sid);
 
 //delete-api
 

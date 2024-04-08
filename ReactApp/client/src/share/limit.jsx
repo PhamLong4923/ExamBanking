@@ -30,6 +30,7 @@ const limit = {
             "quesLimit": 125
         }
     }
+
 };
 
 export default limit;
