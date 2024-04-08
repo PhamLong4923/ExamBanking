@@ -290,9 +290,6 @@ export default function ExamConfig({ seclectedIds }) {
                     </Button>
                 </div>
             </div>
-
-
-
         </>
     );
 }

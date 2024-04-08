@@ -4,8 +4,8 @@ import { Row, Col, Input, Button, Checkbox } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
 import { GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
-import { Google } from '../services/api';
-import { setToken } from '../redux-setup/action';
+import { Google } from '../../services/api';
+import { setToken } from '../../redux-setup/action';
 
 const LoginAndRegister = () => {
     const dispatch = useDispatch();

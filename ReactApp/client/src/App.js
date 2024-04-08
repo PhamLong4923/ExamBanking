@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { NavLink, Route, BrowserRouter, Routes } from 'react-router-dom';
-import LoginAndRegister from './pages/login';
+import LoginAndRegister from './pages/Login';
 import { Provider } from 'react-redux';
 import store from './redux-setup/store';
 import BankPage from './pages/Bank';

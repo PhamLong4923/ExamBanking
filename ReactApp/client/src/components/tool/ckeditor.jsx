@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
-const Ckeditor = ({ title, dataOnChange, editorId }) => {
-    const [editorData, setEditorData] = useState('');
+const Ckeditor = ({ title, dataOnChange, editorId, cdata }) => {
+
 
     const handleEditorChange = async (event, editor) => {
         const data = editor.getData();
-        setEditorData(data);
         dataOnChange(data);
     };
 
@@ -17,7 +16,7 @@ const Ckeditor = ({ title, dataOnChange, editorId }) => {
             <CKEditor
                 id={editorId}
                 editor={Editor.Editor}
-                data={editorData}
+                data={cdata}
                 onChange={handleEditorChange}
             />
             <br />

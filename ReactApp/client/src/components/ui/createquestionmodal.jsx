@@ -44,6 +44,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                 <Ckeditor
                     dataOnChange={(data) => handleAnswerChange(data, record.id)}
                     editorId={`answer_${record.id}`}
+                    cdata={''}
                 />
             ),
         },
@@ -76,7 +77,6 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
             warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
         } else {
             try {
-                console.log("Go here 1" + qdata);
                 // Kiểm tra và tải lên ảnh trong nội dung của qdata
                 const updatedQdata = await uploadImagesInContent(qdata);
 
@@ -109,10 +109,8 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
 
     // Hàm kiểm tra và tải lên ảnh trong nội dung
     const uploadImagesInContent = async (content) => {
-        console.log("Go here2");
         const imgTags = content.match(/<img[^>]+>/g);
         if (!imgTags || imgTags.length === 0) {
-            console.log("no img");
             return content;
         }
 
@@ -120,11 +118,8 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
         for (const imgTag of imgTags) {
             const src = imgTag.match(/src="([^"]+)"/)[1];
             const newSrc = await uploadImageToFirebase(src);
-            console.log(newSrc + '====');
             if (newSrc) {
-                console.log(newSrc);
                 updatedContent = updatedContent.replace(src, newSrc);
-
             }
         }
 
@@ -179,7 +174,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                 </Select>
             )}
 
-            <Ckeditor title={'Câu hỏi'} dataOnChange={getEditorData} editorId={'question_editor'} />
+            <Ckeditor title={'Câu hỏi'} dataOnChange={getEditorData} editorId={'question_editor'} cdata={''} />
 
             {questionType === '1' && (
                 <>
@@ -199,7 +194,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                 </>
             )}
 
-            <Ckeditor title={'Hướng dẫn giải'} dataOnChange={getSolutionData} editorId={'solution_editor'} />
+            <Ckeditor title={'Hướng dẫn giải'} dataOnChange={getSolutionData} editorId={'solution_editor'} cdata={''} />
         </Modal>
     );
 };

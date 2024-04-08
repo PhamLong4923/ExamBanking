@@ -189,12 +189,11 @@ const Section = () => {
     }, [selectSec]);
 
     const handleOpenQuesModal = () => {
-        // if (selectSec !== null) {
-        //     setAddQuesModal(true);
-        // } else {
-        //     warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
-        // }
-        setAddQuesModal(true);
+        if (selectSec !== null) {
+            setAddQuesModal(true);
+        } else {
+            warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
+        }
 
     }
 
