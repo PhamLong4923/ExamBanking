@@ -40,90 +40,100 @@ const SystemQuestion = ({
 
     return (
         <div onClick={() => handleSelectQuestion(question.id)}>
-            <Modal
-                title="Chỉnh sửa câu hỏi"
-                open={modalIsOpen}
-                onCancel={() => setModalIsOpen(false)}
-                footer={null}
-                width={1000}
-            >
-                <div className='question-select-option'>
-                    {isAddQuestion === true && (
-                        <Select className='cursor-icon' value={"" + question.type} onChange={(value) => handleQuestionTypeChange(question.id, value)}>
-                            <Option value="1">Trắc nghiệm</Option>
-                            <Option value="2">Tự luận</Option>
-                        </Select>
-                    )}
-                    <Select className='cursor-icon' value={"" + question.mode} onChange={(value) => handleQuestionModeChange(question.id, value)}>
-                        {question.type === "1" ? (
-                            <>
-                                <Option value="1">Nhận biết</Option>
-                                <Option value="2">Thông hiểu</Option>
-                                <Option value="3">Vận dụng</Option>
-                                <Option value="4">Vận dụng cao</Option>
-                            </>
-                        ) : (
-                            <>
-                                <Option value='5'>Dễ</Option>
-                                <Option value='6'>Thường</Option>
-                                <Option value='7'>Khó</Option>
-                                <Option value='8'>Anh hùng</Option>
-                            </>
+            {editingQuestionId === question.id && (
+                <Modal
+                    title="Chỉnh sửa câu hỏi"
+                    open={modalIsOpen}
+                    onCancel={() => setModalIsOpen(false)}
+                    footer={null}
+                    width={1000}
+                >
+                    <div className='question-select-option'>
+                        {isAddQuestion === true && (
+                            <Select
+                                className='cursor-icon'
+                                value={"" + question.type}
+                                onChange={(value) => handleQuestionTypeChange(question.id, value)}
+                            >
+                                <Option value="1">Trắc nghiệm</Option>
+                                <Option value="2">Tự luận</Option>
+                            </Select>
                         )}
-                    </Select>
-                </div>
-                <div className='editquestion-head'>
-                    <div className='editquestion-title'>
-                        <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
-                        <div className='myeditor-ck'>
-                            <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
+                        <Select
+                            className='cursor-icon'
+                            value={"" + question.mode}
+                            onChange={(value) => handleQuestionModeChange(question.id, value)}
+                        >
+                            {question.type === "1" ? (
+                                <>
+                                    <Option value="1">Nhận biết</Option>
+                                    <Option value="2">Thông hiểu</Option>
+                                    <Option value="3">Vận dụng</Option>
+                                    <Option value="4">Vận dụng cao</Option>
+                                </>
+                            ) : (
+                                <>
+                                    <Option value="5">Dễ</Option>
+                                    <Option value="6">Thường</Option>
+                                    <Option value="7">Khó</Option>
+                                    <Option value="8">Anh hùng</Option>
+                                </>
+                            )}
+                        </Select>
+                    </div>
+                    <div className='editquestion-head'>
+                        <div className='editquestion-title'>
+                            <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
+                            <div className='myeditor-ck'>
+                                <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <table className="edit-answers">
-                    {question.type === "1" && (
-                        <>
-                            <thead>
-                                <tr>
-                                    <th>Đáp án</th>
-                                    <th>Nội dung đáp án</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {question.answers.map((answer, index2) => (
-                                    <tr key={answer.id}>
-                                        <th>Đáp án {index2 + 1}</th>
-                                        <td>
-                                            <div className='editanswer-each'>
-                                                <div className='myeditor-ck'>
-                                                    <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
-                                                </div>
-                                                <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash className='cursor-icon'></FaTrash></i>
-                                            </div>
-                                        </td>
+                    <table className="edit-answers">
+                        {question.type === "1" && (
+                            <>
+                                <thead>
+                                    <tr>
+                                        <th>Đáp án</th>
+                                        <th>Nội dung đáp án</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </>
-                    )}
-                    <tr className='edit-solution'>
-                        <th>Hướng dẫn giải</th>
-                        <td>
-                            <div className='myeditor-ck'>
-                                <MyEditor type="solution" quesid={question.id} ansid="" value={question.solution} onChange={handleEditorDataChange} />
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <div className='addquestion-savebutton'>
-                    {question.type === '1' && (
-                        <Button onClick={() => addAnswer(question.id)}>Thêm đáp án</Button>
-                    )}
-                    <Button type="primary" onClick={() => handleSaveEdit()}>
-                        Lưu
-                    </Button>
-                </div>
-            </Modal>
+                                </thead>
+                                <tbody>
+                                    {question.answers.map((answer, index2) => (
+                                        <tr key={answer.id}>
+                                            <th>Đáp án {index2 + 1}</th>
+                                            <td>
+                                                <div className='editanswer-each'>
+                                                    <div className='myeditor-ck'>
+                                                        <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
+                                                    </div>
+                                                    <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash className='cursor-icon'></FaTrash></i>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </>
+                        )}
+                        <tr className='edit-solution'>
+                            <th>Hướng dẫn giải</th>
+                            <td>
+                                <div className='myeditor-ck'>
+                                    <MyEditor type="solution" quesid={question.id} ansid="" value={question.solution} onChange={handleEditorDataChange} />
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div className='addquestion-savebutton'>
+                        {question.type === '1' && (
+                            <Button onClick={() => addAnswer(question.id)}>Thêm đáp án</Button>
+                        )}
+                        <Button type="primary" onClick={() => handleSaveEdit()}>
+                            Lưu
+                        </Button>
+                    </div>
+                </Modal>
+            )}
 
             <table className={`addquestion-table ${isSelected ? 'selected' : ''}`}>
                 <thead>

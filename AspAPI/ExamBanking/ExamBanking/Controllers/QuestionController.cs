@@ -4,6 +4,7 @@ using ExamBanking.Repositories;
 using ExamBanking.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamBanking.Controllers
 {
@@ -24,7 +25,11 @@ namespace ExamBanking.Controllers
         [HttpGet("listQuestion")]
         public IActionResult GetQuestion(int sectionid)
         {
-            var listQuestion = _context.Questions.Where(a => a.Secid == sectionid).ToList();
+            var listQuestion = _context.Questions
+                        .Include(q => q.Answers)
+                        .Where(a => a.Secid == sectionid)
+                        .ToList();
+
             return Ok(listQuestion);
         }
         //create question using rquestion

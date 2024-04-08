@@ -1,15 +1,14 @@
+import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Dropdown, Menu } from 'antd';
-import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import MyBreadCrumb from '../../../components/ui/breadcrumb';
 import ConfirmationModal from '../../../components/ui/confirmModel';
 import EditModal from '../../../components/ui/editNameModel';
-import MyBreadCrumb from '../../../components/ui/breadcrumb';
-import { useDispatch, useSelector } from 'react-redux';
-import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_LIMIT_MESSAGE, SYSTEM_SUCCESS_MESSAGE } from '../../../share/constrains';
-import setLimit from '../../../ultils/setlimit';
-import { getBank, delBank, addBank, updateBank } from '../../../services/api';
-import { success, errors, warning } from '../../../components/ui/notifications';
+import { errors, success, warning } from '../../../components/ui/notifications';
 import { setBankId } from '../../../redux-setup/action';
+import { addBank, delBank, getBank, updateBank } from '../../../services/api';
+import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_LIMIT_MESSAGE, SYSTEM_SUCCESS_MESSAGE } from '../../../share/constrains';
 
 
 const Bank = () => {
@@ -38,7 +37,7 @@ const Bank = () => {
             try {
                 const response = await getBank();
                 setBanks(response.data);
-                setIsLimit(setLimit('bank', response.data.length));
+                // setIsLimit(setLimit('bank', response.data.length));
                 setLoading(false);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -56,7 +55,7 @@ const Bank = () => {
     }, []);
 
     useEffect(() => {
-        setIsLimit(setLimit('bank', banks.length));
+        // setIsLimit(setLimit('bank', banks.length));
     }, [banks]);
 
     const handleAddBank = async (id, value) => {

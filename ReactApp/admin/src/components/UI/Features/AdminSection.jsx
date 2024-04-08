@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, DeleteOutlined, FileExcelOutlined, FileWordOutlined, PlusOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Input, Select, Space } from 'antd';
+import { Button, Flex, Form, Input, Menu, Modal, Select, Space } from 'antd';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import SystemQuestion from '../../common/SystemQuestion';
@@ -7,14 +7,61 @@ import SystemQuestion from '../../common/SystemQuestion';
 const { Option } = Select;
 
 const AdminSection = () => {
+    const [visible, setVisible] = useState(false);
+    const [form] = Form.useForm();
+    const [isToastOpen, setIsToastOpen] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
+    const [selectedSectionId, setSelectedSectionId] = useState("1");
     const [isSelecting, setIsSelecting] = useState(false);
     const [isqueslimit, setIsQueslimit] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isAddQuestion, setIsAddQuestion] = useState(false);
-    const [editingQuestionId, setEditingQuestionId] = useState(null);
+    const [editingQuestionId, setEditingQuestionId] = useState('');
+    const [editingSectionID, setEditingSectionId] = useState(null);
+    const [questions, setQuestions] = useState([
+        // {
+        //   id: 1,
+        //   title: 'Đề ở đây',
+        //   answers: [
+        //     // { id: 'answer1', content: 'Đáp án ở đây' },
+        //     // { id: 'answer2', content: 'Đáp án ở đây' },
+        //     // { id: 'answer3', content: 'Đáp án ở đây' },
+        //     // { id: 'answer4', content: 'Đáp án ở đây' }
+        //   ],
+        //   type: 1,
+        //   solution: 'Hướng dẫn giải',
+        //   mode: 2,
+        // }
+    ]);
+    const [sections, setSections] = useState([
+        {
+            key: 1,
+            name: "bài 1: dfghjfghj",
+            questions: [],
+        },
+        {
+            key: 2,
+            name: "bài 2: dfghjdvfwsdffghj",
+            questions: [],
+        },
+    ])
+
+    let questionsList = [];
+
+    if (selectedSectionId !== null && selectedSectionId !== "" && selectedSectionId <= sections.length) {
+        questionsList = questions.filter(questions => questions.sectionID === selectedSectionId);
+    }
+
+    const showModal = () => {
+        form.resetFields();
+        setVisible(true);
+    };
+
+    const handleClick = (key) => {
+        setSelectedSectionId(key);
+    };
 
     const toggleSelecting = () => {
         setIsSelecting(!isSelecting);
@@ -37,22 +84,85 @@ const AdminSection = () => {
         setSelectedQuestions([]);
     };
 
-    const [questions, setQuestions] = useState([
-        // {
-        //   id: 1,
-        //   title: 'Đề ở đây',
-        //   answers: [
-        //     // { id: 'answer1', content: 'Đáp án ở đây' },
-        //     // { id: 'answer2', content: 'Đáp án ở đây' },
-        //     // { id: 'answer3', content: 'Đáp án ở đây' },
-        //     // { id: 'answer4', content: 'Đáp án ở đây' }
-        //   ],
-        //   type: 1,
-        //   solution: 'Hướng dẫn giải',
-        //   mode: 2,
-        // }
+    const handleOk = () => {
+        form
+            .validateFields()
+            .then((values) => {
+                form.resetFields();
+                if (editingSectionID !== "" && editingSectionID !== null) { // Nếu đang chỉnh sửa
+                    const newData = [...sections];
+                    const index = newData.findIndex((item) => editingSectionID === item.key);
+                    if (index > -1) {
+                        const item = newData[index];
+                        newData.splice(index, 1, { ...item, ...values });
+                        setSections(newData);
+                        setEditingSectionId(null);
+                        setVisible(false);
+                    }
+                } else { // Nếu thêm mới
+                    const newSection = {
+                        key: sections.length + 1,
+                        name: values.name,
+                        questions: [],
+                    };
+                    setSections([...sections, newSection]);
+                    setVisible(false);
+                }
+            })
+            .catch((info) => {
+                console.log('Validate Failed:', info);
+            });
+    };
 
-    ]);
+    const handleCancel = () => {
+        form.resetFields();
+        setEditingSectionId(null);
+        setVisible(false);
+    };
+
+    const handleEdit = (record) => {
+        form.setFieldsValue(record);
+        setEditingSectionId(record.key);
+        setVisible(true);
+    };
+
+    const toastVerifyDelete = (key) => {
+        setVisible(false);
+        if (!isToastOpen) {
+            const id = toast.info(
+                <div>
+                    Are you sure want to delete?
+                    <div className='toast-buttons'>
+                        <Flex gap="middle">
+                            <Button onClick={() => {
+                                toast.dismiss(id);
+                                setIsToastOpen(false);
+                            }}>
+                                Cancel
+                            </Button>
+                            <Button onClick={() => handleDelete(key, id)}>
+                                Yes
+                            </Button>
+                        </Flex>
+                    </div>
+                </div>,
+                { onClose: () => setIsToastOpen(false) }
+            );
+            setIsToastOpen(true);
+        }
+    };
+
+    const handleDelete = (keyToDelete, toastId) => {
+        const newData = sections.filter(item => item.key !== keyToDelete);
+        for (let i = 0; i < newData.length; i++) {
+            if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
+                newData[i].key = (parseInt(newData[i].key) - 1).toString();
+            }
+        }
+        setSections(newData);
+        toast.dismiss(toastId);
+        setIsToastOpen(false);
+    };
 
     const handleEditorDataChange = (data, type, quesid, ansid) => {
         console.log('Data from CKEditor:', data);
@@ -72,29 +182,34 @@ const AdminSection = () => {
     };
 
     const handleAddQuestion = () => {
-        if (isqueslimit) {
-            toast.error("Đã đạt giới hạn");
+        if (sections.length < selectedSectionId) {
+            toast.error("vui lòng tạo và chọn bài trước");
         } else {
             const newId = (questions.length + 1).toString();
-            setQuestions([
-                ...questions,
-                {
-                    id: newId,
-                    title: '',
-                    answers: [
-                        { id: 'answer1', content: '' },
-                    ],
-                    type: "1",
-                    solution: 'hướng dẫn giải',
-                    mode: "1",
-                },
-            ]);
+            const newQuestion = {
+                id: newId,
+                title: '',
+                answers: [
+                    { id: 'answer1', content: '' },
+                ],
+                type: "1",
+                solution: 'hướng dẫn giải',
+                mode: "1",
+                sectionID: selectedSectionId,
+            };
+
+            setQuestions([...questions, newQuestion]);
+
+            const updatedSections = [...sections];
+            updatedSections[selectedSectionId - 1].questions.push(newId);
+            setSections(updatedSections);
 
             setEditingQuestionId(newId);
             setModalIsOpen(true);
             setIsAddQuestion(true);
         }
     };
+
 
     const handleEditQuestion = (questionId) => {
         setEditingQuestionId(questionId);
@@ -151,8 +266,16 @@ const AdminSection = () => {
     const handleDeleteQuestion = (questionId) => {
         const updatedQuestions = questions.filter((question) => question.id !== questionId);
         setQuestions(updatedQuestions);
-        setEditingQuestionId(null); // Đặt editingQuestionId về null nếu câu hỏi đang được chỉnh sửa bị xóa
+
+        const updatedSections = [...sections];
+        updatedSections.forEach((section) => {
+            section.questions = section.questions.filter((id) => id !== questionId);
+        });
+        setSections(updatedSections);
+
+        setEditingQuestionId(null);
     };
+
 
     const close1 = () => {
         setShowModal1(false);
@@ -192,71 +315,104 @@ const AdminSection = () => {
     };
 
     const handleQuestionTypeChange = (questionId, selectedType) => {
-        // Cập nhật giá trị question.type khi thay đổi loại câu hỏi
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, type: selectedType } : question
+                question.id === questionId ? { ...question, type: selectedType, mode: "1" } : question
             )
         );
-        if (selectedType === '2') {
+        if (selectedType === "2") {
             setQuestions((prevQuestions) =>
                 prevQuestions.map((question) =>
-                    question.id === questionId ? { ...question, answers: [] } : question
+                    question.id === questionId ? { ...question, answers: [], mode: "5" } : question //cho mảng question thành null
                 )
             );
         }
     };
 
     return (
-        <div style={{ padding: '24px' }}>
-            <div style={{ marginBottom: '24px', textAlign: 'right' }}>
-                {isSelecting ? (
-                    <Space>
-                        <span>Số lượng câu hỏi đã chọn: {selectedQuestions.length}</span>
-                        <Button type="primary" icon={<CloseCircleOutlined />} onClick={handleClearSelection}>Bỏ chọn</Button>
-                        <Button type="primary" icon={<DeleteOutlined />}>Xóa câu hỏi</Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={handleAddQuestion}>Thêm câu hỏi</Button>
-                    </Space>
-                ) : (
-                    <Space>
-                        <Input placeholder="Tìm kiếm" style={{ width: '200px' }} prefix={<SearchOutlined />} />
-                        <Select defaultValue="all" style={{ width: '120px' }}>
-                            <Option value="all">Tất cả</Option>
-                            <Option value="1">Trắc nghiệm</Option>
-                            <Option value="2">Tự luận</Option>
-                        </Select>
-                        <Button type="primary" icon={<FileExcelOutlined />}>Import Excel</Button>
-                        <Button type="primary" icon={<FileWordOutlined />}>Import Word</Button>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={handleAddQuestion}>Thêm câu hỏi</Button>
-                        <Button type="primary" icon={<UploadOutlined />} onClick={toggleSelecting}>Chọn câu hỏi</Button>
-                    </Space>
-                )}
+        <div style={{ display: 'flex', padding: '24px' }}>
+            <div style={{ flex: '40%', marginRight: '10px', minHeight: '500px' }}>
+                <Space>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>Thêm bài</Button>
+                </Space>
+                <Menu onClick={({ key }) => handleClick(key)} defaultSelectedKeys={[selectedSectionId]}>
+                    {sections.map(section => (
+                        <Menu.Item key={section.key}>
+                            <Flex gap="middle" style={{ width: '100%' }}>
+                                <span style={{ flex: 1 }}>
+                                    {section.name}
+                                </span>
+                                <Button style={{ marginLeft: 'auto', margin: 'auto' }} onClick={() => handleEdit(section)}>Edit</Button>
+                                <Button style={{ marginLeft: '8px', margin: 'auto' }} onClick={() => toastVerifyDelete(section.key)}>Delete</Button>
+                            </Flex>
+                        </Menu.Item>
+                    ))}
+                </Menu>
             </div>
-            {/* Render the SystemQuestion component */}
-            {questions.map((question, index) => (
-                <SystemQuestion
-                    key={index}
-                    question={question}
-                    handleEditQuestion={handleEditQuestion}
-                    deleteQuestion={handleDeleteQuestion}
-                    handleEditAnswer={handleEditAnswer}
-                    deleteAnswer={deleteAnswer}
-                    addAnswer={addAnswer}
-                    handleSaveEdit={handleSaveEdit}
-                    editingQuestionId={editingQuestionId}
-                    modalIsOpen={modalIsOpen}
-                    handleEditorDataChange={handleEditorDataChange}
-                    setModalIsOpen={setModalIsOpen}
-                    // handleSelectSection={handleSelectSection}
-                    handleQuestionTypeChange={handleQuestionTypeChange}
-                    handleEditSolution={handleEditSolution}
-                    isAddQuestion={isAddQuestion}
-                    handleQuestionModeChange={handleQuestionModeChange}
-                    handleSelectQuestion={handleSelectQuestion}
-                    isSelected={selectedQuestions.includes(question.id)}
-                />
-            ))
-            }
+
+            <Modal
+                title={editingSectionID !== null ? "Edit User" : "Add User"}
+                open={visible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <Form form={form} layout="vertical">
+                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            <div style={{ flex: '60%', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
+                <div style={{ marginBottom: '24px', textAlign: 'right' }}>
+                    {isSelecting ? (
+                        <Space>
+                            <span>Số lượng câu hỏi đã chọn: {selectedQuestions.length}</span>
+                            <Button type="primary" icon={<CloseCircleOutlined />} onClick={handleClearSelection}>Bỏ chọn</Button>
+                            <Button type="primary" icon={<DeleteOutlined />}>Xóa câu hỏi</Button>
+                            <Button type="primary" onClick={toggleSelecting}>Thoát</Button>
+                        </Space>
+                    ) : (
+                        <Space>
+                            <Input placeholder="Tìm kiếm" style={{ width: '200px' }} prefix={<SearchOutlined />} />
+                            <Select defaultValue="all" style={{ width: '120px' }}>
+                                <Option value="all">Tất cả</Option>
+                                <Option value="1">Trắc nghiệm</Option>
+                                <Option value="2">Tự luận</Option>
+                            </Select>
+                            <Button type="primary" icon={<FileExcelOutlined />}>Import Excel</Button>
+                            <Button type="primary" icon={<FileWordOutlined />}>Import Word</Button>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddQuestion}>Thêm câu hỏi</Button>
+                            <Button type="primary" icon={<UploadOutlined />} onClick={toggleSelecting}>Chọn câu hỏi</Button>
+                        </Space>
+                    )}
+                </div>
+                {/* Render the SystemQuestion component */}
+                {questionsList.map((question, index) => (
+                    <SystemQuestion
+                        key={index}
+                        question={question}
+                        handleEditQuestion={handleEditQuestion}
+                        deleteQuestion={handleDeleteQuestion}
+                        handleEditAnswer={handleEditAnswer}
+                        deleteAnswer={deleteAnswer}
+                        addAnswer={addAnswer}
+                        handleSaveEdit={handleSaveEdit}
+                        editingQuestionId={editingQuestionId}
+                        modalIsOpen={modalIsOpen}
+                        handleEditorDataChange={handleEditorDataChange}
+                        setModalIsOpen={setModalIsOpen}
+                        // handleSelectSection={handleSelectSection}
+                        handleQuestionTypeChange={handleQuestionTypeChange}
+                        handleEditSolution={handleEditSolution}
+                        isAddQuestion={isAddQuestion}
+                        handleQuestionModeChange={handleQuestionModeChange}
+                        handleSelectQuestion={handleSelectQuestion}
+                        isSelected={selectedQuestions.includes(question.id)}
+                    />
+                ))
+                }
+            </div>
         </div>
     );
 };
