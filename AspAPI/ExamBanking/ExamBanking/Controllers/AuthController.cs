@@ -1,6 +1,5 @@
 ﻿using ExamBanking.DTO.AccountDto;
 using ExamBanking.Models;
-using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;

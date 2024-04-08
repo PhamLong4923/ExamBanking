@@ -261,9 +261,6 @@ D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Exam
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\BCrypt.Net-Next.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Auth.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Core.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Humanizer.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -284,19 +281,16 @@ D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Micr
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.OpenApi.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Newtonsoft.Json.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Scrutor.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.CodeDom.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Drawing.Common.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Management.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Runtime.Caching.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Permissions.dll
@@ -310,7 +304,6 @@ D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runt
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
-D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Management.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\hoc\ki_6\v11\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll

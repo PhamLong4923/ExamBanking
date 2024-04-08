@@ -30,11 +30,11 @@ namespace ExamBanking.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server = exambankingserver.database.windows.net; database = ExamBanking;uid=exambanking;pwd=Abyss040903@");
-            }
+            var builder = new ConfigurationBuilder()
+                  .SetBasePath(Directory.GetCurrentDirectory())
+                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,28 +66,28 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Accesses)
                     .HasForeignKey(d => d.Bankid)
-                    .HasConstraintName("FK__Access__bankid__6E01572D");
+                    .HasConstraintName("FK__Access__bankid__7E37BEF6");
 
                 entity.HasOne(d => d.From)
                     .WithMany(p => p.AccessFroms)
                     .HasForeignKey(d => d.Fromid)
-                    .HasConstraintName("FK__Access__fromid__6EF57B66");
+                    .HasConstraintName("FK__Access__fromid__7F2BE32F");
 
                 entity.HasOne(d => d.Repo)
                     .WithMany(p => p.Accesses)
                     .HasForeignKey(d => d.Repoid)
-                    .HasConstraintName("FK__Access__repoid__6FE99F9F");
+                    .HasConstraintName("FK__Access__repoid__00200768");
 
                 entity.HasOne(d => d.To)
                     .WithMany(p => p.AccessTos)
                     .HasForeignKey(d => d.Toid)
-                    .HasConstraintName("FK__Access__toid__70DDC3D8");
+                    .HasConstraintName("FK__Access__toid__01142BA1");
             });
 
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => e.Accid)
-                    .HasName("PK__Account__A472ABF2322E135D");
+                    .HasName("PK__Account__A472ABF24B9B86B0");
 
                 entity.ToTable("Account");
 
@@ -121,13 +121,13 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.Roleid)
-                    .HasConstraintName("FK__Account__roleid__71D1E811");
+                    .HasConstraintName("FK__Account__roleid__02084FDA");
             });
 
             modelBuilder.Entity<Answer>(entity =>
             {
                 entity.HasKey(e => e.Ansid)
-                    .HasName("PK__Answer__2626EE5882D22E93");
+                    .HasName("PK__Answer__2626EE58A507F86E");
 
                 entity.ToTable("Answer");
 
@@ -142,7 +142,7 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Ques)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.Quesid)
-                    .HasConstraintName("FK__Answer__quesid__72C60C4A");
+                    .HasConstraintName("FK__Answer__quesid__02FC7413");
             });
 
             modelBuilder.Entity<Bank>(entity =>
@@ -168,7 +168,7 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Acc)
                     .WithMany(p => p.Banks)
                     .HasForeignKey(d => d.Accid)
-                    .HasConstraintName("FK__Bank__accid__73BA3083");
+                    .HasConstraintName("FK__Bank__accid__03F0984C");
             });
 
             modelBuilder.Entity<Mode>(entity =>
@@ -185,7 +185,7 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Payment>(entity =>
             {
                 entity.HasKey(e => e.Payid)
-                    .HasName("PK__Payment__082D8EEBBF353082");
+                    .HasName("PK__Payment__082D8EEBF36D4657");
 
                 entity.ToTable("Payment");
 
@@ -206,13 +206,13 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Acc)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.Accid)
-                    .HasConstraintName("FK__Payment__accid__74AE54BC");
+                    .HasConstraintName("FK__Payment__accid__04E4BC85");
             });
 
             modelBuilder.Entity<Question>(entity =>
             {
                 entity.HasKey(e => e.Quesid)
-                    .HasName("PK__Question__8FF5F51D54528006");
+                    .HasName("PK__Question__8FF5F51DC6F1E4F5");
 
                 entity.ToTable("Question");
 
@@ -231,12 +231,12 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Mode)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.Modeid)
-                    .HasConstraintName("FK__Question__modeid__75A278F5");
+                    .HasConstraintName("FK__Question__modeid__05D8E0BE");
 
                 entity.HasOne(d => d.Sec)
                     .WithMany(p => p.Questions)
                     .HasForeignKey(d => d.Secid)
-                    .HasConstraintName("FK__Question__secid__76969D2E");
+                    .HasConstraintName("FK__Question__secid__06CD04F7");
             });
 
             modelBuilder.Entity<Repo>(entity =>
@@ -258,12 +258,12 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Repos)
                     .HasForeignKey(d => d.Bankid)
-                    .HasConstraintName("FK__Repo__bankid__778AC167");
+                    .HasConstraintName("FK__Repo__bankid__07C12930");
 
                 entity.HasOne(d => d.SecondeditorNavigation)
                     .WithMany(p => p.Repos)
                     .HasForeignKey(d => d.Secondeditor)
-                    .HasConstraintName("FK__Repo__secondedit__787EE5A0");
+                    .HasConstraintName("FK__Repo__secondedit__08B54D69");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -280,7 +280,7 @@ namespace ExamBanking.Models
             modelBuilder.Entity<Section>(entity =>
             {
                 entity.HasKey(e => e.Secid)
-                    .HasName("PK__Section__C25197F0BE545F53");
+                    .HasName("PK__Section__C25197F00D89311C");
 
                 entity.ToTable("Section");
 
@@ -295,7 +295,7 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Repo)
                     .WithMany(p => p.Sections)
                     .HasForeignKey(d => d.Repoid)
-                    .HasConstraintName("FK__Section__repoid__797309D9");
+                    .HasConstraintName("FK__Section__repoid__09A971A2");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -319,12 +319,12 @@ namespace ExamBanking.Models
                 entity.HasOne(d => d.Acc)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.Accid)
-                    .HasConstraintName("FK__Ticket__accid__18EBB532");
+                    .HasConstraintName("FK__Ticket__accid__0A9D95DB");
 
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.Bankid)
-                    .HasConstraintName("FK__Ticket__bankid__19DFD96B");
+                    .HasConstraintName("FK__Ticket__bankid__0B91BA14");
             });
 
             OnModelCreatingPartial(modelBuilder);
