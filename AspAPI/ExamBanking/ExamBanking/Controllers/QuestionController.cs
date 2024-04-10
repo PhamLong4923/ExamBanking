@@ -5,6 +5,7 @@ using ExamBanking.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace ExamBanking.Controllers
 {
@@ -20,17 +21,35 @@ namespace ExamBanking.Controllers
             _rquestion = rquestion;
             
         }
-        
-        
+
+
         [HttpGet("listQuestion")]
         public IActionResult GetQuestion(int sectionid)
         {
             var listQuestion = _context.Questions
-                        .Include(q => q.Answers)
-                        .Where(a => a.Secid == sectionid)
-                        .ToList();
+                            .Include(q => q.Answers)
+                            .Where(a => a.Secid == sectionid)
+                            .ToList();
 
-            return Ok(listQuestion);
+            // Convert each question to HTML format
+            var htmlList = new List<object>();
+            foreach (var question in listQuestion)
+            {
+                var htmlQuestion = new
+                {
+                    type = question.Type.ToString(),
+                    content = $"<p>{question.Quescontent}</p>",
+                    difficulty = question.Modeid.ToString(),
+                    solution = $"<p>{question.Solution}</p>",
+                    answers = question.Answers.Select(a => $"<p>{a.Anscontent}</p>").ToList()
+                };
+                htmlList.Add(htmlQuestion);
+            }
+
+           
+            var json = JsonConvert.SerializeObject(htmlList, Formatting.Indented);
+
+            return Ok(json);
         }
         //create question using rquestion
         [HttpPost("CreateQuestion")]
@@ -41,10 +60,10 @@ namespace ExamBanking.Controllers
         }
         
         [HttpPut("EditQuestion")]
-        public IActionResult EditQuestion(EditQuestionRequest question)
+        public IActionResult EditQuestion(int question)
         {
             _rquestion.EditQuestion(question);
-            return Ok(question.Quesid);
+            return Ok(question);
         }
         
         [HttpDelete("DeleteQuestion")]

@@ -392,8 +392,8 @@
     "Parameters": [
       {
         "Name": "question",
-        "Type": "ExamBanking.DTO.QuestionDto.EditQuestionRequest",
-        "IsRequired": true
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
