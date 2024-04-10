@@ -60,10 +60,10 @@ namespace ExamBanking.Controllers
         }
         
         [HttpPut("EditQuestion")]
-        public IActionResult EditQuestion(EditQuestionRequest question)
+        public IActionResult EditQuestion(int question)
         {
             _rquestion.EditQuestion(question);
-            return Ok(question.Quesid);
+            return Ok(question);
         }
         
         [HttpDelete("DeleteQuestion")]
