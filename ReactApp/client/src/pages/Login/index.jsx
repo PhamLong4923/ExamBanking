@@ -49,7 +49,6 @@ const LoginAndRegister = () => {
                             <Button type="primary" style={{ width: '100%', marginBottom: '10px' }}>Login</Button>
                             <p style={{ textAlign: 'center', marginBottom: '10px' }}>hoặc</p>
                             <GoogleLogin
-                                clientId="YOUR_CLIENT_ID.apps.googleusercontent.com"
                                 buttonText="Đăng nhập bằng Google"
                                 onSuccess={responseGoogle}
                                 onFailure={responseGoogle}

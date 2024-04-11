@@ -9,7 +9,7 @@ import { errors, success, warning } from '../../../components/ui/notifications';
 import { setBankId } from '../../../redux-setup/action';
 import { addBank, delBank, getBank, updateBank } from '../../../services/api';
 import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_LIMIT_MESSAGE, SYSTEM_SUCCESS_MESSAGE } from '../../../share/constrains';
-
+import setLimit from '../../../ultils/setlimit';
 
 const Bank = () => {
 
@@ -37,7 +37,7 @@ const Bank = () => {
             try {
                 const response = await getBank();
                 setBanks(response.data);
-                // setIsLimit(setLimit('bank', response.data.length));
+                setIsLimit(setLimit('bank', response.data.length));
                 setLoading(false);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -55,7 +55,7 @@ const Bank = () => {
     }, []);
 
     useEffect(() => {
-        // setIsLimit(setLimit('bank', banks.length));
+        setIsLimit(setLimit('bank', banks.length));
     }, [banks]);
 
     const handleAddBank = async (id, value) => {
@@ -66,8 +66,8 @@ const Bank = () => {
             setBanks([
                 ...banks,
                 {
-                    id: newid,
-                    name: value,
+                    bankid: newid,
+                    bankname: value,
                 },
             ]);
             success(SYSTEM_SUCCESS_MESSAGE, 2);
@@ -83,7 +83,7 @@ const Bank = () => {
         try {
             const response = await delBank(id);
             var dbid = response.data;
-            const updatedBanks = banks.filter(b => b.id !== dbid);
+            const updatedBanks = banks.filter(b => b.bankid !== dbid);
             setBanks(updatedBanks);
             setCfvisible(false);
             success(SYSTEM_SUCCESS_MESSAGE, 2);
@@ -100,7 +100,7 @@ const Bank = () => {
 
             if (response.data === id) {
                 setBanks(prev =>
-                    prev.map(bank => bank.id === id ? { ...bank, name: newname } : bank)
+                    prev.map(bank => bank.bankid === id ? { ...bank, bankname: newname } : bank)
                 );
                 setEditModalVisible(false);
                 success(SYSTEM_SUCCESS_MESSAGE, 2);
@@ -116,10 +116,10 @@ const Bank = () => {
     const handleMenuClick = (e, record) => {
         const { key } = e;
         if (key === 'delete') {
-            setDeleteItemId(record.id);
-            setCfvisible({ [record.id]: true });
+            setDeleteItemId(record.bankid);
+            setCfvisible({ [record.bankid]: true });
         } else if (key === 'edit') {
-            setEditItemId(record.id);
+            setEditItemId(record.bankid);
             setEditModalVisible(true);
         }
     };
@@ -135,7 +135,7 @@ const Bank = () => {
     const columns = [
         {
             title: 'Tên',
-            dataIndex: 'name',
+            dataIndex: 'bankname',
             key: 'name',
         },
         {
@@ -158,7 +158,7 @@ const Bank = () => {
     ];
 
     const handleRowClick = (record) => {
-        dispatch(setBankId(record.id));
+        dispatch(setBankId(record.bankid));
     };
 
     return (
@@ -180,7 +180,7 @@ const Bank = () => {
                 columns={columns}
                 align="center"
                 loading={loading}
-                rowKey="id"
+                rowKey="bankid"
                 rowClassName="row-clickable"
                 onRow={(record, rowIndex) => { return { onDoubleClick: (event) => { handleRowClick(record) } } }} />
             <ConfirmationModal

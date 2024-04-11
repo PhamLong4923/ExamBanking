@@ -15,7 +15,7 @@ const { Sider, Content } = Layout;
 
 const App = () => {
   return (
-    <GoogleOAuthProvider clientId="938499363807-98j4h24p097far090tfuund563hs82od.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="961165515652-b6pd4d1492do15fspi8ssa268o4h1ce6.apps.googleusercontent.com">
       <Provider store={store}>
         <BrowserRouter>
           <Layout style={{ minHeight: '100vh' }}>

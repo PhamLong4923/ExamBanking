@@ -1,13 +1,17 @@
 // Import Firebase SDK
 import { firebase } from '../../services/firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-
+import checkFileExists from '../../ultils/checkurlexist';
 
 
 // Hàm tải lên ảnh lên Firebase Storage
 const uploadImageToFirebase = async (src) => {
     // Tạo tham chiếu tới Firebase Storage
     const storage = getStorage(firebase);
+
+    if (checkFileExists(src)) {
+        return src; // trả về nếu tồn tại
+    }
 
     // Tạo tên ngẫu nhiên cho ảnh
     const imageName = Math.random().toString(36).substring(2);

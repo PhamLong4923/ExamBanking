@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Select, Button, Table, Space } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import Ckeditor from '../tool/ckeditor';
@@ -41,11 +41,14 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
             dataIndex: 'content',
             key: 'content',
             render: (text, record) => (
-                <Ckeditor
-                    dataOnChange={(data) => handleAnswerChange(data, record.id)}
-                    editorId={`answer_${record.id}`}
-                    cdata={''}
-                />
+                <div style={{ width: "90%", overflowY: "auto" }}>
+                    <Ckeditor
+                        dataOnChange={(data) => handleAnswerChange(data, record.id)}
+                        editorId={`answer_${record.id}`}
+                        cdata={''}
+                    />
+                </div>
+
             ),
         },
         {
@@ -98,7 +101,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                     solution: updatedSolutionData,
                     answers: updatedAnswers.map(answer => answer.content)
                 };
-
+                console.log(question);
                 onSave(question);
                 onCancel();
             } catch (error) {
@@ -127,6 +130,16 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
     };
 
     //End save use firebase
+
+    useEffect(() => {
+        if (!open) {
+            setQuestionType('');
+            setQdata('');
+            setDifficultyLevel('');
+            setSolutionData('');
+            setAnswers([{ key: '1', id: Date.now(), content: '' }]);
+        }
+    }, [open]);
 
     return (
         <Modal
@@ -183,6 +196,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                         columns={columns}
                         pagination={false}
                         rowKey={(record) => record.id}
+
                     />
                     <Button
                         onClick={handleAddAnswer}

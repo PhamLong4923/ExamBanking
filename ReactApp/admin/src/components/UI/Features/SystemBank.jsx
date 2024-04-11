@@ -2,7 +2,7 @@ import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import AdminRepository from './Repository';
+import AdminRepository from '../Features/repository.jsx';
 
 const { Option } = Select;
 
