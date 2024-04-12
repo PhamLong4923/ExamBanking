@@ -5,17 +5,22 @@ import {
   ShopOutlined,
   TeamOutlined,
   UploadOutlined,
+  UserAddOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  VideoCameraOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AccessManagement from './components/UI/Features/AccessManagement';
 import AccountManagement from './components/UI/Features/AccountManagement';
 import Home from './components/UI/Features/AdminHome';
+import AdminSection from './components/UI/Features/AdminSection';
 import Analysis from './components/UI/Features/Analysis';
 import Payment from './components/UI/Features/Payment';
+import AdminRepository from './components/UI/Features/Repository';
 import SystemBank from './components/UI/Features/SystemBank';
 import Profile from './components/UI/Users/profile';
 
@@ -61,20 +66,54 @@ const items = [
   {
     key: '6',
     icon: <VideoCameraOutlined />,
-    label: 'SystemRepo'
+    label: 'System Repo',
+    link: '/system_bank/:bankId/system_repo'
   },
   {
     key: '7',
     icon: <UploadOutlined />,
-    label: 'SystemSection',
+    label: 'System Section',
+    link: '/system_bank/:bankId/system_repo/:repoId/system_setion'
   },
+  {
+    key: '8',
+    icon: <UserAddOutlined />,
+    label: 'Access Management',
+    link: '/system_bank/:bankId/access_management'
+  }
 ];
 
 const App = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  const [selectedMenu, setSelectedMenu] = useState('0'); // Initialize selectedMenu state
+  const [selectedMenu, setSelectedMenu] = useState();
+  const location = useLocation()
+
+  // useEffect(() => {
+  //   const currentPath = location.pathname;
+  //   const selectedItem = items.find(item => {
+  //     const linkParts = item.link.split('/').filter(part => part !== ''); // Lọc bỏ các phần tử rỗng
+  //     const pathParts = currentPath.split('/').filter(part => part !== ''); // Lọc bỏ các phần tử rỗng
+  //     if (linkParts.length !== pathParts.length) return false; // Kiểm tra độ dài của hai mảng
+  //     return linkParts.every((part, index) => {
+  //       if (part.startsWith(':')) return true; // Nếu phần tử bắt đầu bằng ':' thì bỏ qua kiểm tra
+  //       return part === pathParts[index]; // Kiểm tra xem mỗi phần tử của link có trùng khớp với mỗi phần tử của pathname không
+  //     });
+  //   });
+  //   if (selectedItem) {
+  //     setSelectedMenu(selectedItem.key);
+  //   }
+  // }, [location]);
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const [mainLink] = currentPath.split('/').slice(1);
+    const selectedItem = items.find(item => currentPath.startsWith(item.link));
+    if (selectedItem) {
+      setSelectedMenu(selectedItem.key);
+    }
+  }, [location]);
+
 
   const handleMenuClick = (e) => {
     setSelectedMenu(e.key);
@@ -101,10 +140,9 @@ const App = () => {
           onClick={handleMenuClick}
         >
           {items.map((item) => (
-            // Check if the key is not '6' or '7' before rendering
-            (item.key !== '6' && item.key !== '7') && (
+            (item.key < 6) && (
               <Menu.Item key={item.key} icon={item.icon}>
-                {item.label}
+                <NavLink to={item.link}>{item.label}</NavLink>
               </Menu.Item>
             )
           ))}
@@ -134,14 +172,25 @@ const App = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            {selectedMenu === '0' && <Home />}
-            {selectedMenu === '1' && <Profile />}
-            {selectedMenu === '2' && <Analysis />}
-            {selectedMenu === '3' && <SystemBank />}
-            {selectedMenu === '4' && <AccountManagement />}
-            {selectedMenu === '5' && <Payment />}
-            {selectedMenu === '6' && null}
-            {selectedMenu === '7' && null}
+            {/* {selectedMenu === '0' && <Home />}
+              {selectedMenu === '1' && <Profile />}
+              {selectedMenu === '2' && <Analysis />}
+              {selectedMenu === '3' && <SystemBank />}
+              {selectedMenu === '4' && <AccountManagement />}
+              {selectedMenu === '5' && <Payment />}
+              {selectedMenu === '6' && null}
+              {selectedMenu === '7' && null} */}
+            <Routes>
+              <Route path="/home" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/analysis" element={<Analysis />} />
+              <Route path="/system_bank" element={<SystemBank />} />
+              <Route path="/account_management" element={<AccountManagement />} />
+              <Route path="/payment_management" element={<Payment />} />
+              <Route path="/system_bank/:bankId/system_repo" element={<AdminRepository />} />
+              <Route path="/system_bank/:bankId/system_repo/:repoId/system_section" element={<AdminSection />} />
+              <Route path="/system_bank/:bankId/access_management" element={<AccessManagement />} />
+            </Routes>
             <ToastContainer
               position="bottom-right"
               autoClose={3000}

@@ -1,36 +1,43 @@
-import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
+import { Button, Flex, Form, Input, Modal, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import AdminSection from './AdminSection';
-import SystemBank from './SystemBank';
-
-const { Option } = Select;
 
 const AdminRepository = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [isToastOpen, setIsToastOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState('AdminRepository');
-    const [idCurrentPage, setIdCurrentPage] = useState('');
-
-    const changePage = (pageName, id) => {
-        setCurrentPage(pageName);
-        setIdCurrentPage(id);
-    };
+    const { bankId } = useParams();
 
     const [dataSource, setDataSource] = useState([
         {
             key: '1',
             name: 'Chương 1',
-            description: 'Toán',
+            description: 'Hàm số',
+            bankId: 1,
             date: moment().format('DD/MM/YYYY'),
         },
         {
             key: '2',
             name: 'Chương 2',
-            description: 'Anh',
+            description: 'Đồ thị',
+            bankId: 1,
+            date: moment().format('DD/MM/YYYY'),
+        },
+        {
+            key: '3',
+            name: 'Chapter 1',
+            description: 'Family',
+            bankId: 2,
+            date: moment().format('DD/MM/YYYY'),
+        },
+        {
+            key: '4',
+            name: 'Chapter 2',
+            description: 'Country',
+            bankId: 2,
             date: moment().format('DD/MM/YYYY'),
         },
     ]);
@@ -40,7 +47,7 @@ const AdminRepository = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <a onClick={() => changePage('AdminSection', record)}>{text}</a>,
+            render: (text, record) => <a href={`/system_bank/${bankId}/system_repo/${record.key}/system_section`}>{text}</a>,
         },
         {
             title: 'Description',
@@ -135,7 +142,7 @@ const AdminRepository = () => {
                         setVisible(false);
                     }
                 } else { // Nếu thêm mới
-                    setDataSource([...dataSource, { ...values, key: (dataSource.length + 1).toString(), date: moment().format('DD/MM/YYYY') }]);
+                    setDataSource([...dataSource, { ...values, key: (dataSource.length + 1).toString(), date: moment().format('DD/MM/YYYY'), bankId: bankId }]);
                     setVisible(false);
                 }
             })
@@ -153,42 +160,37 @@ const AdminRepository = () => {
 
     return (
         <div>
-            {currentPage === 'AdminRepository' &&
-                <div>
-                    <a onClick={() => changePage('SystemBank', null)}>Back</a>
-                    <Button type="primary" onClick={showModal}>
-                        Add repository
-                    </Button>
-                    <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
+            <div>
+                <Button type="primary" onClick={showModal}>
+                    Add repository
+                </Button>
+                <Table dataSource={dataSource.filter(item => parseInt(item.bankId) === parseInt(bankId))} columns={columns} pagination={{ pageSize: 8 }} />
 
-                    <Modal
-                        title="Add repository"
-                        open={visible}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
+                <Modal
+                    title="Add repository"
+                    open={visible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                >
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        initialValues={{
+                            // description: 'abc',
+                        }}
                     >
-                        <Form
-                            form={form}
-                            layout="vertical"
-                            initialValues={{
-                                // description: 'abc',
-                            }}
-                        >
-                            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Description" name="description">
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Date" name="date">
-                                <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
-                            </Form.Item>
-                        </Form>
-                    </Modal>
-                </div>
-            }
-            {currentPage === 'SystemBank' && <SystemBank />}
-            {currentPage === 'AdminSection' && <AdminSection />}
+                        <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Description" name="description">
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Date" name="date">
+                            <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </div>
         </div>
     );
 };
