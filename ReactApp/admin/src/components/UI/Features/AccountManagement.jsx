@@ -160,6 +160,7 @@ const AccountManagement = () => {
       <Button type="primary" onClick={showModal}>
         Add User
       </Button>
+      <br /><br />
       <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
       <Modal
