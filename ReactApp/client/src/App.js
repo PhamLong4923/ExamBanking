@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { NavLink, Route, BrowserRouter, Routes } from 'react-router-dom';
-import LoginAndRegister from './pages/login';
+import LoginAndRegister from './pages/Login';
 import { Provider } from 'react-redux';
 import store from './redux-setup/store';
 import BankPage from './pages/Bank';
@@ -10,11 +10,12 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import Services from './pages/Services';
 import ExamPage from './pages/Exam';
 
+
 const { Sider, Content } = Layout;
 
 const App = () => {
   return (
-    <GoogleOAuthProvider clientId="938499363807-98j4h24p097far090tfuund563hs82od.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="961165515652-b6pd4d1492do15fspi8ssa268o4h1ce6.apps.googleusercontent.com">
       <Provider store={store}>
         <BrowserRouter>
           <Layout style={{ minHeight: '100vh' }}>
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/services" element={<Services />} />
                     <Route path="/bank" element={<BankPage />} />
                     <Route path="/exam-creator" element={<ExamPage />} />
+                    <Route path="/ck" element={<></>} />
                   </Routes>
 
                 </div>

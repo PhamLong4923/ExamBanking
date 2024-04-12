@@ -184,7 +184,7 @@ const Bank = () => {
                 loading={loading}
                 rowKey="repoid"
                 rowClassName="row-clickable"
-                onRow={(record, rowIndex) => { return { onClick: (event) => { handleRowClick(record) } } }} />
+                onRow={(record, rowIndex) => { return { onDoubleClick: (event) => { handleRowClick(record) } } }} />
             <ConfirmationModal
                 isvisible={Object.values(cfvisible).includes(true)}
                 onCancel={() => setCfvisible({})}

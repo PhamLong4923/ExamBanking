@@ -1,5 +1,25 @@
 [
   {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "getIsnewbie",
+    "RelativePath": "api/Account/NewBie",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "UpdateIsnewUser",
+    "RelativePath": "api/Account/UpdateIsnewUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.AnswersController",
     "Method": "GetAnswers",
     "RelativePath": "api/Answers",
@@ -247,6 +267,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "UpdateBankMode",
+    "RelativePath": "api/Bank/Update_bankMode",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "mode",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ExamBanking.Controllers.ExamController",
     "Method": "CreateExam",
     "RelativePath": "api/Exam/CreateExam",
@@ -271,6 +312,22 @@
       },
       {
         "Name": "applyCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.ExamController",
+    "Method": "CreateExam",
+    "RelativePath": "api/Exam/ShowExam",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "repoId",
         "Type": "System.Int32",
         "IsRequired": false
       }
@@ -335,8 +392,8 @@
     "Parameters": [
       {
         "Name": "question",
-        "Type": "ExamBanking.DTO.QuestionDto.EditQuestionRequest",
-        "IsRequired": true
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -414,14 +471,14 @@
     "ContainingType": "ExamBanking.Controllers.RepositoriesController",
     "Method": "GetRepo",
     "RelativePath": "api/Repositories/GetRepo",
-    "HttpMethod": "POST",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.RepoDto.ListRepoRequest",
-        "IsRequired": true
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -491,6 +548,38 @@
         "Name": "repoid",
         "Type": "System.Int32",
         "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "CreateTicket",
+    "RelativePath": "api/Ticket",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.TicketDto.CreateTicketRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "DeleteTicket",
+    "RelativePath": "api/Ticket",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.TicketDto.DeleteTicketRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []

@@ -12,6 +12,7 @@ namespace ExamBanking.Models
             Banks = new HashSet<Bank>();
             Payments = new HashSet<Payment>();
             Repos = new HashSet<Repo>();
+            Tickets = new HashSet<Ticket>();
         }
 
         public decimal Accid { get; set; }
@@ -25,6 +26,8 @@ namespace ExamBanking.Models
         public DateTime? ResetTokenExpires { get; set; }
         public int? Roleid { get; set; }
         public int? Bankmode { get; set; }
+        public int? Isnewbie { get; set; }
+        public int? Ticketmode { get; set; }
 
         public virtual Role? Role { get; set; }
         public virtual ICollection<Access> AccessFroms { get; set; }
@@ -32,10 +35,6 @@ namespace ExamBanking.Models
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Repo> Repos { get; set; }
-
-        public override string? ToString()
-        {
-            return $"Account ID: {Accid}, Email: {Email}, Name: {Accname}, Role: {Roleid}";
-        }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

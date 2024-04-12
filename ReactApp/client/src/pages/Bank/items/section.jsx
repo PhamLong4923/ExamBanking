@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Select, Button, Space, Collapse, Typography, List, Spin, Empty } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined, BulbOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, EditOutlined, BulbOutlined, CloseOutlined } from '@ant-design/icons';
 import ConfirmationModal from '../../../components/ui/confirmModel';
 import MyBreadCrumb from '../../../components/ui/breadcrumb';
 import setLimit from '../../../ultils/setlimit';
 import { useSelector } from 'react-redux';
 import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_SUCCESS_MESSAGE, SYSTEM_LIMIT_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../../share/constrains';
 import { success, errors, warning } from '../../../components/ui/notifications';
-import { getSection, addSection, updateSection, delSection, getQuestions } from '../../../services/api';
+import { getSection, addSection, updateSection, delSection, getQuestions, delQuestions } from '../../../services/api';
 import EditModal from '../../../components/ui/editNameModel';
+import QuestionModal from '../../../components/ui/createquestionmodal.jsx'
+import EditQuestionModal from '../../../components/ui/editquestionmodal.jsx';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -37,6 +39,7 @@ const Section = () => {
     const [addquesmodal, setAddQuesModal] = useState(false);
 
     const [editsecmodal, setEditSecModal] = useState(false);
+    const [editquesid, setEditQuesId] = useState(null);
 
     const [selectSec, setSelectSec] = useState(null);
 
@@ -187,66 +190,78 @@ const Section = () => {
         loadQuestions();
     }, [selectSec]);
 
+    const handleOpenQuesModal = () => {
+        if (selectSec !== null) {
+            setAddQuesModal(true);
+        } else {
+            warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
+        }
+
+    }
+
+    const handleCancelQuesModal = () => {
+        setAddQuesModal(false);
+    }
+
+    const handleOnSaveQues = (data) => {
+        console.log(data);
+    }
+
+    const handleDeleteQuestion = async (id) => {
+        try {
+            const response = await delQuestions(id);
+            var dqid = response.data;
+            const updatedQuestions = questions.filter(question => question.id !== id);
+            setQuestions(updatedQuestions);
+            setConfirmationModalVisible(false);
+        } catch (error) {
+            errors(SYSTEM_ERROR_MESSAGE, 2);
+            console.log(error);
+        }
+    };
+
+    const handleOpenEditQuestion = (id) => {
+        setEditQuesId(id);
+    };
+
+    const handleSaveEditQues = () => {
+        success(SYSTEM_SUCCESS_MESSAGE, 2);
+    }
+
 
     //==========================End Question Tool Area==========================//
 
     const [questions, setQuestions] = useState([
         {
-            id: 1,
-            question: 'What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color?',
-            answers: ['Red', 'Blue', 'Green'],
+            quesid: 1,
+            quescontent: 'What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color?',
+            answers: [
+                { ansid: 1, anscontent: 'Red' },
+                { ansid: 2, anscontent: 'Blue' },
+                { ansid: 3, anscontent: 'Green' }
+            ],
             solution: 'The solution for the favorite color question is to choose the color that you like the most.',
+            type: 1,
+            modeid: 2,
         },
         {
-            id: 2,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
+            quesid: 2,
+            quescontent: 'Which programming language do you prefer?',
+            answers: [
+                { ansid: 4, anscontent: 'JavaScript' },
+                { ansid: 5, anscontent: 'Python' },
+                { ansid: 6, anscontent: 'Java' },
+                { ansid: 7, anscontent: 'C++' }
+            ],
             solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 3,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 4,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 5,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 6,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 7,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 8,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-        },
-        {
-            id: 9,
-            question: 'Which programming language do you prefer?',
-            answers: ['JavaScript', 'Python', 'Java', 'C++'],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
+            type: 1,
+            modeid: 3,
         },
 
+
+        // Thêm các câu hỏi khác ở đây
     ]);
+
 
     const handleFilter1Change = (value) => {
         setFilter1(value);
@@ -268,15 +283,9 @@ const Section = () => {
         setQuestions([...questions, { id: questions.length + 1, question: '', answers: [''], solution: '' }]);
     };
 
-    const handleDeleteQuestion = (id) => {
-        const updatedQuestions = questions.filter(question => question.id !== id);
-        setQuestions(updatedQuestions);
-        setConfirmationModalVisible(false);
-    };
 
-    const handleEditQuestion = (id) => {
-        // Handle edit question logic here
-    };
+
+
 
     const handleItemClick = (id) => {
         setSelectSec(id === selectSec ? null : id); // Nếu item đã được chọn thì bỏ chọn, ngược lại chọn item mới
@@ -288,146 +297,162 @@ const Section = () => {
         setConfirmationModalVisible2(false);
     }
 
-    return (
-        <>
-            <MyBreadCrumb path={3}></MyBreadCrumb>
-            <div style={{ display: 'flex', height: '80vh' }}>
 
-                {/* Phần 7/10 */}
-                <div style={{ flex: '70%', padding: '20px' }}>
 
-                    <div style={{ marginBottom: '20px' }}>
-                        <Input placeholder="Search" style={{ width: '200px', marginRight: '10px' }} />
-                        <Select value={filter1} onChange={handleFilter1Change} style={{ width: '120px', marginRight: '10px' }}>
-                            <Option value="1">Filter 1A</Option>
-                            <Option value="2">Filter 1B</Option>
-                            <Option value="3">All</Option>
-                        </Select>
-                        {filter1 === '1' && (
-                            <Select value={filter2} onChange={handleFilter2Change} style={{ width: '120px', marginRight: '10px' }}>
-                                <Option value="A">Filter 2A</Option>
-                                <Option value="B">Filter 2B</Option>
+    if (editquesid !== null) {
+        return (
+            <>
+                <EditQuestionModal qdata={questions.find(q => q.quesid === editquesid)} onCancel={() => setEditQuesId(null)} onSave={() => handleSaveEditQues()}></EditQuestionModal>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <MyBreadCrumb path={3}></MyBreadCrumb>
+                <div style={{ display: 'flex', height: '80vh' }}>
+
+                    {/* Phần 7/10 */}
+                    <div style={{ flex: '70%', padding: '20px' }}>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <Input placeholder="Search" style={{ width: '200px', marginRight: '10px' }} />
+                            <Select value={filter1} onChange={handleFilter1Change} style={{ width: '120px', marginRight: '10px' }}>
+                                <Option value="1">Trắc nghiệm</Option>
+                                <Option value="2">Tự luận</Option>
+                                <Option value="3">Tất cả</Option>
                             </Select>
-                        )}
-                        {filter1 === '2' && (
-                            <Select value={filter3} onChange={handleFilter3Change} style={{ width: '120px', marginRight: '10px' }}>
-                                <Option value="X">Filter 3X</Option>
-                                <Option value="Y">Filter 3Y</Option>
-                            </Select>
-                        )}
-                    </div>
-                    {/* <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
-                    <Space>
-                        <Button type="text" icon={<CloseOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                        <Tag color="blue" style={{ fontSize: '16px' }}>{selectedCount} selected</Tag>
-                        <Button type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                        <Button type="text" icon={<DeleteOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                    </Space>
-                </div> */}
-                    <div style={{ height: '100%', overflowY: 'auto' }}>
-                        {questions.map((question) => (
-                            <Collapse key={question.id} style={{ marginBottom: '10px' }}>
-                                <Panel
-                                    header={(
-                                        <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            <div>
-                                                <Text>{question.question}</Text>
-                                            </div>
+                            {filter1 === '1' && (
+                                <Select value={filter2} onChange={handleFilter2Change} style={{ width: '120px', marginRight: '10px' }}>
+                                    <Option value="1">Nhận biết</Option>
+                                    <Option value="2">Thông hiểu</Option>
+                                    <Option value="3">Vận dụng</Option>
+                                    <Option value="4">Vận dụng cao</Option>
+                                </Select>
+                            )}
+                            {filter1 === '2' && (
+                                <Select value={filter3} onChange={handleFilter3Change} style={{ width: '120px', marginRight: '10px' }}>
+                                    <Option value="5">Dễ</Option>
+                                    <Option value="6">Trung bình</Option>
+                                    <Option value="7">Khó</Option>
+                                    <Option value="8">Nâng cao</Option>
+                                </Select>
+                            )}
+                        </div>
+                        <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
+                            <Space>
 
-                                            <Space >
-                                                <Button type="text" icon={<BulbOutlined />} />
-                                                <Button type="text" icon={<EditOutlined />} onClick={() => handleEditQuestion(question.id)} />
-                                                <Button onClick={() => setConfirmationModalVisible(prevState => ({ ...prevState, [question.id]: true }))} type="text" icon={<DeleteOutlined />} />
-                                                <ConfirmationModal isvisible={confirmationModalVisible[question.id]} onCancel={() => setConfirmationModalVisible(prevState => ({ ...prevState, [question.id]: false }))} onOk={() => handleDeleteQuestion(question.id)} />
+                                <Button onClick={() => handleOpenQuesModal()} type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+
+                            </Space>
+                            <QuestionModal open={addquesmodal} onSave={handleOnSaveQues} onCancel={handleCancelQuesModal} secid={selectSec} ></QuestionModal>
+                        </div>
+                        <div style={{ height: '90%', overflowY: 'auto' }}>
+                            {questions.map((question) => (
+                                <Collapse key={question.quesid} style={{ marginBottom: '10px' }}>
+                                    <Panel
+                                        header={(
+                                            <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                <div>
+                                                    <Text>{question.quescontent}</Text>
+                                                </div>
+
+                                                <Space >
+                                                    <Button type="text" icon={<BulbOutlined />} />
+                                                    <Button type="text" icon={<EditOutlined />} onClick={() => handleOpenEditQuestion(question.quesid)} />
+                                                    <Button onClick={() => setConfirmationModalVisible(prevState => ({ ...prevState, [question.quesid]: true }))} type="text" icon={<DeleteOutlined />} />
+                                                    <ConfirmationModal isvisible={confirmationModalVisible[question.quesid]} onCancel={() => setConfirmationModalVisible(prevState => ({ ...prevState, [question.quesid]: false }))} onOk={() => handleDeleteQuestion(question.quesid)} />
+
+                                                </Space>
+
 
                                             </Space>
-
-
-                                        </Space>
-                                    )}
-                                >
-                                    <div style={{ flex: '70%', padding: '20px', overflowY: 'auto' }}>
-                                        {question.answers.map((answer, idx) => (
-                                            <div key={idx}>
-                                                <Text>{answer}</Text>
-                                            </div>
-                                        ))}
-
-                                        {question.solution && (
-                                            <div style={{ marginTop: '10px', maxHeight: '300px', overflowY: 'auto', backgroundColor: 'azure' }}>
-                                                <Collapse ghost>
-                                                    <Panel header="Solution" key="1">
-                                                        <Text>{question.solution}</Text>
-                                                    </Panel>
-                                                </Collapse>
-                                            </div>
                                         )}
-                                    </div>
+                                    >
+                                        <div style={{ flex: '70%', padding: '20px', overflowY: 'auto' }}>
+                                            {question.answers.map((answer, idx) => (
+                                                <div key={idx}>
+                                                    <Text>{answer.anscontent}</Text>
+                                                </div>
+                                            ))}
 
-                                </Panel>
-                            </Collapse>
-                        ))}
+                                            {question.solution && (
+                                                <div style={{ marginTop: '10px', maxHeight: '300px', overflowY: 'auto', backgroundColor: 'azure' }}>
+                                                    <Collapse ghost>
+                                                        <Panel header="Solution" key="1">
+                                                            <Text>{question.solution}</Text>
+                                                        </Panel>
+                                                    </Collapse>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                    </Panel>
+                                </Collapse>
+                            ))}
+                        </div>
+                    </div>
+                    {/* Phần 3/10 */}
+                    <div style={{ flex: '30%', padding: '20px', borderLeft: '1px solid #ccc', flexDirection: 'column' }}>
+                        <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
+                            <Space>
+                                <Button onClick={() => handleOpenAddSecModel(seclimit)} type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                                <Button onClick={() => handleOpenEditSecModal()} type="text" icon={<EditOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                                <Button onClick={() => handleOpenDeleteSecModal()} type="text" icon={<DeleteOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
+                                <ConfirmationModal isvisible={confirmationModalVisible2[selectSec]} onCancel={() => setConfirmationModalVisible2(prevState => ({ ...prevState, [selectSec]: false }))} onOk={() => handleDeleteSection(selectSec)} />
+                            </Space>
+                            {/*============Modal Space============*/}
+                            <EditModal
+                                title={'Nhập tên bài'}
+                                visible={addsecmodal}
+                                onCancel={() => setAddSecModal(false)}
+                                onOk={handleAddSection}
+                                id={repoId}
+
+                            />
+
+                            <EditModal
+                                title={'Nhập tên bài'}
+                                visible={editsecmodal}
+                                onCancel={() => setEditSecModal(false)}
+                                onOk={handleEditSection}
+                                id={selectSec}
+
+                            />
+
+                            <ConfirmationModal
+                                isvisible={cfvisible}
+                                onCancel={() => setCfvisible(false)}
+                                onOk={() => handleDeleleteSecion(selectSec)}
+                            />
+                            {/*============Modal Space============*/}
+                        </div>
+
+                        <div style={{ marginBottom: '20px', overflowY: 'auto', height: '98%' }}>
+                            <List
+                                dataSource={sections}
+                                loading={false}
+                                locale={{ emptyText: <Empty description="Không có dữ liệu" /> }}
+                                renderItem={item => (
+                                    <Button
+                                        type={selectSec === item.secid ? 'primary' : 'default'}
+                                        onClick={() => handleItemClick(item.secid)}
+                                        style={{ marginTop: '10px', textAlign: 'left', width: '100%' }}
+                                    >
+                                        <div>
+                                            <Text strong>{item.secname}</Text>
+                                        </div>
+                                    </Button>
+                                )}
+                            />
+                        </div>
                     </div>
                 </div>
-                {/* Phần 3/10 */}
-                <div style={{ flex: '30%', padding: '20px', borderLeft: '1px solid #ccc', flexDirection: 'column' }}>
-                    <div style={{ height: '30px', borderRadius: '5px', border: '1px solid #ccc', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
-                        <Space>
-                            <Button onClick={() => handleOpenAddSecModel(seclimit)} type="text" icon={<PlusOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                            <Button onClick={() => handleOpenEditSecModal()} type="text" icon={<EditOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                            <Button onClick={() => handleOpenDeleteSecModal()} type="text" icon={<DeleteOutlined />} style={{ fontSize: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
-                            <ConfirmationModal isvisible={confirmationModalVisible2[selectSec]} onCancel={() => setConfirmationModalVisible2(prevState => ({ ...prevState, [selectSec]: false }))} onOk={() => handleDeleteSection(selectSec)} />
-                        </Space>
-                        {/*============Modal Space============*/}
-                        <EditModal
-                            title={'Nhập tên bài'}
-                            visible={addsecmodal}
-                            onCancel={() => setAddSecModal(false)}
-                            onOk={handleAddSection}
-                            id={repoId}
+            </>
 
-                        />
+        );
+    }
 
-                        <EditModal
-                            title={'Nhập tên bài'}
-                            visible={editsecmodal}
-                            onCancel={() => setEditSecModal(false)}
-                            onOk={handleEditSection}
-                            id={selectSec}
 
-                        />
-
-                        <ConfirmationModal
-                            isvisible={cfvisible}
-                            onCancel={() => setCfvisible(false)}
-                            onOk={() => handleDeleleteSecion(selectSec)}
-                        />
-                        {/*============Modal Space============*/}
-                    </div>
-
-                    <div style={{ marginBottom: '20px', overflowY: 'auto', height: '98%' }}>
-                        <List
-                            dataSource={sections}
-                            loading={false} // Hiển thị Spin khi đang tải dữ liệu
-                            locale={{ emptyText: <Empty description="Không có dữ liệu" /> }} // Hiển thị thông báo khi không có dữ liệu
-                            renderItem={item => (
-                                <Button
-                                    type={selectSec === item.secid ? 'primary' : 'default'}
-                                    onClick={() => handleItemClick(item.secid)}
-                                    style={{ marginTop: '10px', textAlign: 'left', width: '100%' }}
-                                >
-                                    <div>
-                                        <Text strong>{item.secname}</Text>
-                                    </div>
-                                </Button>
-                            )}
-                        />
-                    </div>
-                </div>
-            </div>
-        </>
-
-    );
 };
 
 export default Section;

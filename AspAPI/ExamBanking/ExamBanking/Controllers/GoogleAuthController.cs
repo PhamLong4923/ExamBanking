@@ -50,8 +50,8 @@ namespace ExamBanking.Controllers
                 var checkExist = _context.Accounts.FirstOrDefault(a => a.Email == account.Email);
                 if (checkExist != null)
                 {
-                    var exittoken = _jwt.CreateJWTToken(checkExist);
-                    return Ok(exittoken);
+                    string tokenExist = _jwt.CreateJWTToken(account);
+                    return Ok(tokenExist);
                 }
                 var token = _jwt.CreateJWTToken(account);
                 _context.Accounts.Add(account);

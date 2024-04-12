@@ -1,15 +1,10 @@
-﻿using ExamBanking.DTO.AccountDto;
-using ExamBanking.DTO.BankDto;
+﻿using ExamBanking.DTO.BankDto;
 using ExamBanking.Models;
 using ExamBanking.Repositories;
 using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 namespace ExamBanking.Controllers
 {
@@ -18,7 +13,7 @@ namespace ExamBanking.Controllers
     [Authorize(Roles = "User")]
     public class BankController : ControllerBase
     {
-        private ExamBankingContext eContext = new ExamBankingContext();
+        
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
@@ -90,6 +85,22 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok(edit.Bankid);
         }
+        [HttpPut("Update_bankMode")]
+        public async Task<IActionResult> UpdateBankMode(int bankid, int mode)
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            var edit = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
+            if (edit == null)
+            {
+                return BadRequest("dont exist");
+            }
+            edit.Bankmode = mode;
+            _context.SaveChangesAsync();
+            return Ok(edit.Bankid);
+        }
         [HttpDelete("DeleteBank")]
         public async Task<IActionResult> DeleteBank(int bankid)
         {
@@ -108,5 +119,6 @@ namespace ExamBanking.Controllers
             return Ok(remove.Bankid);
         }
 
+       
     }
 }

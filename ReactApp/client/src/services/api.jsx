@@ -30,7 +30,7 @@ export const addSection = (data) => Http.post("/Section/CreateSection", data);
 
 export const addRepository = (data) => Http.post("/Repositories/CreateRepo", data);
 
-export const addQuestion = (data) => Http.post("Question/CreateQuestion", data);
+export const addQuestion = (data, sid) => Http.post("Question/CreateQuestion", data, sid);
 
 //delete-api
 
@@ -40,7 +40,7 @@ export const delSection = (secid) => Http.delete(`/Section/DeleteSection?secid=$
 
 export const delRepository = (repoid) => Http.delete(`/Repositories/DelRepo?repoid=${repoid}`);
 
-export const delQuestions = () => Http.get("");
+export const delQuestions = (quesid) => Http.get(`/Question/DeleteQuestion?quesid=${quesid}`);
 
 //update-api
 
@@ -50,7 +50,7 @@ export const updateSection = (secid, newname) => Http.put(`/Section/EditSection?
 
 export const updateRepository = (repoid, newname) => Http.put(`/Repositories/EditRepo?repoid=${repoid}&newname=${newname}`);
 
-export const updateQuestion = () => Http.get("");
+export const updateQuestion = () => Http.get(`/Question/EditQuestion?`);
 
 export const updateAccount = () => Http.get("");
 

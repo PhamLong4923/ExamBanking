@@ -31,16 +31,12 @@ namespace ExamBanking.Repositories
             return question.Quesid;
         }
         //edit question
-        public void EditQuestion(EditQuestionRequest request)
+        public void EditQuestion(int questionId)
         {
-            var question = _context.Questions.Find(request.Quesid);
+            var question = _context.Questions.Find(questionId);
             if (question != null)
             {
-                question.Quescontent = request.Quescontent;
-                question.Type = request.Type;
-                question.Solution = request.Solution;
-                question.Secid = request.Secid;
-                question.Modeid = request.Modeid;
+                _context.Questions.Update(question);
                 _context.SaveChanges();
             }
         }

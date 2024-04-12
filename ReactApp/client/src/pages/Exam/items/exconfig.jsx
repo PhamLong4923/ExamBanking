@@ -1,72 +1,295 @@
-import React, { useState, useEffect } from 'react';
-import { Table } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Table, Input, Button, Checkbox, Radio } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import axios from "axios";
+import Export from "./export";
 
-const { Column, ColumnGroup } = Table;
-
-const ExConfig = ({ selectedIds, onBack }) => {
-    const [sections, setSections] = useState([]);
+export default function ExamConfig({ seclectedIds }) {
+    const [data, setData] = useState([]);
+    const [dataConfig, setDataConfig] = useState([]);
+    const [rowSpanArr, setRowSpanArr] = useState([]);
+    const [submit, setSubmit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        // Tạo một số dữ liệu mẫu cho sections
-        const sampleSections = [
-            { id: 1, name: 'Bài 1: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sint obcaecati culpa animi facilis quis sunt, perferendis non veniam maxime libero aspernatur quasi, excepturi minus nihil, debitis dicta provident autem eaque!', nhận_biết: 3, thông_hiểu: 2, vận_dụng: 3, vận_dụng_cao: 5, tổng1: 5, dễ: 3, trung_bình: 2, khó: 3, nâng_cao: 5, tổng2: 5, trắc_nghiệm: 1, tự_luận: 2 },
-            { id: 2, name: 'Bài 2', nhận_biết: '', thông_hiểu: '', vận_dụng: '', vận_dụng_cao: '', tổng1: '', dễ: '', trung_bình: '', khó: '', nâng_cao: '', tổng2: '', trắc_nghiệm: '', tự_luận: '' },
-            // Thêm các section khác nếu cần
+        // Mock data for sections
+        const mockData = [
+
+            {
+                repoid: 3, reponame: 'Chuong tes',
+                secs: [
+                    {
+                        secid: 4, secname: 'Bai 4', count: [
+                            { essay: [{ easy: 20, normal: 20, hard: 20, advanced: 20 }] },
+                            { mcq: [{ recognition: 20, comprehension: 20, application: 30, advanced: 50 }] }
+                        ]
+                    },
+                    {
+                        secid: 5, secname: 'Bai 5', count: [
+                            { essay: [{ easy: 20, normal: 20, hard: 20, advanced: 20 }] },
+                            { mcq: [{ recognition: 20, comprehension: 20, application: 30, advanced: 40 }] }
+                        ]
+                    }]
+            }
         ];
-        setSections(sampleSections);
+        setData(mockData);
     }, []);
 
-    const handleInputChange = (record, column, value) => {
-        // Xử lý logic khi người dùng thay đổi input
+    const handleInputChange = (sectionId, type, mode, value) => {
+        const existingIndex = dataConfig.findIndex(item => item.sectionId === sectionId && item.type === type && item.mode === mode);
+
+        if (existingIndex !== -1) {
+            const updatedData = [...dataConfig];
+            updatedData[existingIndex].count = value;
+            setDataConfig(updatedData);
+        } else {
+            setDataConfig(prevState => [...prevState, { sectionId, type, mode, count: value }]);
+        }
     };
 
-    const data = [
+    useEffect(() => {
+        console.log(dataConfig);
+    }, [dataConfig]);
+
+    const handleSubmit = () => {
+        setSubmit(true);
+
+        // const dataToSend = dataConfig.filter(item => item.count !== '' && item.count !== '0');
+        // console.log(dataToSend);
+        // axios.post('url_to_your_backend_api', dataToSend)
+        //     .then(response => {
+        //         // Handle response from backend if needed
+        //     })
+        //     .catch(error => {
+        //         // Handle errors if any
+        //     });
+    };
+
+    const generateMockData = () => {
+        const mockData = [];
+        data.forEach(repo => {
+            repo.secs.forEach(sec => {
+
+                mockData.push({
+                    repoid: repo.repoid,
+                    reponame: repo.reponame,
+                    secid: sec.secid,
+                    secname: sec.secname,
+                    total: sec.count
+                });
+            });
+        });
+
+        return mockData;
+    };
+
+
+    useEffect(() => {
+        const calculateRowSpanArr = () => {
+            const newRowSpanArr = [];
+            data.forEach(({ secs }) => {
+                newRowSpanArr.push(secs.length);
+                for (let i = 1; i < secs.length; i++) {
+                    newRowSpanArr.push(0);
+                }
+            });
+            console.log(rowSpanArr);
+            setRowSpanArr(newRowSpanArr);
+        };
+
+        calculateRowSpanArr();
+    }, [data]);
+
+    const countRowSpan = (data, repoid) => {
+        const chapter = data.find(item => item.repoid === repoid);
+        return chapter ? chapter.secs.length : 0;
+    };
+
+    let index = 0;
+
+    const columns = [
         {
-            key: '1',
-            repo: 'Repo1',
-            sections: [
-                { name: 'Section1', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 },
-                { name: 'Section2', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 },
-                { name: 'Section3', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 }
-            ]
+            title: 'Chương',
+            dataIndex: 'reponame',
+            key: 'repoid',
+            render: (_, record, index) => {
+                return {
+                    children: record.reponame,
+                    props: {
+                        rowSpan: rowSpanArr[index++],
+                    },
+                };
+            },
         },
         {
-            key: '2',
-            repo: 'Repo2',
-            sections: [
-                { name: 'Section4', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 },
-                { name: 'Section5', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 },
-                { name: 'Section6', nb: 0, th: 0, vd: 0, vdc: 0, de: 0, tb: 0, kho: 0, nc: 0 }
-            ]
-        }
+            title: 'Bài',
+            dataIndex: 'secname',
+            key: 'secname',
+            render: (_, record) => record.secname,
+        },
+        {
+            title: 'Trắc nhiệm',
+            children: [
+                {
+                    title: 'Nhận biết',
+                    dataIndex: 'nbiet',
+                    key: 'nbiet',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[1].mcq[0].recognition} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Thông hiểu',
+                    dataIndex: 'thong_hieu',
+                    key: 'thong_hieu',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[1].mcq[0].comprehension} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Vận dụng',
+                    dataIndex: 'van_dung',
+                    key: 'van_dung',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[1].mcq[0].application} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Vận dụng cao',
+                    dataIndex: 'van_dung_cao',
+                    key: 'van_dung_cao',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[1].mcq[0].advanced} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Tổng',
+                    dataIndex: 'tong1',
+                    key: 'tong1',
+                },
+            ],
+        },
+        {
+            title: 'Tự luận',
+            dataIndex: 'tu_luan',
+            key: 'tu_luan',
+            children: [
+                {
+                    title: 'Dễ',
+                    dataIndex: 'de',
+                    key: 'de',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[0].essay[0].easy} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Trung bình',
+                    dataIndex: 'trung_binh',
+                    key: 'trung_binh',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[0].essay[0].normal} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Khó',
+                    dataIndex: 'kho',
+                    key: 'kho',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[0].essay[0].hard} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Nâng cao',
+                    dataIndex: 'nang_cao',
+                    key: 'nang_cao',
+                    render: (_, record) => (
+                        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input disabled='true' value={record.total[0].essay[0].advanced} />
+                        </div>
+                    ),
+                },
+                {
+                    title: 'Tổng',
+                    dataIndex: 'tong2',
+                    key: 'tong2',
+                },
+            ],
+        },
     ];
 
-    return (
-        <Table dataSource={data} bordered>
-            <ColumnGroup title="Repo" dataIndex="repo" key="repo">
-                <Column
-                    title="Section"
-                    dataIndex={['sections', 'name']}
-                    key="name"
-                    render={(text) => (
-                        <b>{text}</b>
-                    )}
-                />
-                <ColumnGroup title="Trắc nhiệm">
-                    <Column title="NB" dataIndex={['sections', 'nb']} key="nb" />
-                    <Column title="TH" dataIndex={['sections', 'th']} key="th" />
-                    <Column title="VD" dataIndex={['sections', 'vd']} key="vd" />
-                    <Column title="VDC" dataIndex={['sections', 'vdc']} key="vdc" />
-                </ColumnGroup>
-                <ColumnGroup title="Tự luận">
-                    <Column title="Dễ" dataIndex={['sections', 'de']} key="de" />
-                    <Column title="TB" dataIndex={['sections', 'tb']} key="tb" />
-                    <Column title="Khó" dataIndex={['sections', 'kho']} key="kho" />
-                    <Column title="NC" dataIndex={['sections', 'nc']} key="nc" />
-                </ColumnGroup>
-            </ColumnGroup>
-        </Table>
-    );
-};
+    if (submit) {
+        return (
+            <Export></Export>
+        )
 
-export default ExConfig;
+    }
+
+    return (
+        <>
+            <div style={{ width: '98%', height: '550px', overflowY: 'scroll', borderBottom: '2px solid black', borderTop: '2px solid black' }}>
+                <Table
+                    columns={columns}
+                    dataSource={generateMockData()}
+                    bordered
+                    pagination={false}
+                    scroll={{ y: 400 }}
+                />
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '90%', height: 'fit-content', marginTop: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
+                    <span style={{ marginRight: '5px' }}>Số câu trắc nhiệm:</span>
+                    <Input type="number" style={{ marginRight: '20px', width: '60px' }} readOnly />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', paddingRight: '10px' }}>
+                    <span style={{ marginRight: '5px' }}>Số câu tự luận:</span>
+                    <Input type="number" style={{ marginRight: '20px', width: '60px' }} readOnly />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', borderRight: '1px solid #000', }}>
+                    <span>Tổng:</span>
+                    <Input type="number" style={{ marginRight: '5px', width: '60px' }} readOnly />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', borderRight: '1px solid #000', paddingRight: '10px' }}>
+                    <Radio.Group defaultValue="chon-lan" style={{ marginRight: '10px' }}>
+                        <Radio.Button value="chon-lan">Trộn lẫn</Radio.Button>
+                        <Radio.Button value="tach-doi">Tách đôi</Radio.Button>
+                    </Radio.Group>
+                    <Checkbox style={{ marginRight: '10px' }}>Lấy đáp án</Checkbox>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Button
+                        type="primary"
+                        onClick={handleSubmit}
+                        loading={isLoading}
+                    >
+                        Bắt đầu khởi tạo
+                    </Button>
+                </div>
+            </div>
+        </>
+    );
+}
