@@ -35,6 +35,7 @@ const AdminSection = () => {
         //   type: 1,
         //   solution: 'Hướng dẫn giải',
         //   mode: 2,
+        //   sectionId;
         // }
     ]);
     const [sections, setSections] = useState([
@@ -42,49 +43,41 @@ const AdminSection = () => {
             key: 1,
             name: "bài 1: phương trình đa thức bậc hai",
             repoId: 1,
-            questions: [],
         },
         {
             key: 2,
             name: "bài 2: phương trình bậc nhất hai ẩn",
             repoId: 1,
-            questions: [],
         },
         {
             key: 3,
             name: "bài 1: cơ bản về đồ thị",
             repoId: 2,
-            questions: [],
         },
         {
             key: 4,
             name: "bài 2: đồ thị hàm số của phương trình bậc hai",
             repoId: 2,
-            questions: [],
         },
         {
             key: 5,
             name: "Lession 1: how many peoples in your family?",
             repoId: 3,
-            questions: [],
         },
         {
             key: 6,
             name: "Lession 2: external family members",
             repoId: 3,
-            questions: [],
         },
         {
             key: 7,
             name: "Lession 1: world",
             repoId: 4,
-            questions: [],
         },
         {
             key: 8,
             name: "Lession 2: languages",
             repoId: 4,
-            questions: [],
         },
     ])
 
@@ -94,7 +87,7 @@ const AdminSection = () => {
     };
 
     const handleClick = (key) => {
-        setSelectedSectionId(key);
+        setSelectedSectionId(parseInt(key));
     };
 
     const toggleSelecting = () => {
@@ -138,10 +131,12 @@ const AdminSection = () => {
                         key: sections.length + 1,
                         name: values.name,
                         repoId: repoId,
-                        questions: [],
                     };
                     setSections([...sections, newSection]);
                     setVisible(false);
+                    if (parseInt(newSection.key) === 1) {
+                        setSelectedSectionId(1)
+                    }
                 }
             })
             .catch((info) => {
@@ -161,7 +156,7 @@ const AdminSection = () => {
         setVisible(true);
     };
 
-    const toastVerifyDelete = (key) => {
+    const toastVerifyDelete = (keyToDelete) => {
         setVisible(false);
         if (!isToastOpen) {
             const id = toast.info(
@@ -175,7 +170,7 @@ const AdminSection = () => {
                             }}>
                                 Cancel
                             </Button>
-                            <Button onClick={() => handleDelete(key, id)}>
+                            <Button onClick={() => handleDelete(keyToDelete, id)}>
                                 Yes
                             </Button>
                         </Flex>
@@ -189,12 +184,27 @@ const AdminSection = () => {
 
     const handleDelete = (keyToDelete, toastId) => {
         const newData = sections.filter(item => item.key !== keyToDelete);
+        const newQuestion = questions.filter(item => item.sectionId !== keyToDelete);
         for (let i = 0; i < newData.length; i++) {
             if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
-                newData[i].key = (parseInt(newData[i].key) - 1).toString();
+                for (let j = 0; j < newQuestion.length; j++) {
+                    if (parseInt(newQuestion[j].sectionId) === parseInt(newData[i].key)) {
+                        newQuestion[j].sectionId = (parseInt(newData[i].key) - 1);
+                    }
+                }
+                newData[i].key = (parseInt(newData[i].key) - 1);
             }
         }
+
+        if (newQuestion.length > 1) {
+            for (let i = 0; i < newQuestion.length; i++) {
+                newQuestion[i].id = "" + (i + 1);
+            }
+        } else if (newQuestion.length === 1) {
+            newQuestion[0].id = "1";
+        }
         setSections(newData);
+        setQuestions(newQuestion);
         toast.dismiss(toastId);
         setIsToastOpen(false);
     };
@@ -217,9 +227,12 @@ const AdminSection = () => {
     };
 
     const handleAddQuestion = () => {
-        if (sections.length < selectedSectionId) {
-            toast.error("vui lòng tạo và chọn bài trước");
-        } else {
+        if (sections.length < 1) {
+            toast.error("vui lòng tạo bài");
+        } else if (typeof selectedSectionId !== "number") {
+            toast.error("vui lòng chọn bài để add")
+        }
+        else {
             const newId = (questions.length + 1).toString();
             const newQuestion = {
                 id: newId,
@@ -234,10 +247,6 @@ const AdminSection = () => {
             };
 
             setQuestions([...questions, newQuestion]);
-
-            const updatedSections = [...sections];
-            updatedSections[selectedSectionId - 1].questions.push(newId);
-            setSections(updatedSections);
 
             setEditingQuestionId(newId);
             setModalIsOpen(true);
@@ -301,13 +310,6 @@ const AdminSection = () => {
     const handleDeleteQuestion = (questionId) => {
         const updatedQuestions = questions.filter((question) => question.id !== questionId);
         setQuestions(updatedQuestions);
-
-        const updatedSections = [...sections];
-        updatedSections.forEach((section) => {
-            section.questions = section.questions.filter((id) => id !== questionId);
-        });
-        setSections(updatedSections);
-
         setEditingQuestionId(null);
     };
 
@@ -370,7 +372,7 @@ const AdminSection = () => {
                 <Space>
                     <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>Thêm bài</Button>
                 </Space>
-                <Menu onClick={({ key }) => handleClick(key)} defaultSelectedKeys={[selectedSectionId]}>
+                <Menu onClick={({ key }) => handleClick(key)}>
                     {sections.filter(item => parseInt(item.repoId) === parseInt(repoId)).map(section => (
                         <Menu.Item key={section.key}>
                             <Flex gap="middle" style={{ width: '100%' }}>
@@ -386,7 +388,7 @@ const AdminSection = () => {
             </div>
 
             <Modal
-                title={editingSectionId !== null ? "Edit User" : "Add User"}
+                title={editingSectionId !== null ? "Edit Section" : "Add Section"}
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
