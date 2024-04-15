@@ -1,65 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Dropdown, Menu, Badge, Tag } from 'antd';
+import { Button, Table, Badge, Tag, Tooltip } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import ExMyBreadCrumb from '../../../components/ui/exbreadcrumb';
-import { useDispatch, useSelector } from 'react-redux';
-import { errors } from '../../../components/ui/notifications';
-import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_ERROR_MESSAGE } from '../../../share/constrains';
-import { getBank } from '../../../services/api';
-import { setExBank } from '../../../redux-setup/action';
 import TicketApprove from '../../../components/ui/ticketapprove';
+import { setExBank } from '../../../redux-setup/action';
+import { useDispatch } from 'react-redux';
 
 const ExBank = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [banks, setBanks] = useState([]);
-    const [isUnlocked, setIsUnlocked] = useState(false);
     const [visible, setVisible] = useState(false);
-    const bankType = useSelector(state => state.exBankType);
+    const [bid, setBid] = useState();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const loadBanks = async () => {
-            try {
-                const response = await getBank();
-                setBanks(response.data);
-                setLoading(false);
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    setBanks([]);
-                    setLoading(false);
-                    errors(AUTHORIZATION_ERROR_MESSAGE, 2);
-                } else {
-                    errors(SYSTEM_ERROR_MESSAGE, 2);
-                    console.log(error);
+        const loadTestData = () => {
+            setLoading(true);
+            // Đây là dữ liệu test thay thế cho API request
+            const testData = [
+                {
+                    id: 1,
+                    name: 'example',
+                    ticket: {
+                        id: 2,
+                        name: 'example ticket',
+                        status: true,
+                    }
+                },
+                {
+                    id: 2,
+                    name: 'example2',
+                    ticket: {
+                        id: 3,
+                        name: 'example ticket 2',
+                        status: false,
+                    }
+                },
+                {
+                    id: 3,
+                    name: 'example2',
+                    ticket: null
                 }
-            }
+            ];
+            setBanks(testData);
+            setLoading(false);
         };
 
-        loadBanks();
+        loadTestData();
     }, []);
 
     const handleRowClick = (record) => {
-        dispatch(setExBank(record.id));
+        if (record.ticket && record.ticket.status) {
+            dispatch(setExBank(record.id));
+        }
     };
 
-    const handleApplyTicket = () => {
-        setIsUnlocked(true);
+
+    const handleApplyTicket = (tid, bid) => {
+        // Tìm kiếm ngân hàng có id tương ứng
+        const bankIndex = banks.findIndex(bank => bank.id === bid);
+
+        // Nếu không tìm thấy ngân hàng có id tương ứng, không làm gì cả
+        if (bankIndex === -1) {
+            return;
+        }
+
+        // Sao chép mảng banks để tránh thay đổi trực tiếp trên state
+        const updatedBanks = [...banks];
+
+        // Thay thế dữ liệu ticket của ngân hàng có id tương ứng
+        updatedBanks[bankIndex] = {
+            ...updatedBanks[bankIndex],
+            ticket: {
+                id: tid,
+                name: 'new ticket name',
+                status: true,
+            }
+        };
+
+        setBanks(updatedBanks);
         setVisible(false);
     };
 
-    const showModal = () => {
+
+    const showTicketModal = (bid) => {
+        setBid(bid);
         setVisible(true);
     };
 
     const handleCancel = () => {
         setVisible(false);
     };
-
-    //useEffect tính số ticket có thẻ sử dụng theo (tickedtmode, expiredate, bankname)
-
-    //hàm chuyển trạng thái của bank sang đã mở 
-
-    //hàm gắn bank vào ticket
 
     const columns = [
         {
@@ -73,14 +105,27 @@ const ExBank = () => {
             align: 'right',
             render: (text, record) => (
                 <div>
-                    {isUnlocked ? (
-                        <Tag color="green">Đã mở khóa</Tag>
+                    {record.ticket === null ? (
+                        <Tag color="red" onClick={() => showTicketModal(record.id)} style={{ cursor: 'pointer' }}>
+                            Chưa mở khóa
+                        </Tag>
+                    ) : record.ticket.status ? (
+                        <Tag color="green" onClick={() => handleRowClick(record)} style={{ cursor: 'pointer' }}>
+                            <Tooltip title={record.ticket.name}>
+                                Đã mở khóa
+                            </Tooltip>
+                        </Tag>
                     ) : (
-                        <Button type="primary" icon={<KeyOutlined />} onClick={() => showModal()}>Áp dụng ticket</Button>
+                        <Tag color="orange">
+                            <Tooltip title={record.ticket.name}>
+                                Khóa hết hạn
+                            </Tooltip>
+                        </Tag>
                     )}
                 </div>
             ),
         },
+
     ];
 
     return (
@@ -108,7 +153,7 @@ const ExBank = () => {
                 rowClassName="row-clickable"
                 onRow={(record, rowIndex) => { return { onDoubleClick: (event) => { handleRowClick(record) } } }}
             />
-            <TicketApprove visible={visible} onApply={handleApplyTicket} onCancel={handleCancel} numberOfTickets={'1'} />
+            <TicketApprove visible={visible} onApply={handleApplyTicket} onCancel={handleCancel} bankid={bid} />
         </div>
     );
 };

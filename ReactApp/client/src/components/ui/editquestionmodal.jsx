@@ -50,7 +50,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         }
         if (comparedata.quescontent === qdata) {
             try {
-                const response = upda
+                // const response = upda
             } catch (error) {
 
             }

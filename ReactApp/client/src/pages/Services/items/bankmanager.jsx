@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Button, Space, Typography } from "antd";
 import { ShoppingOutlined } from "@ant-design/icons";
+import ContentGenerator from "../../../ultils/paymentcontentcreator";
+import VietQrPaymentModal from "../../../components/payment/vietqr";
 
 const { Meta } = Card;
 const { Title, Paragraph } = Typography;
@@ -9,6 +11,7 @@ const BankManager = () => {
     const limit = {
         bankMode: {
             "0": {
+                "id": "00",
                 "name": "System",
                 "bankLimit": null,
                 "repoLimit": null,
@@ -17,15 +20,18 @@ const BankManager = () => {
                 "price:": 0
             },
             "1": {
+                "id": "01",
                 "name": "Free",
                 "bankLimit": 1,
                 "repoLimit": 5,
                 "secLimit": 3,
                 "quesLimit": 50,
-                "price:": 'Áp dụng'
+                "price:": '0'
             },
             "2": {
+                "id": "02",
                 "name": "Standard",
+                "description": "Gói ngân hàng loại 2",
                 "bankLimit": 1,
                 "repoLimit": 7,
                 "secLimit": 5,
@@ -33,7 +39,9 @@ const BankManager = () => {
                 "price:": 199000
             },
             "3": {
+                "id": "03",
                 "name": "Premium",
+                "description": "Gói ngân hàng loại 3",
                 "bankLimit": 2,
                 "repoLimit": 11,
                 "secLimit": 7,
@@ -43,10 +51,29 @@ const BankManager = () => {
         }
     };
 
+    //api get curent bankmode
+    const [currentbankmode, setCurrentBankmode] = useState(1);
+
+    const [openpay, setOpenPay] = useState(false);
+    const [price, setPrice] = useState(0);
+    const [content, setContent] = useState('');
+    const [description, setDescription] = useState('');
+
+    const handleOpenPayMethod = (price, bankmode, description) => {
+        const content = ContentGenerator({ type: 'BM', value: bankmode, action: 'U' });
+        console.log(content);
+        setContent(content);
+        setPrice(price);
+        setDescription(description);
+        setOpenPay(true);
+    }
+
     const packageData = Object.values(limit.bankMode).slice(1); // Lấy dữ liệu từ gói dịch vụ 1 đến cuối
 
     return (
         <div style={{ marginTop: "20px" }}>
+            {openpay && <VietQrPaymentModal start={openpay} amount={price} content={content} description={description} setClose={() => setOpenPay(false)} ></VietQrPaymentModal>}
+
             <Typography>
                 <Title level={4}>Dịch vụ nâng cấp ngân hàng</Title>
                 <Paragraph>
@@ -69,7 +96,15 @@ const BankManager = () => {
                             </div>
                             <div style={{ marginTop: 20 }}>
                                 <Space>
-                                    <Button type="primary" icon={<ShoppingOutlined />}>{packageItem["price:"] || "Unlimited"}</Button>
+                                    {currentbankmode === parseInt(packageItem.id) && (
+                                        <Button type="primary" disabled>Đang áp dụng</Button>
+                                    )}
+                                    {currentbankmode < parseInt(packageItem.id) && (
+                                        <Button type="primary" onClick={() => handleOpenPayMethod(packageItem["price:"] || "Unlimited", packageItem.id, packageItem.description)} >{packageItem["price:"] || "Unlimited"}</Button>
+                                    )}
+                                    {currentbankmode > parseInt(packageItem.id) && (
+                                        <Button disabled type="primary" icon={<ShoppingOutlined />}>{packageItem["price:"] || "Unlimited"}</Button>
+                                    )}
                                 </Space>
                             </div>
                         </Card>

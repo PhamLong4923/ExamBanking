@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Table, Menu, Dropdown, Space, Tag } from "antd";
 import { PlusOutlined, EllipsisOutlined, GiftOutlined } from "@ant-design/icons";
 import KitNewbie from "../../../components/ui/kitnewbie";
+import TicketPaymentModal from "../../../components/ui/ticketpaymentui";
+import TicketRenewPaymentModal from "../../../components/ui/ticketrenewmodal";
 
 const { Column } = Table;
 
@@ -9,18 +11,25 @@ const TicketManager = () => {
 
     const [isnewbie, setIsnewbie] = useState(true);
     const [visible, setVisible] = useState(false);
+    const [tid, setTid] = useState();
 
     const tickets = [
-        { id: 1, name: "Ticket 1", bank: "Bank A", createdAt: new Date("2024-03-15"), expiry: new Date("2024-03-20") }, // Ticket này đã hết hạn
-        { id: 2, name: "Ticket 2", bank: "Bank B", createdAt: new Date("2024-03-20"), expiry: new Date("2024-04-06") },
-        { id: 3, name: "Ticket 3", bank: "Bank C", createdAt: new Date("2024-03-25"), expiry: new Date("2024-04-07") }
+        { id: 1, name: "Ticket 1", bank: "Bank F", createdAt: new Date("2024-03-15"), expiry: 30 }, // Ticket này đã hết hạn
+        { id: 2, name: "Ticket 2", bank: "Bank B", createdAt: new Date("2024-03-20"), expiry: 40 },
+        { id: 4, name: "Ticket 4", bank: null, createdAt: new Date("2024-03-25"), expiry: 60 },
+        { id: 3, name: "Ticket 3", bank: "Bank C", createdAt: new Date("2024-03-25"), expiry: 0 }
     ];
 
 
     const handleMenuClick = (ticketId, action) => {
-        console.log(`Ticket ID: ${ticketId}, Action: ${action}`);
+
+        setTid(ticketId);
+        setOpenRenew(true);
 
     };
+
+
+    const [openrenew, setOpenRenew] = useState(false);
 
 
     const menu = (ticketId) => (
@@ -59,34 +68,48 @@ const TicketManager = () => {
     //Hàm xóa ticket
 
     //Hàm thêm ticket
+    const [openpay, setOpenPay] = useState(false);
+
+    const handleOpenPayMethod = () => {
+        setOpenPay(true);
+    };
 
 
     return (
-        <div style={{ marginTop: '20px' }}>
-            {isnewbie ? (<Button onClick={() => handleOpenKit()} type="primary" icon={<GiftOutlined />}>Nhận kit cho người mới</Button>) : (<Button type="primary" icon={<PlusOutlined />}>Thêm Ticket</Button>)}
+        <div style={{ marginTop: '20px', padding: '5px' }}>
+            <TicketPaymentModal start={openpay} setClose={() => setOpenPay(false)} ></TicketPaymentModal>
+            <TicketRenewPaymentModal start={openrenew} setClose={() => setOpenRenew(false)} tid={tid}></TicketRenewPaymentModal>
+            {isnewbie ? (<Button onClick={() => handleOpenKit()} type="primary" icon={<GiftOutlined />}>Nhận kit cho người mới</Button>)
+                :
+                (<Button type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
             <KitNewbie visible={visible} onCancel={handleCloseKit} onApply={handleAcceptKit}></KitNewbie>
             <Table dataSource={tickets} pagination={false}>
                 <Column title="Tên Ticket" dataIndex="name" key="name" />
                 <Column title="Ngân hàng" dataIndex="bank" key="bank" />
-                <Column title="Ngày Tạo" dataIndex="createdAt" key="createdAt" render={(text, record) => new Date(record.createdAt).toLocaleDateString()} />
+                <Column title="Ngày bắt đầu" dataIndex="createdAt" key="createdAt" render={(text, record) => new Date(record.createdAt).toLocaleDateString()} />
                 <Column title="Hạn sử dụng" dataIndex="expiry" key="expiry" render={(text, record) => new Date(record.expiry).toLocaleDateString()} />
                 <Column
                     title="Trạng thái"
-                    dataIndex="expiry"
+                    dataIndex="bank"
                     key="status"
                     render={(text, record) => {
                         const expired = new Date(record.expiry) < new Date();
-                        return (
-                            <Space>
-                                {expired ? (
-                                    <Tag color="red">Hết hạn</Tag>
-                                ) : (
-                                    <Tag color="green">Còn hạn</Tag>
-                                )}
-                            </Space>
-                        );
+                        if (!record.bank) {
+                            return <Tag color="blue">Chưa sử dụng</Tag>;
+                        } else {
+                            return (
+                                <Space>
+                                    {expired ? (
+                                        <Tag color="red">Hết hạn</Tag>
+                                    ) : (
+                                        <Tag color="green">Còn hạn</Tag>
+                                    )}
+                                </Space>
+                            );
+                        }
                     }}
                 />
+
                 <Column
                     title=""
                     key="action"

@@ -9,6 +9,8 @@ import Account from './components/ui/account';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Services from './pages/Services';
 import ExamPage from './pages/Exam';
+import VietQrPaymentModal from './components/payment/vietqr';
+import TicketPaymentModal from './components/ui/ticketpaymentui';
 
 
 const { Sider, Content } = Layout;
@@ -52,7 +54,7 @@ const App = () => {
                     <Route path="/services" element={<Services />} />
                     <Route path="/bank" element={<BankPage />} />
                     <Route path="/exam-creator" element={<ExamPage />} />
-                    <Route path="/ck" element={<></>} />
+                    <Route path="/ck" element={<><TicketPaymentModal start={true}></TicketPaymentModal></>} />
                   </Routes>
 
                 </div>
