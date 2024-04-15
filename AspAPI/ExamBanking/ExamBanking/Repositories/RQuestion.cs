@@ -30,18 +30,31 @@ namespace ExamBanking.Repositories
             _context.SaveChanges();
             return question.Quesid;
         }
-        //edit question
-        public void EditQuestion(int questionId)
+        //edit question i want user input questionid and new question content
+        public int EditQuestion(int Quesid, string Quescontent, int type, string solution, int modeid)
         {
-            var question = _context.Questions.Find(questionId);
-            if (question != null)
+            var question = _context.Questions.Find(Quesid);
+
+            if (question == null)
             {
-                _context.Questions.Update(question);
-                _context.SaveChanges();
+
+                return -1;
             }
+
+            
+            question.Type = type;
+            question.Quescontent = Quescontent;
+            question.Solution = solution;
+            question.Modeid = modeid;
+            _context.SaveChanges();
+
+            return Quesid;
         }
+
+
+
         //delete question and all answer which have quesid
-        
+
         public int DeleteQuestion(int Quesid)
         {
             var question = _context.Questions.Find(Quesid);

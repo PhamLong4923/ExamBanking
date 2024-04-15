@@ -394,6 +394,26 @@
         "Name": "question",
         "Type": "System.Int32",
         "IsRequired": false
+      },
+      {
+        "Name": "Quescontent",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "solution",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "modeid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

@@ -19,7 +19,7 @@ namespace ExamBanking.Controllers
         {
             _context = context;
             _rquestion = rquestion;
-            
+
         }
 
 
@@ -31,26 +31,30 @@ namespace ExamBanking.Controllers
                             .Where(a => a.Secid == sectionid)
                             .ToList();
 
-            // Convert each question to HTML format
-            var htmlList = new List<object>();
+            var questionOutputList = new List<listQuestionDto>();
             foreach (var question in listQuestion)
             {
-                var htmlQuestion = new
+                var answers = question.Answers.Select(a => new AnswerOutput
                 {
-                    type = question.Type.ToString(),
-                    content = $"<p>{question.Quescontent}</p>",
-                    difficulty = question.Modeid.ToString(),
-                    solution = $"<p>{question.Solution}</p>",
-                    answers = question.Answers.Select(a => $"<p>{a.Anscontent}</p>").ToList()
+                    ansid = a.Ansid,
+                    anscontent = a.Anscontent
+                }).ToList();
+
+                var questionOutput = new listQuestionDto
+                {
+                    quesid = question.Quesid,
+                    quescontent = question.Quescontent,
+                    answers = answers,
+                    solution = question.Solution,
+                    type = question.Type,
+                    modeid = question.Modeid
                 };
-                htmlList.Add(htmlQuestion);
+                questionOutputList.Add(questionOutput);
             }
 
-           
-            var json = JsonConvert.SerializeObject(htmlList, Formatting.Indented);
-
-            return Ok(json);
+            return Ok(questionOutputList);
         }
+
         //create question using rquestion
         [HttpPost("CreateQuestion")]
         public IActionResult CreateQuestion(CreateQuestionRequest question)
@@ -58,18 +62,18 @@ namespace ExamBanking.Controllers
             var questionid = _rquestion.CreateQuestion(question);
             return Ok(questionid);
         }
-        
+
         [HttpPut("EditQuestion")]
-        public IActionResult EditQuestion(int question)
+        public IActionResult EditQuestion(int question, string Quescontent, int type, string solution, int modeid)
         {
-            _rquestion.EditQuestion(question);
+            _rquestion.EditQuestion(question, Quescontent, type, solution, modeid);
             return Ok(question);
         }
-        
+
         [HttpDelete("DeleteQuestion")]
         public IActionResult DeleteQuestion(int Quesid)
         {
-           
+
             var question = _rquestion.DeleteQuestion(Quesid);
             return Ok(question);
         }

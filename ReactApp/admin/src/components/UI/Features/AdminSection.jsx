@@ -1,6 +1,7 @@
 import { CloseCircleOutlined, DeleteOutlined, FileExcelOutlined, FileWordOutlined, PlusOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, Menu, Modal, Select, Space } from 'antd';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import SystemQuestion from '../../common/SystemQuestion';
 
@@ -11,7 +12,7 @@ const AdminSection = () => {
     const [form] = Form.useForm();
     const [isToastOpen, setIsToastOpen] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
-    const [selectedSectionId, setSelectedSectionId] = useState("1");
+    const [selectedSectionId, setSelectedSectionId] = useState();
     const [isSelecting, setIsSelecting] = useState(false);
     const [isqueslimit, setIsQueslimit] = useState(false);
     const [showModal1, setShowModal1] = useState(false);
@@ -19,10 +20,11 @@ const AdminSection = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isAddQuestion, setIsAddQuestion] = useState(false);
     const [editingQuestionId, setEditingQuestionId] = useState('');
-    const [editingSectionID, setEditingSectionId] = useState(null);
+    const [editingSectionId, setEditingSectionId] = useState(null);
+    const { repoId } = useParams();
     const [questions, setQuestions] = useState([
         // {
-        //   id: 1,
+        //   id: 1, 
         //   title: 'Đề ở đây',
         //   answers: [
         //     // { id: 'answer1', content: 'Đáp án ở đây' },
@@ -33,26 +35,51 @@ const AdminSection = () => {
         //   type: 1,
         //   solution: 'Hướng dẫn giải',
         //   mode: 2,
+        //   sectionId;
         // }
     ]);
     const [sections, setSections] = useState([
         {
             key: 1,
-            name: "bài 1: dfghjfghj",
-            questions: [],
+            name: "bài 1: phương trình đa thức bậc hai",
+            repoId: 1,
         },
         {
             key: 2,
-            name: "bài 2: dfghjdvfwsdffghj",
-            questions: [],
+            name: "bài 2: phương trình bậc nhất hai ẩn",
+            repoId: 1,
+        },
+        {
+            key: 3,
+            name: "bài 1: cơ bản về đồ thị",
+            repoId: 2,
+        },
+        {
+            key: 4,
+            name: "bài 2: đồ thị hàm số của phương trình bậc hai",
+            repoId: 2,
+        },
+        {
+            key: 5,
+            name: "Lession 1: how many peoples in your family?",
+            repoId: 3,
+        },
+        {
+            key: 6,
+            name: "Lession 2: external family members",
+            repoId: 3,
+        },
+        {
+            key: 7,
+            name: "Lession 1: world",
+            repoId: 4,
+        },
+        {
+            key: 8,
+            name: "Lession 2: languages",
+            repoId: 4,
         },
     ])
-
-    let questionsList = [];
-
-    if (selectedSectionId !== null && selectedSectionId !== "" && selectedSectionId <= sections.length) {
-        questionsList = questions.filter(questions => questions.sectionID === selectedSectionId);
-    }
 
     const showModal = () => {
         form.resetFields();
@@ -60,7 +87,7 @@ const AdminSection = () => {
     };
 
     const handleClick = (key) => {
-        setSelectedSectionId(key);
+        setSelectedSectionId(parseInt(key));
     };
 
     const toggleSelecting = () => {
@@ -89,9 +116,9 @@ const AdminSection = () => {
             .validateFields()
             .then((values) => {
                 form.resetFields();
-                if (editingSectionID !== "" && editingSectionID !== null) { // Nếu đang chỉnh sửa
+                if (editingSectionId !== "" && editingSectionId !== null) { // Nếu đang chỉnh sửa
                     const newData = [...sections];
-                    const index = newData.findIndex((item) => editingSectionID === item.key);
+                    const index = newData.findIndex((item) => editingSectionId === item.key);
                     if (index > -1) {
                         const item = newData[index];
                         newData.splice(index, 1, { ...item, ...values });
@@ -103,10 +130,13 @@ const AdminSection = () => {
                     const newSection = {
                         key: sections.length + 1,
                         name: values.name,
-                        questions: [],
+                        repoId: repoId,
                     };
                     setSections([...sections, newSection]);
                     setVisible(false);
+                    if (parseInt(newSection.key) === 1) {
+                        setSelectedSectionId(1)
+                    }
                 }
             })
             .catch((info) => {
@@ -126,7 +156,7 @@ const AdminSection = () => {
         setVisible(true);
     };
 
-    const toastVerifyDelete = (key) => {
+    const toastVerifyDelete = (keyToDelete) => {
         setVisible(false);
         if (!isToastOpen) {
             const id = toast.info(
@@ -140,7 +170,7 @@ const AdminSection = () => {
                             }}>
                                 Cancel
                             </Button>
-                            <Button onClick={() => handleDelete(key, id)}>
+                            <Button onClick={() => handleDelete(keyToDelete, id)}>
                                 Yes
                             </Button>
                         </Flex>
@@ -154,12 +184,27 @@ const AdminSection = () => {
 
     const handleDelete = (keyToDelete, toastId) => {
         const newData = sections.filter(item => item.key !== keyToDelete);
+        const newQuestion = questions.filter(item => item.sectionId !== keyToDelete);
         for (let i = 0; i < newData.length; i++) {
             if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
-                newData[i].key = (parseInt(newData[i].key) - 1).toString();
+                for (let j = 0; j < newQuestion.length; j++) {
+                    if (parseInt(newQuestion[j].sectionId) === parseInt(newData[i].key)) {
+                        newQuestion[j].sectionId = (parseInt(newData[i].key) - 1);
+                    }
+                }
+                newData[i].key = (parseInt(newData[i].key) - 1);
             }
         }
+
+        if (newQuestion.length > 1) {
+            for (let i = 0; i < newQuestion.length; i++) {
+                newQuestion[i].id = "" + (i + 1);
+            }
+        } else if (newQuestion.length === 1) {
+            newQuestion[0].id = "1";
+        }
         setSections(newData);
+        setQuestions(newQuestion);
         toast.dismiss(toastId);
         setIsToastOpen(false);
     };
@@ -182,9 +227,12 @@ const AdminSection = () => {
     };
 
     const handleAddQuestion = () => {
-        if (sections.length < selectedSectionId) {
-            toast.error("vui lòng tạo và chọn bài trước");
-        } else {
+        if (sections.length < 1) {
+            toast.error("vui lòng tạo bài");
+        } else if (typeof selectedSectionId !== "number") {
+            toast.error("vui lòng chọn bài để add")
+        }
+        else {
             const newId = (questions.length + 1).toString();
             const newQuestion = {
                 id: newId,
@@ -195,14 +243,10 @@ const AdminSection = () => {
                 type: "1",
                 solution: 'hướng dẫn giải',
                 mode: "1",
-                sectionID: selectedSectionId,
+                sectionId: selectedSectionId,
             };
 
             setQuestions([...questions, newQuestion]);
-
-            const updatedSections = [...sections];
-            updatedSections[selectedSectionId - 1].questions.push(newId);
-            setSections(updatedSections);
 
             setEditingQuestionId(newId);
             setModalIsOpen(true);
@@ -266,13 +310,6 @@ const AdminSection = () => {
     const handleDeleteQuestion = (questionId) => {
         const updatedQuestions = questions.filter((question) => question.id !== questionId);
         setQuestions(updatedQuestions);
-
-        const updatedSections = [...sections];
-        updatedSections.forEach((section) => {
-            section.questions = section.questions.filter((id) => id !== questionId);
-        });
-        setSections(updatedSections);
-
         setEditingQuestionId(null);
     };
 
@@ -335,8 +372,8 @@ const AdminSection = () => {
                 <Space>
                     <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>Thêm bài</Button>
                 </Space>
-                <Menu onClick={({ key }) => handleClick(key)} defaultSelectedKeys={[selectedSectionId]}>
-                    {sections.map(section => (
+                <Menu onClick={({ key }) => handleClick(key)}>
+                    {sections.filter(item => parseInt(item.repoId) === parseInt(repoId)).map(section => (
                         <Menu.Item key={section.key}>
                             <Flex gap="middle" style={{ width: '100%' }}>
                                 <span style={{ flex: 1 }}>
@@ -351,7 +388,7 @@ const AdminSection = () => {
             </div>
 
             <Modal
-                title={editingSectionID !== null ? "Edit User" : "Add User"}
+                title={editingSectionId !== null ? "Edit Section" : "Add Section"}
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
@@ -388,29 +425,34 @@ const AdminSection = () => {
                     )}
                 </div>
                 {/* Render the SystemQuestion component */}
-                {questionsList.map((question, index) => (
-                    <SystemQuestion
-                        key={index}
-                        question={question}
-                        handleEditQuestion={handleEditQuestion}
-                        deleteQuestion={handleDeleteQuestion}
-                        handleEditAnswer={handleEditAnswer}
-                        deleteAnswer={deleteAnswer}
-                        addAnswer={addAnswer}
-                        handleSaveEdit={handleSaveEdit}
-                        editingQuestionId={editingQuestionId}
-                        modalIsOpen={modalIsOpen}
-                        handleEditorDataChange={handleEditorDataChange}
-                        setModalIsOpen={setModalIsOpen}
-                        // handleSelectSection={handleSelectSection}
-                        handleQuestionTypeChange={handleQuestionTypeChange}
-                        handleEditSolution={handleEditSolution}
-                        isAddQuestion={isAddQuestion}
-                        handleQuestionModeChange={handleQuestionModeChange}
-                        handleSelectQuestion={handleSelectQuestion}
-                        isSelected={selectedQuestions.includes(question.id)}
-                    />
-                ))
+                {
+                    (
+                        selectedSectionId ?
+                            questions.filter(item => parseInt(item.sectionId) === parseInt(selectedSectionId))
+                            : questions
+                    ).map((question, index) => (
+                        <SystemQuestion
+                            key={index}
+                            question={question}
+                            handleEditQuestion={handleEditQuestion}
+                            deleteQuestion={handleDeleteQuestion}
+                            handleEditAnswer={handleEditAnswer}
+                            deleteAnswer={deleteAnswer}
+                            addAnswer={addAnswer}
+                            handleSaveEdit={handleSaveEdit}
+                            editingQuestionId={editingQuestionId}
+                            modalIsOpen={modalIsOpen}
+                            handleEditorDataChange={handleEditorDataChange}
+                            setModalIsOpen={setModalIsOpen}
+                            // handleSelectSection={handleSelectSection}
+                            handleQuestionTypeChange={handleQuestionTypeChange}
+                            handleEditSolution={handleEditSolution}
+                            isAddQuestion={isAddQuestion}
+                            handleQuestionModeChange={handleQuestionModeChange}
+                            handleSelectQuestion={handleSelectQuestion}
+                            isSelected={selectedQuestions.includes(question.id)}
+                        />
+                    ))
                 }
             </div>
         </div>

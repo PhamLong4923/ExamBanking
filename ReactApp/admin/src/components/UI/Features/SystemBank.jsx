@@ -2,8 +2,6 @@ import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import AdminRepository from '../Features/repository.jsx';
-
 const { Option } = Select;
 
 const SystemBank = () => {
@@ -11,24 +9,17 @@ const SystemBank = () => {
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [isToastOpen, setIsToastOpen] = useState(false);
-    const [currentPage, setCurrentPage] = useState('SystemBank');
-    const [idCurrentPage, setIdCurrentPage] = useState('');
-
-    const changePage = (pageName, id) => {
-        setCurrentPage(pageName);
-        setIdCurrentPage(id);
-    };
 
     const [dataSource, setDataSource] = useState([
         {
             key: '1',
-            name: 'Bank 1',
+            name: 'Toán 9',
             subject: 'Toán',
             date: moment().format('DD/MM/YYYY'),
         },
         {
             key: '2',
-            name: 'Bank 2',
+            name: 'Anh 9',
             subject: 'Anh',
             date: moment().format('DD/MM/YYYY'),
         },
@@ -39,7 +30,7 @@ const SystemBank = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <a onClick={() => changePage('AdminRepository', record)}>{text}</a>,
+            render: (text, record) => <a href={`/system_bank/${record.key}/system_repo`}>{text}</a>
         },
         {
             title: 'Subject',
@@ -58,6 +49,7 @@ const SystemBank = () => {
                 <Flex gap="middle">
                     <Button onClick={() => handleEdit(record)}>Edit</Button>
                     <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>
+                    <Button href={`/system_bank/${record.key}/access_management`}>Quản lý truy cập</Button>
                 </Flex>
             )
         },
@@ -152,40 +144,39 @@ const SystemBank = () => {
 
     return (
         <div>
-            {currentPage === 'SystemBank' &&
-                <div>
-                    <Button type="primary" onClick={showModal}>
-                        Add bank
-                    </Button>
-                    <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
-                    <Modal
-                        title="Add bank"
-                        open={visible}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
+            <div>
+                <Button type="primary" onClick={showModal}>
+                    Add bank
+                </Button>
+                <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
+
+                <Modal
+                    title="Add bank"
+                    open={visible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                >
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        initialValues={{
+                            // subject: 'Toán',
+                        }}
                     >
-                        <Form
-                            form={form}
-                            layout="vertical"
-                            initialValues={{
-                                // subject: 'Toán',
-                            }}
-                        >
-                            <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Date" name="date">
-                                <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
-                            </Form.Item>
-                        </Form>
-                    </Modal>
-                </div>
-            }
-            {currentPage === 'AdminRepository' && <AdminRepository />}
+                        <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Subject" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item label="Date" name="date">
+                            <Input disabled initialValues={moment().format('DD/MM/YYYY')} />
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </div>
+
         </div>
     );
 };
