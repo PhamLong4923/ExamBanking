@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamBanking.Models
 {
@@ -26,7 +27,7 @@ namespace ExamBanking.Models
         public int? Bankmode { get; set; }
         public int? Isnewbie { get; set; }
         public int? Ticketmode { get; set; }
-
+        [JsonIgnore]
         public virtual Role? Role { get; set; }
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
