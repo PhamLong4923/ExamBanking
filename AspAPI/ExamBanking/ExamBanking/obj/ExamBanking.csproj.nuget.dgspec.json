@@ -1,27 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
+    "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {}
   },
   "projects": {
-    "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {
+    "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "projectUniqueName": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
         "projectName": "ExamBanking",
-        "projectPath": "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
-        "packagesPath": "C:\\Users\\viet2\\.nuget\\packages\\",
-        "outputPath": "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+        "projectPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+        "packagesPath": "C:\\Users\\PHAM LONG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\PHAM LONG\\Desktop\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\viet2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PHAM LONG\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,11 +33,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -117,7 +111,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

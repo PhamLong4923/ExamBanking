@@ -10,6 +10,8 @@ export const login = () => Http.post("");
 
 export const isnew = () => Http.get("/Account/NewBie");
 
+export const updateisnew = () => Http.post("/Account/UpdateIsNewUser")
+
 //get-api
 
 export const getBank = () => Http.get("/Bank/GetBank");
@@ -33,6 +35,8 @@ export const addSection = (data) => Http.post("/Section/CreateSection", data);
 export const addRepository = (data) => Http.post("/Repositories/CreateRepo", data);
 
 export const addQuestion = (data, sid) => Http.post("Question/CreateQuestion", data, sid);
+
+export const paymentCreate = (data) => Http.post("");
 
 //delete-api
 

@@ -4,7 +4,7 @@ import { PlusOutlined, EllipsisOutlined, GiftOutlined } from "@ant-design/icons"
 import KitNewbie from "../../../components/ui/kitnewbie";
 import TicketPaymentModal from "../../../components/ui/ticketpaymentui";
 import TicketRenewPaymentModal from "../../../components/ui/ticketrenewmodal";
-import { isnew } from "../../../services/api";
+import { isnew, updateisnew } from "../../../services/api";
 
 const { Column } = Table;
 
@@ -49,7 +49,13 @@ const TicketManager = () => {
     }
 
     const handleAcceptKit = () => {
-        setIsnewbie(false);
+        try {
+            const response = updateisnew();
+            console.log(response.data);
+            setIsnewbie(false);
+        } catch (error) {
+            console.log(error);
+        }
         setVisible(false);
     }
 
@@ -65,15 +71,23 @@ const TicketManager = () => {
     useEffect(() => {
         try {
             const response = isnew();
-            if (response.data && response.status === 200) {
-
+            console.log(response.data);
+            if (response.data === 0) {
+                console.log(response.data);
+                setIsnewbie(false);
             }
         } catch (error) {
-
+            console.log(error);
         }
     }, []);
 
-    //useEffect load ticket của người dùng
+    useEffect(() => {
+        try {
+
+        } catch (error) {
+
+        }
+    })
 
     //Hàm xóa ticket
 
