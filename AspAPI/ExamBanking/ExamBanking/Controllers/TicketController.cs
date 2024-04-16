@@ -10,8 +10,8 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class TicketController : ControllerBase
     {
-        private readonly ExamBankingContext _context;
-        public TicketController(ExamBankingContext context)
+        private readonly exambankingContext _context;
+        public TicketController(exambankingContext context)
         {
             _context = context;
         }
@@ -21,6 +21,8 @@ namespace ExamBanking.Controllers
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            DateTime Expire;
             if (user == null)
             {
                 return Ok("User not found or token is invalid.");
@@ -29,7 +31,7 @@ namespace ExamBanking.Controllers
             {
                 Bankid = request.Bankid,
                 Accid = user.Accid,
-                Expire = request.Expire,
+                Expire = request.Expire ,
                 Ticketmode = request.Ticketmode
             };
            

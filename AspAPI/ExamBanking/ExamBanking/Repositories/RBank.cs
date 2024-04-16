@@ -5,9 +5,9 @@ namespace ExamBanking.Repositories
 {
     public class RBank
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
 
-        public RBank(ExamBankingContext context)
+        public RBank(exambankingContext context)
         {
             _context = context;
         }

@@ -8,7 +8,8 @@ namespace ExamBanking.Models
         public int Ticketid { get; set; }
         public int? Bankid { get; set; }
         public decimal? Accid { get; set; }
-        public DateTime? Expire { get; set; }
+        public DateTime? Startdate { get; set; }
+        public int? Expire { get; set; }
         public int? Ticketmode { get; set; }
 
         public virtual Account? Acc { get; set; }

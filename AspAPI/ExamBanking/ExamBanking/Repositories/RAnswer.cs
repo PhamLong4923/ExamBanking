@@ -7,9 +7,9 @@ namespace ExamBanking.Repositories
 {
     public class RAnswer
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
 
-        public RAnswer(ExamBankingContext context)
+        public RAnswer(exambankingContext context)
         {
             _context = context;
         }

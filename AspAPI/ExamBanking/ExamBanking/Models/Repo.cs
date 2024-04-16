@@ -7,7 +7,6 @@ namespace ExamBanking.Models
     {
         public Repo()
         {
-            Accesses = new HashSet<Access>();
             Sections = new HashSet<Section>();
         }
 
@@ -18,7 +17,6 @@ namespace ExamBanking.Models
 
         public virtual Bank? Bank { get; set; }
         public virtual Account? SecondeditorNavigation { get; set; }
-        public virtual ICollection<Access> Accesses { get; set; }
         public virtual ICollection<Section> Sections { get; set; }
     }
 }

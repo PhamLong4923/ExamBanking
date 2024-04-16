@@ -16,9 +16,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class GoogleAuthController : ControllerBase
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly Jwt _jwt;
-        public GoogleAuthController(ExamBankingContext context,Jwt jwt)
+        public GoogleAuthController(exambankingContext context,Jwt jwt)
         {
             _context = context;
             _jwt = jwt;
