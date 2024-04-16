@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "p02b5vrcTZ5FVDdOvYLzFMTjwvo06ngJyJVgCcnKhBFXf7EGOVEXjRwGULCdj8+tFYi78ikROvWbBxZsfS47Vg==",
+  "dgSpecHash": "/vi1y8W1HqLOirftrBSJszwd1bac9xeCnpOK53SfKMQLtPIH7OGapIBgwqvhQtn6J3oSZe+/XalyzKipQyLrFw==",
   "success": true,
-  "projectFilePath": "D:\\hoc\\ki_6\\v15\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+  "projectFilePath": "D:\\hoc\\ki_6\\v16\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\viet2\\.nuget\\packages\\automapper\\8.0.0\\automapper.8.0.0.nupkg.sha512",
     "C:\\Users\\viet2\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\6.0.0\\automapper.extensions.microsoft.dependencyinjection.6.0.0.nupkg.sha512",
