@@ -14,11 +14,11 @@ namespace ExamBanking.Controllers
     public class BankController : ControllerBase
     {
         
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
     
-        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount)
+        public BankController(exambankingContext context, RRepositories rRepositories, RAccount rAccount)
         {
             _context = context;
             _rRepositories = rRepositories;

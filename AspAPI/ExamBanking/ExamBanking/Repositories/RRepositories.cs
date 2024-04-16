@@ -7,9 +7,9 @@ namespace ExamBanking.Repositories
 {
     public class RRepositories
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly RSection _rSection;
-        public RRepositories(ExamBankingContext context,RSection rSection)
+        public RRepositories(exambankingContext context,RSection rSection)
         {
             _context = context;
             _rSection = rSection;

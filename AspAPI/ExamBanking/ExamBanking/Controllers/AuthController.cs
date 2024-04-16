@@ -21,9 +21,9 @@ namespace ExamBanking.Controllers
     public class AuthController : ControllerBase
     {
         public static Account a = new Account();
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly IConfiguration _configuration;
-        public AuthController(ExamBankingContext context, IConfiguration configuration)
+        public AuthController(exambankingContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
