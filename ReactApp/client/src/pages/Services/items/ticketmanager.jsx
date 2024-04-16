@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Table, Menu, Dropdown, Space, Tag } from "antd";
 import { PlusOutlined, EllipsisOutlined, GiftOutlined } from "@ant-design/icons";
 import KitNewbie from "../../../components/ui/kitnewbie";
 import TicketPaymentModal from "../../../components/ui/ticketpaymentui";
 import TicketRenewPaymentModal from "../../../components/ui/ticketrenewmodal";
+import { isnew } from "../../../services/api";
 
 const { Column } = Table;
 
@@ -61,7 +62,16 @@ const TicketManager = () => {
         return diffDays;
     };
 
-    //useEffect kiểm tra xem đó có phải người dùng mới hay không, nếu có thì hiển thị modal 
+    useEffect(() => {
+        try {
+            const response = isnew();
+            if (response.data && response.status === 200) {
+
+            }
+        } catch (error) {
+
+        }
+    }, []);
 
     //useEffect load ticket của người dùng
 
@@ -79,9 +89,9 @@ const TicketManager = () => {
         <div style={{ marginTop: '20px', padding: '5px' }}>
             <TicketPaymentModal start={openpay} setClose={() => setOpenPay(false)} ></TicketPaymentModal>
             <TicketRenewPaymentModal start={openrenew} setClose={() => setOpenRenew(false)} tid={tid}></TicketRenewPaymentModal>
-            {isnewbie ? (<Button onClick={() => handleOpenKit()} type="primary" icon={<GiftOutlined />}>Nhận kit cho người mới</Button>)
+            {isnewbie ? (<Button style={{ marginBottom: '5px' }} onClick={() => handleOpenKit()} type="primary" icon={<GiftOutlined />}>Nhận kit cho người mới</Button>)
                 :
-                (<Button type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
+                (<Button style={{ marginBottom: '5px' }} type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
             <KitNewbie visible={visible} onCancel={handleCloseKit} onApply={handleAcceptKit}></KitNewbie>
             <Table dataSource={tickets} pagination={false}>
                 <Column title="Tên Ticket" dataIndex="name" key="name" />
