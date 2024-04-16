@@ -6,6 +6,12 @@ namespace ExamBanking.Repositories
 {
     public class RTicket
     {
-       
+        private readonly exambankingContext _context;
+        public RTicket(exambankingContext context)
+        {
+            _context = context;
+        }
+
+        
     }
 }

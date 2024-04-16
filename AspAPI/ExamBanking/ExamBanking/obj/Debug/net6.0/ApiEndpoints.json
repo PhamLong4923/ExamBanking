@@ -632,6 +632,16 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "findTickets",
+    "RelativePath": "api/Ticket",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
     "Method": "DeleteTicket",
     "RelativePath": "api/Ticket",
     "HttpMethod": "DELETE",

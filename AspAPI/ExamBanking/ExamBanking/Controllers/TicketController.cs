@@ -22,20 +22,29 @@ namespace ExamBanking.Controllers
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
-            DateTime Expire;
             if (user == null)
             {
                 return Ok("User not found or token is invalid.");
             }
             var ticket = new Ticket
-            {
-                Bankid = request.Bankid,
+            {       
                 Accid = user.Accid,
-                Expire = request.Expire ,
                 Ticketmode = request.Ticketmode
             };
            
             return Ok(ticket);
+        }
+        [HttpGet]
+        public async Task<IActionResult> findTickets()
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            if (user == null)
+            {
+                return Ok("User not found or token is invalid.");
+            }
+            var tickets = _context.Tickets.Where(t => t.Accid == user.Accid && t.Bankid == null ).ToList();
+            return Ok(tickets); 
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteTicket(DeleteTicketRequest request)
