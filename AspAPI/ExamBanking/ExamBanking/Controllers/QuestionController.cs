@@ -66,7 +66,20 @@ namespace ExamBanking.Controllers
         [HttpPut("EditQuestion")]
         public IActionResult EditQuestion(int question, string Quescontent, int type, string solution, int modeid)
         {
-            _rquestion.EditQuestion(question, Quescontent, type, solution, modeid);
+            _rquestion.EditQuestion(question, Quescontent, type);
+            return Ok(question);
+        }
+
+        [HttpPut("EditSolution")]
+        public IActionResult EditSolution(int question, string solution)
+        {
+            _rquestion.EditSolution(question, solution);
+            return Ok(question);
+        }
+        [HttpPut]
+        public IActionResult EditMode(int question, int modeid)
+        {
+            _rquestion.EditMode(question, modeid);
             return Ok(question);
         }
 

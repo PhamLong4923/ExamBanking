@@ -352,6 +352,27 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.QuestionController",
+    "Method": "EditMode",
+    "RelativePath": "api/Question",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "question",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "modeid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.QuestionController",
     "Method": "CreateQuestion",
     "RelativePath": "api/Question/CreateQuestion",
     "HttpMethod": "POST",
@@ -413,6 +434,27 @@
       {
         "Name": "modeid",
         "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.QuestionController",
+    "Method": "EditSolution",
+    "RelativePath": "api/Question/EditSolution",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "question",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "solution",
+        "Type": "System.String",
         "IsRequired": false
       }
     ],
