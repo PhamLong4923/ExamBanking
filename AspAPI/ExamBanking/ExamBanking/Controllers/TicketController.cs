@@ -91,7 +91,6 @@ namespace ExamBanking.Controllers
                 return Ok("You do not have permission to update this ticket.");
             }
             ticket.Startdate = DateTime.Now;
-            
             ticket.Bankid = BankId;
             await _context.SaveChangesAsync();
             return Ok("Ticket updated.");
