@@ -5,11 +5,11 @@ namespace ExamBanking.Repositories
 {
     public class RSection
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly RQuestion _rQuestion;
         private readonly RAnswer _rAnswer;
 
-        public RSection(ExamBankingContext context,RQuestion rQuestion,RAnswer rAnswer)
+        public RSection(exambankingContext context,RQuestion rQuestion,RAnswer rAnswer)
         {
             _context = context;
             _rQuestion = rQuestion;

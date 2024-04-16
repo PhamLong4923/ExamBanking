@@ -9,10 +9,10 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class ExamController : ControllerBase
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
 
 
-        public ExamController(ExamBankingContext context)
+        public ExamController(exambankingContext context)
         {
             _context = context;
         }

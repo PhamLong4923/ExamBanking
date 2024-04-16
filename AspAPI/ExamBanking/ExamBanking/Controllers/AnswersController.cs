@@ -12,9 +12,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class AnswersController : ControllerBase
     {
-        private readonly ExamBankingContext _context;
+        private readonly exambankingContext _context;
         private readonly RAnswer _ranswer;
-        public AnswersController(ExamBankingContext context,RAnswer reanswer)
+        public AnswersController(exambankingContext context,RAnswer reanswer)
         {
             _context = context;
             _ranswer = reanswer;
