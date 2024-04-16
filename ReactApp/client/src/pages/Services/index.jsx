@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Typography, Button } from 'antd';
-import { BankOutlined, SolutionOutlined, LockOutlined } from '@ant-design/icons';
+import { BankOutlined, SolutionOutlined, LockOutlined, ReloadOutlined } from '@ant-design/icons';
 import BankManager from './items/bankmanager';
 import TicketManager from './items/ticketmanager';
 import AccessManager from './items/accessmanager';
@@ -24,10 +24,16 @@ const Services = () => {
         setCurrentPage(null);
     };
 
+    const handleReload = () => {
+        setCurrentPage(null);
+        setTimeout(() => setCurrentPage(currentPage), 0);
+    };
+
     if (currentPage) {
         return (
             <div>
                 <Button onClick={handleBack}>Back</Button>
+                <Button onClick={handleReload} style={{ marginLeft: '10px' }} icon={<ReloadOutlined />}>Reload</Button>
                 {currentPage}
             </div>
         );

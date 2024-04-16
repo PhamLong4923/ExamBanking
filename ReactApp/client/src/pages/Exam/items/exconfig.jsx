@@ -128,7 +128,7 @@ export default function ExamConfig({ seclectedIds }) {
             render: (_, record) => record.secname,
         },
         {
-            title: 'Trắc nhiệm',
+            title: 'Trắc nghiệm',
             children: [
                 {
                     title: 'Nhận biết',

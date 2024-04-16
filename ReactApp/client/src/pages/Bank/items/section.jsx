@@ -171,24 +171,20 @@ const Section = () => {
 
 
     //==========================Question Tool Area==========================//
-    useEffect(() => {
-        const loadQuestions = async () => {
-            try {
-                if (selectSec === null) {
 
-                }
-                const response = await getQuestions(selectSec);
+    const loadQuestions = async (id) => {
+        try {
 
-                setQuestions(response.data);
-                setQueslimit(setLimit('ques', questions.length));
+            const response = await getQuestions(id);
 
-            } catch (error) {
-                errors(SYSTEM_ERROR_MESSAGE, 2);
-            }
-        };
+            setQuestions(response.data);
+            setQueslimit(setLimit('ques', questions.length));
 
-        loadQuestions();
-    }, [selectSec]);
+        } catch (error) {
+            errors(SYSTEM_ERROR_MESSAGE, 2);
+        }
+    };
+
 
     const handleOpenQuesModal = () => {
         if (selectSec !== null) {
@@ -211,12 +207,12 @@ const Section = () => {
         try {
             const response = await delQuestions(id);
             var dqid = response.data;
-            const updatedQuestions = questions.filter(question => question.id !== id);
+            const updatedQuestions = questions.filter(question => question.quesid !== id);
             setQuestions(updatedQuestions);
+            success(SYSTEM_SUCCESS_MESSAGE, 2);
             setConfirmationModalVisible(false);
         } catch (error) {
             errors(SYSTEM_ERROR_MESSAGE, 2);
-            console.log(error);
         }
     };
 
@@ -231,36 +227,7 @@ const Section = () => {
 
     //==========================End Question Tool Area==========================//
 
-    const [questions, setQuestions] = useState([
-        {
-            quesid: 1,
-            quescontent: 'What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color? What is your favorite color?',
-            answers: [
-                { ansid: 1, anscontent: 'Red' },
-                { ansid: 2, anscontent: 'Blue' },
-                { ansid: 3, anscontent: 'Green' }
-            ],
-            solution: 'The solution for the favorite color question is to choose the color that you like the most.',
-            type: 1,
-            modeid: 2,
-        },
-        {
-            quesid: 2,
-            quescontent: 'Which programming language do you prefer?',
-            answers: [
-                { ansid: 4, anscontent: 'JavaScript' },
-                { ansid: 5, anscontent: 'Python' },
-                { ansid: 6, anscontent: 'Java' },
-                { ansid: 7, anscontent: 'C++' }
-            ],
-            solution: 'It depends on the project and personal preference. Each programming language has its strengths and weaknesses.',
-            type: 1,
-            modeid: 3,
-        },
-
-
-        // Thêm các câu hỏi khác ở đây
-    ]);
+    const [questions, setQuestions] = useState([]);
 
 
     const handleFilter1Change = (value) => {
@@ -288,7 +255,8 @@ const Section = () => {
 
 
     const handleItemClick = (id) => {
-        setSelectSec(id === selectSec ? null : id); // Nếu item đã được chọn thì bỏ chọn, ngược lại chọn item mới
+        setSelectSec(id === selectSec ? null : id);
+        loadQuestions(id);
     };
 
     const handleDeleteSection = (id) => {

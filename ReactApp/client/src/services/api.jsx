@@ -8,6 +8,8 @@ export const signUp = () => Http.post("");
 
 export const login = () => Http.post("");
 
+export const isnew = () => Http.get("/Account/NewBie");
+
 //get-api
 
 export const getBank = () => Http.get("/Bank/GetBank");
@@ -40,7 +42,7 @@ export const delSection = (secid) => Http.delete(`/Section/DeleteSection?secid=$
 
 export const delRepository = (repoid) => Http.delete(`/Repositories/DelRepo?repoid=${repoid}`);
 
-export const delQuestions = (quesid) => Http.get(`/Question/DeleteQuestion?quesid=${quesid}`);
+export const delQuestions = (quesid) => Http.delete(`/Question/DeleteQuestion?quesid=${quesid}`);
 
 //update-api
 
