@@ -21,26 +21,10 @@ namespace ExamBanking.Controllers
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
 
-            // Sử dụng userId để truy vấn người dùng từ cơ sở dữ liệu
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
             if (user != null)
             {
-
-                DateTime dateJoined = (DateTime)user.Datejoin;
-                DateTime currentDate = DateTime.Now;
-
-
-                TimeSpan timeSinceJoin = currentDate - dateJoined;
-
-                if (timeSinceJoin.TotalDays < 30)
-                {
-                    return Ok(0);
-                }
-                else
-                {
-                    return Ok(1);
-                }
-
+                return Ok(user.Isnewbie);
             }
 
             return BadRequest("user not found");
