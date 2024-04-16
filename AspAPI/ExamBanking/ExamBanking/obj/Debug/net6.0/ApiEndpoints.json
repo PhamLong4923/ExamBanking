@@ -616,8 +616,29 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
-    "Method": "CreateTicket",
+    "Method": "AproveTicket",
     "RelativePath": "api/Ticket",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "BankId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ticketId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "CreateTicket",
+    "RelativePath": "api/Ticket/createTicket",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -633,7 +654,7 @@
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
     "Method": "DeleteTicket",
-    "RelativePath": "api/Ticket",
+    "RelativePath": "api/Ticket/deleteTicket",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -644,6 +665,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "findTickets",
+    "RelativePath": "api/Ticket/ListAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]
