@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamBanking.Models
 {
@@ -16,7 +17,7 @@ namespace ExamBanking.Models
         public string? Bankname { get; set; }
         public byte? Bankstatus { get; set; }
         public decimal? Accid { get; set; }
-
+        [JsonIgnore]
         public virtual Account? Acc { get; set; }
         public virtual ICollection<Access> Accesses { get; set; }
         public virtual ICollection<Repo> Repos { get; set; }
