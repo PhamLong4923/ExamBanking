@@ -10,9 +10,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class SectionController : ControllerBase
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
         private readonly RSection _rsection;
-        public SectionController(exambankingContext context, RSection rsection)
+        public SectionController(ExamBankingContext context, RSection rsection)
         {
             _context = context;
             _rsection = rsection;

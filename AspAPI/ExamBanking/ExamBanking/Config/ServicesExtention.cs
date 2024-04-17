@@ -12,7 +12,7 @@ namespace ExamBanking.Config
         {
             //add service
             services.AddScoped<RAccount>();
-            services.AddDbContext<exambankingContext>();
+            services.AddDbContext<ExamBankingContext>();
             services.AddScoped<RAnswer>();
             services.AddScoped<RQuestion>();
             services.AddScoped<RRepositories>();

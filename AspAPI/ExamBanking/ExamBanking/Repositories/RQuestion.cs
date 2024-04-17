@@ -7,9 +7,9 @@ namespace ExamBanking.Repositories
 {
     public class RQuestion
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
         private readonly RAnswer _ranswer;
-        public RQuestion(exambankingContext context, RAnswer ranswer)
+        public RQuestion(ExamBankingContext context, RAnswer ranswer)
         {
             _context = context;
             _ranswer = ranswer;

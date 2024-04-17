@@ -10,8 +10,8 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly exambankingContext _context;
-        public AccountController(exambankingContext context)
+        private readonly ExamBankingContext _context;
+        public AccountController(ExamBankingContext context)
         {
             _context = context;
         }
@@ -46,7 +46,24 @@ namespace ExamBanking.Controllers
             }
 
             return BadRequest("user not found");
-        }   
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("getBankMode")]
+        public async Task<IActionResult> getBankMode()
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+
+            // Sử dụng userId để truy vấn người dùng từ cơ sở dữ liệu
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            if (user != null)
+            {
+ 
+                return Ok(user.Bankmode);
+            }
+
+            return BadRequest("user not found");
+        }
 
 
     }

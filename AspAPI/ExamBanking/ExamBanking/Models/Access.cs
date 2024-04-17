@@ -9,13 +9,11 @@ namespace ExamBanking.Models
         public decimal? Fromid { get; set; }
         public decimal? Toid { get; set; }
         public int? Bankid { get; set; }
-        public int? Repoid { get; set; }
         public string? Message { get; set; }
         public int? Status { get; set; }
 
         public virtual Bank? Bank { get; set; }
         public virtual Account? From { get; set; }
-        public virtual Repo? Repo { get; set; }
         public virtual Account? To { get; set; }
     }
 }

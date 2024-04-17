@@ -7,8 +7,8 @@ namespace ExamBanking.Repositories
 {
     public class RAccount
     {
-        private readonly exambankingContext _context;
-        public RAccount(exambankingContext context)
+        private readonly ExamBankingContext _context;
+        public RAccount(ExamBankingContext context)
         {
             _context = context;
         }

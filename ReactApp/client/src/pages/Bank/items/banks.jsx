@@ -38,6 +38,7 @@ const Bank = () => {
                 const response = await getBank();
                 setBanks(response.data);
                 setIsLimit(setLimit('bank', response.data.length));
+                console.log(islimit);
                 setLoading(false);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -125,7 +126,7 @@ const Bank = () => {
     };
 
     const handleOpenModel = (limit) => {
-        if (limit === true) {
+        if (limit === false) {
             warning(SYSTEM_LIMIT_MESSAGE, 2);
         } else {
             setAddModal(true);

@@ -13,9 +13,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class QuestionController : ControllerBase
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
         private readonly RQuestion _rquestion;
-        public QuestionController(exambankingContext context, RQuestion rquestion)
+        public QuestionController(ExamBankingContext context, RQuestion rquestion)
         {
             _context = context;
             _rquestion = rquestion;

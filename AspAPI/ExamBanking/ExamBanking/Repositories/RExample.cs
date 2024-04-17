@@ -6,9 +6,9 @@ namespace ExamBanking.Repository
 
     public class RExample
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
 
-        public RExample(exambankingContext context)
+        public RExample(ExamBankingContext context)
         {
             _context = context;
         }

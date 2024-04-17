@@ -26,6 +26,8 @@ export const getQuestionType = () => Http.get();
 
 export const getQuestionMode = () => Http.get();
 
+export const getBankMode = () => Http.get("/Account/getBankMode");
+
 //create-api
 
 export const addBank = (data) => Http.post("/Bank/CreateBank", data);

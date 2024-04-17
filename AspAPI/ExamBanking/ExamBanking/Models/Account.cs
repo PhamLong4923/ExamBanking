@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace ExamBanking.Models
 {
@@ -8,9 +7,10 @@ namespace ExamBanking.Models
     {
         public Account()
         {
+            AccessFroms = new HashSet<Access>();
+            AccessTos = new HashSet<Access>();
             Banks = new HashSet<Bank>();
             Payments = new HashSet<Payment>();
-            Repos = new HashSet<Repo>();
             Tickets = new HashSet<Ticket>();
         }
 
@@ -26,12 +26,12 @@ namespace ExamBanking.Models
         public int? Roleid { get; set; }
         public int? Bankmode { get; set; }
         public int? Isnewbie { get; set; }
-        public int? Ticketmode { get; set; }
-        [JsonIgnore]
+
         public virtual Role? Role { get; set; }
+        public virtual ICollection<Access> AccessFroms { get; set; }
+        public virtual ICollection<Access> AccessTos { get; set; }
         public virtual ICollection<Bank> Banks { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
-        public virtual ICollection<Repo> Repos { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

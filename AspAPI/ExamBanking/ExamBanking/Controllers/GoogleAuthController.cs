@@ -16,9 +16,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class GoogleAuthController : ControllerBase
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
         private readonly Jwt _jwt;
-        public GoogleAuthController(exambankingContext context,Jwt jwt)
+        public GoogleAuthController(ExamBankingContext context,Jwt jwt)
         {
             _context = context;
             _jwt = jwt;
@@ -41,7 +41,6 @@ namespace ExamBanking.Controllers
                 {
                     Accname = jsonToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value,
                     Email = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
-                    Accid = Convert.ToDecimal(jsonToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value),
                     Datejoin = DateTime.Now
                    
                 };

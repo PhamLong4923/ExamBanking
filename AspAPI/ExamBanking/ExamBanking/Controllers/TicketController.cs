@@ -11,8 +11,8 @@ namespace ExamBanking.Controllers
     [Authorize(Roles = "User")]
     public class TicketController : ControllerBase
     {
-        private readonly exambankingContext _context;
-        public TicketController(exambankingContext context)
+        private readonly ExamBankingContext _context;
+        public TicketController(ExamBankingContext context)
         {
             _context = context;
         }

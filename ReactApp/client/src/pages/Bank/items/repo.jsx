@@ -127,7 +127,7 @@ const Bank = () => {
     };
 
     const handleOpenModel = (limit) => {
-        if (limit === true) {
+        if (limit === false) {
             warning(SYSTEM_LIMIT_MESSAGE, 2);
         } else {
             setAddModal(true);

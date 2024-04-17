@@ -10,9 +10,9 @@ namespace ExamBanking.Controllers
     [ApiController]
     public class RepositoriesController : ControllerBase
     {
-        private readonly exambankingContext _context;
+        private readonly ExamBankingContext _context;
         private readonly RRepositories _rerepo;
-        public RepositoriesController(exambankingContext context, RRepositories rerepo)
+        public RepositoriesController(ExamBankingContext context, RRepositories rerepo)
         {
             _context = context;
             _rerepo = rerepo;
