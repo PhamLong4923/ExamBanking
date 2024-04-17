@@ -49,14 +49,17 @@ const TicketManager = () => {
     }
 
     const handleAcceptKit = () => {
-        try {
-            const response = updateisnew();
-            console.log(response.data);
-            setIsnewbie(false);
-        } catch (error) {
-            console.log(error);
+        const updateNew = async () => {
+            try {
+                const response = await updateisnew();
+                console.log(response.data);
+                setIsnewbie(false);
+            } catch (error) {
+                console.log(error);
+            }
+            setVisible(false);
         }
-        setVisible(false);
+        updateNew();
     }
 
 
@@ -69,16 +72,18 @@ const TicketManager = () => {
     };
 
     useEffect(() => {
-        try {
-            const response = isnew();
-            console.log(response.data);
-            if (response.data === 0) {
-                console.log(response.data);
-                setIsnewbie(false);
+        const loadIsNew = async () => {
+            try {
+                const response = await isnew();
+                if (response.data === 0) {
+                    setIsnewbie(false);
+                }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.log(error);
-        }
+        };
+
+        loadIsNew();
     }, []);
 
     useEffect(() => {

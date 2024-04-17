@@ -27,6 +27,7 @@ const uploadImageToFirebase = async (src) => {
         const downloadURL = await getDownloadURL(imageRef);
 
         // Trả về URL của ảnh từ Firebase
+        console.log(downloadURL);
         return downloadURL;
     } catch (error) {
         console.error('Error uploading image to Firebase:', error);

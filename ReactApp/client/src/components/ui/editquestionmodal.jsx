@@ -5,15 +5,16 @@ import Ckeditor from '../tool/ckeditor';
 import { errors, warning } from './notifications';
 import { SYSTEM_ERROR_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../share/constrains';
 import { uploadImageToFirebase } from '../tool/uploader';
+import { updateQuestion, updateSolution } from '../../services/api';
 
 const { Option } = Select;
 
 const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
     const [questionType, setQuestionType] = useState(qdata.type);
     const [qcontent, setQcontent] = useState('');
-    const [difficultyLevel, setDifficultyLevel] = useState(qdata.modeid);
+    const [difficultyLevel, setDifficultyLevel] = useState();
     const [solutionData, setSolutionData] = useState('');
-    const [answers, setAnswers] = useState(qdata.answers);
+    const [answers, setAnswers] = useState();
 
     const [comparedata, setCompareData] = useState(qdata);
 
@@ -22,6 +23,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         setDifficultyLevel(qdata.modeid);
         setSolutionData(qdata.solution);
         setAnswers(qdata.answers.map((ans, index) => ({ key: index, ...ans })));
+        console.log(qdata);
     }, [qdata]);
 
     const handleAddAnswer = () => {
@@ -37,6 +39,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
             return answer;
         });
         setAnswers(updatedAnswers);
+
     };
 
     const handleRemoveAnswer = (id) => {
@@ -44,26 +47,44 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         setAnswers(newAnswers);
     };
 
-    const handleSaveEditQuestion = async () => {
-        if (comparedata.modeid !== qdata.modeid) {
-            // call change modeid
-        }
-        if (comparedata.quescontent === qdata) {
-            try {
-                // const response = upda
-            } catch (error) {
+    const handleSaveEditQuestion = async (data) => {
+        if (comparedata.modeid !== data.modeid) {
 
-            }
         }
-        for (let i = 0; i < answers.length; i++) {
-            if (answers[i].ansid !== comparedata.answers[i].ansid) {
-                //call add Answer
-            } else if (answers[i].anscontent !== comparedata.answers[i].anscontent) {
-                //call edit answer
-            }
+        if (comparedata.quescontent !== data.quescontent) {
+            updateQuestionf(qdata.quesid, data.quescontent);
+            console.log(qdata.quescontent);
+        }
+        // for (let i = 0; i < answers.length; i++) {
+        //     if (answers[i].ansid !== comparedata.answers[i].ansid) {
+        //         //call add Answer
+        //     } else if (answers[i].anscontent !== comparedata.answers[i].anscontent) {
+        //         //call edit answer
+        //     }
 
+        // }
+        if (comparedata.solution !== data.solution) {
+            updateSolutionf(qdata.quesid, data.solution);
         }
     };
+
+    const updateSolutionf = async (qid, nsol) => {
+        try {
+            const response = await updateSolution(qid, nsol);
+            //qdata.solution = response.data;
+        } catch (error) {
+            console.log("Cannot update solution", error);
+        }
+    }
+
+    const updateQuestionf = async (qid, qcontent) => {
+        try {
+            const response = await updateQuestion(qid, qcontent);
+            //qdata.solution = response.data;
+        } catch (error) {
+            console.log("Cannot update question", error);
+        }
+    }
 
 
 
@@ -98,7 +119,9 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
     ];
 
     const getEditorData = (data) => {
+
         setQcontent(data);
+        console.log(qcontent);
     };
 
     const getSolutionData = (data) => {
@@ -110,7 +133,6 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         try {
             // Check and upload images in question content
             const updatedQcontent = await uploadImagesInContent(qcontent);
-
             // Check and upload images in solution content
             const updatedSolutionData = await uploadImagesInContent(solutionData);
 
@@ -122,7 +144,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
                 };
             }));
 
-            const updatedQuestion = {
+            const newData = {
                 qtype: parseInt(questionType), // Set qtype here
                 quescontent: updatedQcontent,
                 qmode: parseInt(difficultyLevel),
@@ -130,7 +152,9 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
                 answers: updatedAnswers
             };
 
-            onSave(updatedQuestion);
+            handleSaveEditQuestion(newData);
+
+            onSave(newData);
             onCancel();
         } catch (error) {
             errors(SYSTEM_ERROR_MESSAGE, 2);
@@ -151,6 +175,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
                 updatedContent = updatedContent.replace(src, newSrc);
             }
         }
+        console.log(updatedContent);
 
         return updatedContent;
     };

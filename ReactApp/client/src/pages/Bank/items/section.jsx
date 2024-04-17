@@ -11,6 +11,7 @@ import { getSection, addSection, updateSection, delSection, getQuestions, delQue
 import EditModal from '../../../components/ui/editNameModel';
 import QuestionModal from '../../../components/ui/createquestionmodal.jsx'
 import EditQuestionModal from '../../../components/ui/editquestionmodal.jsx';
+import parse from 'html-react-parser';
 
 const { Option } = Select;
 const { Panel } = Collapse;
@@ -321,7 +322,7 @@ const Section = () => {
                                         header={(
                                             <Space style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                 <div>
-                                                    <Text>{question.quescontent}</Text>
+                                                    <Text>{parse(question.quescontent)}</Text>
                                                 </div>
 
                                                 <Space >

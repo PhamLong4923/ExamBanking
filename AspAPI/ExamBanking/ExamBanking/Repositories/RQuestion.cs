@@ -31,7 +31,7 @@ namespace ExamBanking.Repositories
             return question.Quesid;
         }
         
-        public int EditQuestion(int Quesid, string Quescontent, int type)
+        public int EditQuestion(int Quesid, string Quescontent)
         {
             var question = _context.Questions.Find(Quesid);
 
@@ -40,7 +40,6 @@ namespace ExamBanking.Repositories
 
                 return -1;
             }         
-            question.Type = type;
             question.Quescontent = Quescontent;
             _context.SaveChanges();
 

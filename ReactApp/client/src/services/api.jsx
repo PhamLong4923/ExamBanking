@@ -56,9 +56,11 @@ export const updateSection = (secid, newname) => Http.put(`/Section/EditSection?
 
 export const updateRepository = (repoid, newname) => Http.put(`/Repositories/EditRepo?repoid=${repoid}&newname=${newname}`);
 
-export const updateQuestion = () => Http.get(`/Question/EditQuestion?`);
+export const updateQuestion = (qid, qcontent) => Http.put(`/Question/EditQuestion?question=${qid}&quescontent=${qcontent}`);
 
 export const updateAccount = () => Http.get("");
+
+export const updateSolution = (question, solution) => Http.put(`/Question/EditSolution?question=${question}&solution=${solution}`);
 
 //
 
