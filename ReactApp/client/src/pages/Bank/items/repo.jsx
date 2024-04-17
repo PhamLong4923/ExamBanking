@@ -39,7 +39,7 @@ const Bank = () => {
             try {
                 const response = await getRepository(bankId);
                 setRepos(response.data);
-                setIsLimit(setLimit('repo', response.data.length));
+                setIsLimit(await setLimit('repo', response.data.length));
                 setLoading(false);
             } catch (error) {
                 if (error.response && error.response.status === 401) {
@@ -57,8 +57,14 @@ const Bank = () => {
     }, []);
 
     useEffect(() => {
-        setIsLimit(setLimit('repo', repos.length));
+        const fetchData = async () => {
+            const isRepoLimitReached = await setLimit('repo', repos.length);
+            setIsLimit(isRepoLimitReached);
+        };
+
+        fetchData();
     }, [repos]);
+
 
     const handleAddRepo = async (id, value) => {
         try {
@@ -127,7 +133,7 @@ const Bank = () => {
     };
 
     const handleOpenModel = (limit) => {
-        if (limit === false) {
+        if (limit === true) {
             warning(SYSTEM_LIMIT_MESSAGE, 2);
         } else {
             setAddModal(true);

@@ -4,7 +4,9 @@ import { PlusOutlined, EllipsisOutlined, GiftOutlined } from "@ant-design/icons"
 import KitNewbie from "../../../components/ui/kitnewbie";
 import TicketPaymentModal from "../../../components/ui/ticketpaymentui";
 import TicketRenewPaymentModal from "../../../components/ui/ticketrenewmodal";
-import { isnew, updateisnew } from "../../../services/api";
+import { delTicket, isnew, updateisnew } from "../../../services/api";
+import { success } from "../../../components/ui/notifications";
+import { SYSTEM_SUCCESS_MESSAGE } from "../../../share/constrains";
 
 const { Column } = Table;
 
@@ -14,29 +16,29 @@ const TicketManager = () => {
     const [visible, setVisible] = useState(false);
     const [tid, setTid] = useState();
 
-    const tickets = [
+    const [tickets, setTicket] = useState([
         { id: 1, name: "Ticket 1", bank: "Bank F", createdAt: new Date("2024-03-15"), expiry: 30 }, // Ticket này đã hết hạn
         { id: 2, name: "Ticket 2", bank: "Bank B", createdAt: new Date("2024-03-20"), expiry: 40 },
         { id: 4, name: "Ticket 4", bank: null, createdAt: new Date("2024-03-25"), expiry: 60 },
         { id: 3, name: "Ticket 3", bank: "Bank C", createdAt: new Date("2024-03-25"), expiry: 0 }
-    ];
+    ]);
 
 
     const handleMenuClick = (ticketId, action) => {
-
         setTid(ticketId);
-        setOpenRenew(true);
-
     };
 
+    const handleRenewTicket = () => {
+        setOpenRenew(true);
+    }
 
     const [openrenew, setOpenRenew] = useState(false);
 
 
     const menu = (ticketId) => (
         <Menu onClick={({ key }) => handleMenuClick(ticketId, key)}>
-            <Menu.Item key="delete">Xóa</Menu.Item>
-            <Menu.Item key="extend">Gia hạn</Menu.Item>
+            <Menu.Item key="delete" onClick={() => handleDeleteTicket(ticketId)}>Xóa</Menu.Item>
+            <Menu.Item key="extend" onClick={() => handleRenewTicket()}>Gia hạn</Menu.Item>
         </Menu>
     );
 
@@ -94,7 +96,17 @@ const TicketManager = () => {
         }
     })
 
-    //Hàm xóa ticket
+    const handleDeleteTicket = async (tkid) => {
+        try {
+            //const response = await delTicket(tkid);
+            const updateTk = tickets.filter(tk => tk.id !== tkid);
+            setTicket(updateTk);
+            success(SYSTEM_SUCCESS_MESSAGE, 2);
+        } catch (error) {
+
+        }
+    }
+
 
     //Hàm thêm ticket
     const [openpay, setOpenPay] = useState(false);

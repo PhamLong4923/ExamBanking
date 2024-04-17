@@ -36,7 +36,9 @@ export const addSection = (data) => Http.post("/Section/CreateSection", data);
 
 export const addRepository = (data) => Http.post("/Repositories/CreateRepo", data);
 
-export const addQuestion = (data, sid) => Http.post("Question/CreateQuestion", data, sid);
+export const addQuestion = (data) => Http.post("Question/CreateQuestion", data);
+
+export const addAnswer = (data) => Http.post("/Answers/CreateAnswer", data)
 
 export const paymentCreate = (data) => Http.post("");
 
@@ -49,6 +51,8 @@ export const delSection = (secid) => Http.delete(`/Section/DeleteSection?secid=$
 export const delRepository = (repoid) => Http.delete(`/Repositories/DelRepo?repoid=${repoid}`);
 
 export const delQuestions = (quesid) => Http.delete(`/Question/DeleteQuestion?quesid=${quesid}`);
+
+export const delTicket = (ticketid) => Http.delete(`/Ticket/deleteTicket?tkid=${ticketid}`);
 
 //update-api
 
@@ -63,6 +67,10 @@ export const updateQuestion = (qid, qcontent) => Http.put(`/Question/EditQuestio
 export const updateAccount = () => Http.get("");
 
 export const updateSolution = (question, solution) => Http.put(`/Question/EditSolution?question=${question}&solution=${solution}`);
+
+export const updateQMode = (qid, mode) => Http.put(`/Question/EditQuestion?question=${qid}&modeid=${mode}`);
+
+export const updateAns = (aid, content) => Http.put(`/Answers/EditAnswer?aid=${aid}&content=${content}`);
 
 //
 

@@ -37,7 +37,7 @@ const Bank = () => {
             try {
                 const response = await getBank();
                 setBanks(response.data);
-                setIsLimit(setLimit('bank', response.data.length));
+                setIsLimit(await setLimit('bank', response.data.length));
                 console.log(islimit);
                 setLoading(false);
             } catch (error) {
@@ -56,8 +56,14 @@ const Bank = () => {
     }, []);
 
     useEffect(() => {
-        setIsLimit(setLimit('bank', banks.length));
+        const fetchData = async () => {
+            const isbanklimit = await setLimit('bank', banks.length);
+            setIsLimit(isbanklimit);
+        };
+
+        fetchData();
     }, [banks]);
+
 
     const handleAddBank = async (id, value) => {
         try {
@@ -126,7 +132,7 @@ const Bank = () => {
     };
 
     const handleOpenModel = (limit) => {
-        if (limit === false) {
+        if (limit === true) {
             warning(SYSTEM_LIMIT_MESSAGE, 2);
         } else {
             setAddModal(true);

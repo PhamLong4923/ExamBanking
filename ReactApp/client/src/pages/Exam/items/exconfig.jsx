@@ -3,6 +3,7 @@ import { Table, Input, Button, Checkbox, Radio } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from "axios";
 import Export from "./export";
+import { ADA, ADV, APP, COMP, EASY, ESS, HARD, MCQ, NOR, REG } from "../../../share/constrains";
 
 export default function ExamConfig({ seclectedIds }) {
     const [data, setData] = useState([]);
@@ -12,6 +13,14 @@ export default function ExamConfig({ seclectedIds }) {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        const loadRepoData = async () => {
+            try {
+                //const response = 
+
+            } catch (error) {
+
+            }
+        }
         // Mock data for sections
         const mockData = [
 
@@ -136,7 +145,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'nbiet',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, REG, e.target.value)} />
                             <Input disabled='true' value={record.total[1].mcq[0].recognition} />
                         </div>
                     ),
@@ -147,7 +156,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'thong_hieu',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, COMP, e.target.value)} />
                             <Input disabled='true' value={record.total[1].mcq[0].comprehension} />
                         </div>
                     ),
@@ -158,7 +167,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'van_dung',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, APP, e.target.value)} />
                             <Input disabled='true' value={record.total[1].mcq[0].application} />
                         </div>
                     ),
@@ -169,7 +178,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'van_dung_cao',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, ADA, e.target.value)} />
                             <Input disabled='true' value={record.total[1].mcq[0].advanced} />
                         </div>
                     ),
@@ -192,7 +201,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'de',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, EASY, e.target.value)} />
                             <Input disabled='true' value={record.total[0].essay[0].easy} />
                         </div>
                     ),
@@ -203,7 +212,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'trung_binh',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, NOR, e.target.value)} />
                             <Input disabled='true' value={record.total[0].essay[0].normal} />
                         </div>
                     ),
@@ -214,7 +223,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'kho',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, HARD, e.target.value)} />
                             <Input disabled='true' value={record.total[0].essay[0].hard} />
                         </div>
                     ),
@@ -225,7 +234,7 @@ export default function ExamConfig({ seclectedIds }) {
                     key: 'nang_cao',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.sectionId, record.type, record.mode, e.target.value)} />
+                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, ADV, e.target.value)} />
                             <Input disabled='true' value={record.total[0].essay[0].advanced} />
                         </div>
                     ),

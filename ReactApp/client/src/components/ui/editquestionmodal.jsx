@@ -5,7 +5,7 @@ import Ckeditor from '../tool/ckeditor';
 import { errors, warning } from './notifications';
 import { SYSTEM_ERROR_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../share/constrains';
 import { uploadImageToFirebase } from '../tool/uploader';
-import { updateQuestion, updateSolution } from '../../services/api';
+import { addAnswer, updateAns, updateQMode, updateQuestion, updateSolution } from '../../services/api';
 
 const { Option } = Select;
 
@@ -49,20 +49,28 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
 
     const handleSaveEditQuestion = async (data) => {
         if (comparedata.modeid !== data.modeid) {
-
+            updateQmodef(qdata.quesid, data.qmode);
         }
         if (comparedata.quescontent !== data.quescontent) {
             updateQuestionf(qdata.quesid, data.quescontent);
             console.log(qdata.quescontent);
         }
-        // for (let i = 0; i < answers.length; i++) {
-        //     if (answers[i].ansid !== comparedata.answers[i].ansid) {
-        //         //call add Answer
-        //     } else if (answers[i].anscontent !== comparedata.answers[i].anscontent) {
-        //         //call edit answer
-        //     }
+        for (let i = 0; i < data.answers.length; i++) {
+            const newAnswer = data.answers[i];
+            const correspondingOldAnswer = comparedata.answers.find(oldAnswer => oldAnswer.ansid === newAnswer.ansid);
 
-        // }
+            if (correspondingOldAnswer) {
+                // If the answer exists in the old data, check if content has changed
+                if (correspondingOldAnswer.anscontent !== newAnswer.anscontent) {
+                    // Call edit answer
+                    updateAnsf(newAnswer.ansid, newAnswer.anscontent);
+                }
+            } else {
+                // If the answer doesn't exist in the old data, it's a new answer
+                // Call add Answer
+                addAnsf(qdata.quesid, newAnswer.anscontent);
+            }
+        }
         if (comparedata.solution !== data.solution) {
             updateSolutionf(qdata.quesid, data.solution);
         }
@@ -83,6 +91,33 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
             //qdata.solution = response.data;
         } catch (error) {
             console.log("Cannot update question", error);
+        }
+    }
+
+    const updateQmodef = async (qid, mode) => {
+        try {
+            const response = await updateQMode(qid, mode);
+            //qdata.solution = response.data;
+        } catch (error) {
+            console.log("Cannot update Qmode", error);
+        }
+    }
+
+    const updateAnsf = async (aid, ct) => {
+        try {
+            const response = await updateAns(aid, ct);
+            //qdata.solution = response.data;
+        } catch (error) {
+            console.log("Cannot update Ans", error);
+        }
+    }
+
+    const addAnsf = async (qid, acontent) => {
+        try {
+            const response = await addAnswer({ quesid: qid, content: acontent, ansstatus: 0 });
+            //qdata.solution = response.data;
+        } catch (error) {
+            console.log("Cannot update Ans", error);
         }
     }
 
@@ -145,6 +180,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
             }));
 
             const newData = {
+                quesid: qdata.quesid,
                 qtype: parseInt(questionType), // Set qtype here
                 quescontent: updatedQcontent,
                 qmode: parseInt(difficultyLevel),

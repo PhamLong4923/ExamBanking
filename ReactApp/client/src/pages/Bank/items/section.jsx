@@ -7,7 +7,7 @@ import setLimit from '../../../ultils/setlimit';
 import { useSelector } from 'react-redux';
 import { AUTHORIZATION_ERROR_MESSAGE, SYSTEM_BANK, SYSTEM_ERROR_MESSAGE, SYSTEM_SUCCESS_MESSAGE, SYSTEM_LIMIT_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../../share/constrains';
 import { success, errors, warning } from '../../../components/ui/notifications';
-import { getSection, addSection, updateSection, delSection, getQuestions, delQuestions } from '../../../services/api';
+import { getSection, addSection, updateSection, delSection, getQuestions, delQuestions, addQuestion } from '../../../services/api';
 import EditModal from '../../../components/ui/editNameModel';
 import QuestionModal from '../../../components/ui/createquestionmodal.jsx'
 import EditQuestionModal from '../../../components/ui/editquestionmodal.jsx';
@@ -72,7 +72,7 @@ const Section = () => {
                 const response = await getSection(repoId);
                 setSections(response.data);
 
-                setSeclimit(setLimit('sec', sections.length))
+                setSeclimit(await setLimit('sec', response.data.length))
                 setSecloading(false);
 
             } catch (error) {
@@ -85,8 +85,14 @@ const Section = () => {
     }, []);
 
     useEffect(() => {
-        setSeclimit(setLimit('sec', sections.length));
+        const fetchData = async () => {
+            const isSecLimitReached = await setLimit('sec', sections.length);
+            setSeclimit(isSecLimitReached);
+        };
+
+        fetchData();
     }, [sections]);
+
 
     const handleAddSection = async (id, value) => {
         try {
@@ -179,7 +185,7 @@ const Section = () => {
             const response = await getQuestions(id);
 
             setQuestions(response.data);
-            setQueslimit(setLimit('ques', questions.length));
+            setQueslimit(await setLimit('ques', questions.length));
 
         } catch (error) {
             errors(SYSTEM_ERROR_MESSAGE, 2);
@@ -189,6 +195,10 @@ const Section = () => {
 
     const handleOpenQuesModal = () => {
         if (selectSec !== null) {
+            if (queslimit) {
+                warning(SYSTEM_LIMIT_MESSAGE, 2);
+                return;
+            }
             setAddQuesModal(true);
         } else {
             warning(SYSTEM_WARNING_MESSAGE_NOSELECT, 2);
@@ -200,8 +210,13 @@ const Section = () => {
         setAddQuesModal(false);
     }
 
-    const handleOnSaveQues = (data) => {
-        console.log(data);
+    const handleOnSaveQues = async (data) => {
+        try {
+            const response = await addQuestion({ quescontent: data.content, type: parseInt(data.type), solution: data.solution, modeid: parseInt(data.difficulty), secid: selectSec });
+
+        } catch (error) {
+
+        }
     }
 
     const handleDeleteQuestion = async (id) => {
@@ -221,7 +236,16 @@ const Section = () => {
         setEditQuesId(id);
     };
 
-    const handleSaveEditQues = () => {
+    const handleSaveEditQues = (newdata) => {
+        const updatedQuestions = questions.map(question => {
+            if (question.quesid === newdata.quesid) {
+                return newdata; // Thay thế dữ liệu mới cho dữ liệu cũ
+            } else {
+                return question; // Giữ nguyên dữ liệu cũ cho các câu hỏi khác
+            }
+        });
+
+        setQuestions(updatedQuestions);
         success(SYSTEM_SUCCESS_MESSAGE, 2);
     }
 
@@ -271,7 +295,7 @@ const Section = () => {
     if (editquesid !== null) {
         return (
             <>
-                <EditQuestionModal qdata={questions.find(q => q.quesid === editquesid)} onCancel={() => setEditQuesId(null)} onSave={() => handleSaveEditQues()}></EditQuestionModal>
+                <EditQuestionModal qdata={questions.find(q => q.quesid === editquesid)} onCancel={() => setEditQuesId(null)} onSave={handleSaveEditQues}></EditQuestionModal>
             </>
         )
     } else {

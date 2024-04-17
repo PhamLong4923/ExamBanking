@@ -2,6 +2,19 @@
 export const PERSONAL_BANK = '1';
 export const SYSTEM_BANK = '2';
 
+//questype
+export const MCQ = 0;
+export const ESS = 1;
+
+//questmode
+export const REG = 0;
+export const COMP = 1;
+export const APP = 2;
+export const ADA = 3;
+export const EASY = 4;
+export const NOR = 5;
+export const HARD = 6;
+export const ADV = 7;
 //message
 export const SYSTEM_SUCCESS_MESSAGE = 'Cập nhật thành công';
 export const SYSTEM_ERROR_MESSAGE = 'Xảy ra lỗi hệ thống';
