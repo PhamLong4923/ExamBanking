@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
+import { Button, Flex, Form, Input, Modal, Popconfirm, Select, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -27,31 +27,38 @@ const SystemBank = () => {
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => <a href={`/system_bank/${record.key}/system_repo`}>{text}</a>
         },
         {
-            title: 'Subject',
+            title: 'Môn học',
             dataIndex: 'subject',
             key: 'subject',
         },
         {
-            title: 'Date',
+            title: 'Ngày lập',
             dataIndex: 'date',
             key: 'date',
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: (record) => (
                 <Flex gap="middle">
-                    <Button onClick={() => handleEdit(record)}>Edit</Button>
-                    <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>
+                    <Button onClick={() => handleEdit(record)}>Chỉnh sửa</Button>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa không?"
+                        onConfirm={() => handleDelete(record.key)}
+                        okText="Có"
+                        cancelText="Không"
+                    >
+                        <Button>Xóa</Button>
+                    </Popconfirm>
                     <Button href={`/system_bank/${record.key}/access_management`}>Quản lý truy cập</Button>
                 </Flex>
-            )
+            ),
         },
     ];
 
@@ -64,32 +71,6 @@ const SystemBank = () => {
         });
         setEditingKey(record.key);
         setVisible(true);
-    };
-
-    const toastVerifyDelete = (key) => {
-        setVisible(false);
-        if (!isToastOpen) {
-            const id = toast.info(
-                <div>
-                    Are you sure want to delete?
-                    <div className='toast-buttons'>
-                        <Flex gap="middle">
-                            <Button onClick={() => {
-                                toast.dismiss(id);
-                                setIsToastOpen(false);
-                            }}>
-                                Cancel
-                            </Button>
-                            <Button onClick={() => handleDelete(key, id)}>
-                                Yes
-                            </Button>
-                        </Flex>
-                    </div>
-                </div>,
-                { onClose: () => setIsToastOpen(false) }
-            );
-            setIsToastOpen(true);
-        }
     };
 
     const handleDelete = (keyToDelete, toastId) => {
@@ -147,8 +128,9 @@ const SystemBank = () => {
 
             <div>
                 <Button type="primary" onClick={showModal}>
-                    Add bank
+                    Thêm ngân hàng
                 </Button>
+                <br /><br />
                 <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
                 <Modal
