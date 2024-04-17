@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Modal, Table } from 'antd';
+import { Button, Flex, Form, Input, Modal, Popconfirm, Table } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -44,30 +44,37 @@ const AdminRepository = () => {
 
     const columns = [
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'name',
             key: 'name',
             render: (text, record) => <a href={`/system_bank/${bankId}/system_repo/${record.key}/system_section`}>{text}</a>,
         },
         {
-            title: 'Description',
+            title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
         },
         {
-            title: 'Date',
+            title: 'Ngày lập',
             dataIndex: 'date',
             key: 'date',
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: (record) => (
                 <Flex gap="middle">
-                    <Button onClick={() => handleEdit(record)}>Edit</Button>
-                    <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>
+                    <Button onClick={() => handleEdit(record)}>Chỉnh sửa</Button>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa không?"
+                        onConfirm={() => handleDelete(record.key)}
+                        okText="Có"
+                        cancelText="Không"
+                    >
+                        <Button>Xóa</Button>
+                    </Popconfirm>
                 </Flex>
-            )
+            ),
         },
     ];
 
@@ -80,32 +87,6 @@ const AdminRepository = () => {
         });
         setEditingKey(record.key);
         setVisible(true);
-    };
-
-    const toastVerifyDelete = (key) => {
-        setVisible(false);
-        if (!isToastOpen) {
-            const id = toast.info(
-                <div>
-                    Are you sure want to delete?
-                    <div className='toast-buttons'>
-                        <Flex gap="middle">
-                            <Button onClick={() => {
-                                toast.dismiss(id);
-                                setIsToastOpen(false);
-                            }}>
-                                Cancel
-                            </Button>
-                            <Button onClick={() => handleDelete(key, id)}>
-                                Yes
-                            </Button>
-                        </Flex>
-                    </div>
-                </div>,
-                { onClose: () => setIsToastOpen(false) }
-            );
-            setIsToastOpen(true);
-        }
     };
 
     const handleDelete = (keyToDelete, toastId) => {
@@ -162,8 +143,9 @@ const AdminRepository = () => {
         <div>
             <div>
                 <Button type="primary" onClick={showModal}>
-                    Add repository
+                    Thêm kho
                 </Button>
+                <br /><br />
                 <Table dataSource={dataSource.filter(item => parseInt(item.bankId) === parseInt(bankId))} columns={columns} pagination={{ pageSize: 8 }} />
 
                 <Modal
@@ -179,7 +161,7 @@ const AdminRepository = () => {
                             // description: 'abc',
                         }}
                     >
-                        <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                        <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Hãy nhập vào tên!' }]}>
                             <Input />
                         </Form.Item>
                         <Form.Item label="Description" name="description">

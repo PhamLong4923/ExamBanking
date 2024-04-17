@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Modal, Select, Table } from 'antd';
+import { Button, Flex, Form, Modal, Select, Table } from 'antd';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -29,7 +29,7 @@ const AccountManagement = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên',
       dataIndex: 'name',
       key: 'name',
     },
@@ -39,21 +39,24 @@ const AccountManagement = () => {
       key: 'email',
     },
     {
-      title: 'Role',
+      title: 'Quyền',
       dataIndex: 'role',
       key: 'role',
+      render: (text) => (
+        text === 'admin' ? 'Quản trị viên' : 'Người dùng'
+      ),
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (record) => (
         <Flex gap="middle">
-          <Button onClick={() => handleEdit(record)}>Edit</Button>
-          <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button>
+          <Button onClick={() => handleEdit(record)}>Thay đổi quyền</Button>
+          {/* <Button onClick={() => toastVerifyDelete(record.key)}>Delete</Button> */}
           {record.locked ? (
-            <Button onClick={() => handleUnlock(record.key)}>Unlock</Button> // Nút Unlock
+            <Button onClick={() => handleUnlock(record.key)}>Mở khóa</Button> // Nút Unlock
           ) : (
-            <Button onClick={() => handleLock(record.key)}>Lock</Button> // Nút Lock
+            <Button onClick={() => handleLock(record.key)}>Khóa</Button> // Nút Lock
           )}
         </Flex>
       ),
@@ -105,11 +108,6 @@ const AccountManagement = () => {
     setIsToastOpen(false);
   };
 
-  const showModal = () => {
-    form.resetFields();
-    setVisible(true);
-  };
-
   const handleOk = () => {
     form
       .validateFields()
@@ -157,10 +155,6 @@ const AccountManagement = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Add User
-      </Button>
-      <br /><br />
       <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} />
 
       <Modal
@@ -170,16 +164,10 @@ const AccountManagement = () => {
         onCancel={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please input the email!' }]}>
-            <Input />
-          </Form.Item>
           <Form.Item label="Role" name="role" rules={[{ required: true, message: 'Please select the role!' }]}>
             <Select>
-              <Option value="admin">Admin</Option>
-              <Option value="user">User</Option>
+              <Option value="admin">Quản trị viên</Option>
+              <Option value="user">Người dùng</Option>
             </Select>
           </Form.Item>
         </Form>

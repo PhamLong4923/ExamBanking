@@ -1,5 +1,5 @@
 import { CloseCircleOutlined, DeleteOutlined, FileExcelOutlined, FileWordOutlined, PlusOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Flex, Form, Input, Menu, Modal, Select, Space } from 'antd';
+import { Button, Flex, Form, Input, Menu, Modal, Popconfirm, Select, Space } from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -134,8 +134,8 @@ const AdminSection = () => {
                     };
                     setSections([...sections, newSection]);
                     setVisible(false);
-                    if (parseInt(newSection.key) === 1) {
-                        setSelectedSectionId(1)
+                    if (sections.every(item => item.repoId !== newSection.repoId)) {
+                        setSelectedSectionId(newSection.key);
                     }
                 }
             })
@@ -150,39 +150,14 @@ const AdminSection = () => {
         setVisible(false);
     };
 
-    const handleEdit = (record) => {
-        form.setFieldsValue(record);
-        setEditingSectionId(record.key);
+    const handleEdit = (sectionId) => {
+        form.setFieldsValue(sectionId);
+        setEditingSectionId(sectionId);
         setVisible(true);
     };
 
-    const toastVerifyDelete = (keyToDelete) => {
-        setVisible(false);
-        if (!isToastOpen) {
-            const id = toast.info(
-                <div>
-                    Are you sure want to delete?
-                    <div className='toast-buttons'>
-                        <Flex gap="middle">
-                            <Button onClick={() => {
-                                toast.dismiss(id);
-                                setIsToastOpen(false);
-                            }}>
-                                Cancel
-                            </Button>
-                            <Button onClick={() => handleDelete(keyToDelete, id)}>
-                                Yes
-                            </Button>
-                        </Flex>
-                    </div>
-                </div>,
-                { onClose: () => setIsToastOpen(false) }
-            );
-            setIsToastOpen(true);
-        }
-    };
 
-    const handleDelete = (keyToDelete, toastId) => {
+    const handleDelete = (keyToDelete) => {
         const newData = sections.filter(item => item.key !== keyToDelete);
         const newQuestion = questions.filter(item => item.sectionId !== keyToDelete);
         for (let i = 0; i < newData.length; i++) {
@@ -205,8 +180,8 @@ const AdminSection = () => {
         }
         setSections(newData);
         setQuestions(newQuestion);
-        toast.dismiss(toastId);
         setIsToastOpen(false);
+        setSelectedSectionId(null);
     };
 
     const handleEditorDataChange = (data, type, quesid, ansid) => {
@@ -227,7 +202,7 @@ const AdminSection = () => {
     };
 
     const handleAddQuestion = () => {
-        if (sections.length < 1) {
+        if (!sections.some(item => parseInt(item.repoId) === parseInt(repoId))) {
             toast.error("vui lòng tạo bài");
         } else if (typeof selectedSectionId !== "number") {
             toast.error("vui lòng chọn bài để add")
@@ -368,59 +343,68 @@ const AdminSection = () => {
 
     return (
         <div style={{ display: 'flex', padding: '24px' }}>
-            <div style={{ flex: '40%', marginRight: '10px', minHeight: '500px' }}>
+            <div style={{ minWidth: '40%', maxWidth: '40%', marginRight: '10px', minHeight: '500px' }}>
                 <Space>
-                    <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>Thêm bài</Button>
+                    <Flex gap="middle" style={{ width: '100%', flexWrap: 'wrap' }}>
+                        <Button type="primary" icon={<PlusOutlined />} onClick={showModal}>Thêm bài</Button>
+                        <Button style={{ marginLeft: 'auto', margin: 'auto' }} onClick={() => handleEdit(selectedSectionId)}>Chỉnh sửa</Button>
+                        <Button style={{ marginLeft: '8px', margin: 'auto' }}>
+                            <Popconfirm
+                                title="Bạn có chắc chắn muốn xóa không?"
+                                onConfirm={() => handleDelete(selectedSectionId)}
+                                okText="Có"
+                                cancelText="Không"
+                            >
+                                Xóa
+                            </Popconfirm>
+                        </Button>
+                    </Flex>
                 </Space>
                 <Menu onClick={({ key }) => handleClick(key)}>
                     {sections.filter(item => parseInt(item.repoId) === parseInt(repoId)).map(section => (
                         <Menu.Item key={section.key}>
-                            <Flex gap="middle" style={{ width: '100%' }}>
-                                <span style={{ flex: 1 }}>
-                                    {section.name}
-                                </span>
-                                <Button style={{ marginLeft: 'auto', margin: 'auto' }} onClick={() => handleEdit(section)}>Edit</Button>
-                                <Button style={{ marginLeft: '8px', margin: 'auto' }} onClick={() => toastVerifyDelete(section.key)}>Delete</Button>
-                            </Flex>
+                            <span style={{ flex: 1 }}>
+                                {section.name}
+                            </span>
                         </Menu.Item>
                     ))}
                 </Menu>
             </div>
 
             <Modal
-                title={editingSectionId !== null ? "Edit Section" : "Add Section"}
+                title={editingSectionId !== null ? "Chỉnh sửa bài" : "Tạo bài mới"}
                 open={visible}
                 onOk={handleOk}
                 onCancel={handleCancel}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                    <Form.Item label="Tên" name="name" rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}>
                         <Input />
                     </Form.Item>
                 </Form>
             </Modal>
 
-            <div style={{ flex: '60%', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
+            <div style={{ minWidth: '60%', maxWidth: '60%', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
                 <div style={{ marginBottom: '24px', textAlign: 'right' }}>
                     {isSelecting ? (
-                        <Space>
+                        <Space style={{ flexWrap: 'wrap' }}>
                             <span>Số lượng câu hỏi đã chọn: {selectedQuestions.length}</span>
                             <Button type="primary" icon={<CloseCircleOutlined />} onClick={handleClearSelection}>Bỏ chọn</Button>
                             <Button type="primary" icon={<DeleteOutlined />}>Xóa câu hỏi</Button>
                             <Button type="primary" onClick={toggleSelecting}>Thoát</Button>
                         </Space>
                     ) : (
-                        <Space>
+                        <Space style={{ flexWrap: 'wrap' }}>
                             <Input placeholder="Tìm kiếm" style={{ width: '200px' }} prefix={<SearchOutlined />} />
                             <Select defaultValue="all" style={{ width: '120px' }}>
                                 <Option value="all">Tất cả</Option>
                                 <Option value="1">Trắc nghiệm</Option>
                                 <Option value="2">Tự luận</Option>
                             </Select>
-                            <Button type="primary" icon={<FileExcelOutlined />}>Import Excel</Button>
-                            <Button type="primary" icon={<FileWordOutlined />}>Import Word</Button>
-                            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddQuestion}>Thêm câu hỏi</Button>
-                            <Button type="primary" icon={<UploadOutlined />} onClick={toggleSelecting}>Chọn câu hỏi</Button>
+                            <Button type="primary" style={{ backgroundColor: 'white', color: 'black' }} icon={<FileExcelOutlined />}></Button>
+                            <Button type="primary" style={{ backgroundColor: 'white', color: 'black' }} icon={<FileWordOutlined />}></Button>
+                            <Button type="primary" style={{ backgroundColor: 'white', color: 'black' }} icon={<PlusOutlined />} onClick={handleAddQuestion}>Thêm câu hỏi</Button>
+                            <Button type="primary" style={{ backgroundColor: 'white', color: 'black' }} icon={<UploadOutlined />} onClick={toggleSelecting}>Chọn câu hỏi</Button>
                         </Space>
                     )}
                 </div>
