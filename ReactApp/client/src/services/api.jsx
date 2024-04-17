@@ -38,7 +38,9 @@ export const addRepository = (data) => Http.post("/Repositories/CreateRepo", dat
 
 export const addQuestion = (data) => Http.post("Question/CreateQuestion", data);
 
-export const addAnswer = (data) => Http.post("/Answers/CreateAnswer", data)
+export const addAnswer = (data) => Http.post("/Answers/CreateAnswer", data);
+
+export const getExBank = () => Http.post()
 
 export const paymentCreate = (data) => Http.post("");
 

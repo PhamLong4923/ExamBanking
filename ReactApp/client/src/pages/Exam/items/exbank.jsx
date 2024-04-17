@@ -15,9 +15,8 @@ const ExBank = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const loadTestData = () => {
+        const loadTestData = async () => {
             setLoading(true);
-            // Đây là dữ liệu test thay thế cho API request
             const testData = [
                 {
                     id: 1,
