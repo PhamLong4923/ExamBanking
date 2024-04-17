@@ -42,7 +42,7 @@ namespace ExamBanking.Controllers
 
             var account = new Account
             {
-                Accid = 1,
+               
                 Email = request.Email,
                 Userpass = password,
                 VerificationToken = CreateRandomToken()

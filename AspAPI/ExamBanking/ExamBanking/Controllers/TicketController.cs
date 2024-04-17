@@ -95,5 +95,46 @@ namespace ExamBanking.Controllers
             await _context.SaveChangesAsync();
             return Ok("Ticket updated.");
         }
+        [HttpGet("find_ticket")]
+        public async Task<IActionResult> FindTicketOfBank(int ticketId)
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            if (user == null)
+            {
+                return Ok("User not found or token is invalid.");
+            }
+
+            // Tìm ngân hàng của người dùng
+            var bank = _context.Banks.SingleOrDefault(b => b.Accid == user.Accid);
+            if (bank == null)
+            {
+                return Ok("Bank not found for the user.");
+            }
+
+            // Tìm vé của ngân hàng đó
+            var ticket = _context.Tickets.SingleOrDefault(t => t.Accid == user.Accid && t.Bankid == bank.Bankid);
+            if (ticket == null)
+            {
+                return Ok("Ticket not found for the bank.");
+            }
+
+            // Trả về thông tin vé
+            var ticketResponse = new
+            {
+                id = ticket.Ticketid,
+                name = DateTime.Now + user.Email,
+                status = ticket.Ticketmode
+            };
+
+            var bankResponse = new
+            {
+                id = bank.Bankid,
+                name = bank.Bankname,
+                ticket = ticketResponse
+            };
+            return Ok(bankResponse);
+        }
+
     }
 }
