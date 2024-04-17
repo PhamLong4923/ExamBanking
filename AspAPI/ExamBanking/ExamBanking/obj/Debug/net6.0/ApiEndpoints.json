@@ -306,8 +306,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "section",
-        "Type": "System.Int32",
+        "Name": "repoIds",
+        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -337,8 +337,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "repoIds",
-        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "Name": "repoId",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -665,17 +665,11 @@
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
     "Method": "FindTicketOfBank",
-    "RelativePath": "api/Ticket/find_ticket",
+    "RelativePath": "api/Ticket/getExTicket",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "ticketId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
