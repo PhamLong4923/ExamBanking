@@ -95,8 +95,8 @@ namespace ExamBanking.Controllers
             await _context.SaveChangesAsync();
             return Ok("Ticket updated.");
         }
-        [HttpGet("find_ticket")]
-        public async Task<IActionResult> FindTicketOfBank(int ticketId)
+        [HttpGet("getExTicket")]
+        public async Task<IActionResult> FindTicketOfBank()
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
@@ -106,34 +106,58 @@ namespace ExamBanking.Controllers
             }
 
             // Tìm ngân hàng của người dùng
-            var bank = _context.Banks.SingleOrDefault(b => b.Accid == user.Accid);
-            if (bank == null)
+            var bank = _context.Banks.Where(b => b.Accid == user.Accid).ToList(); // Sử dụng ToList() thay vì SingleOrDefault
+            if (bank == null || !bank.Any())
             {
                 return Ok("Bank not found for the user.");
             }
 
+            List<Object> blist = new List<Object>();
+
             // Tìm vé của ngân hàng đó
-            var ticket = _context.Tickets.SingleOrDefault(t => t.Accid == user.Accid && t.Bankid == bank.Bankid);
-            if (ticket == null)
+            foreach (var item in bank)
             {
-                return Ok("Ticket not found for the bank.");
+                var ticket = _context.Tickets.FirstOrDefault(t => t.Accid == user.Accid && t.Bankid == item.Bankid); // Sử dụng FirstOrDefault thay vì SingleOrDefault
+                if (ticket != null)
+                {
+                    var ticketResponse = new
+                    {
+                        id = ticket.Ticketid,
+                        name = DateTime.Now + user.Email,
+                        status = ticket.Ticketmode
+                    };
+
+
+
+                    var bankResponse = new
+                    {
+                        id = item.Bankid,
+                        name = item.Bankname,
+                        ticket = ticketResponse
+                    };
+
+                    blist.Add(bankResponse);
+                }
+                else
+                {
+                    var bankResponse = new
+                    {
+                        id = item.Bankid,
+                        name = item.Bankname,
+                        ticket = "null",
+                    };
+
+                    blist.Add(bankResponse);
+                }
+                
+                
+                    
+
+                
+                
             }
+            return Ok(blist.ToArray());
 
-            // Trả về thông tin vé
-            var ticketResponse = new
-            {
-                id = ticket.Ticketid,
-                name = DateTime.Now + user.Email,
-                status = ticket.Ticketmode
-            };
-
-            var bankResponse = new
-            {
-                id = bank.Bankid,
-                name = bank.Bankname,
-                ticket = ticketResponse
-            };
-            return Ok(bankResponse);
         }
 
     }

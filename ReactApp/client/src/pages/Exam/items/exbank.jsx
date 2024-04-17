@@ -5,6 +5,9 @@ import ExMyBreadCrumb from '../../../components/ui/exbreadcrumb';
 import TicketApprove from '../../../components/ui/ticketapprove';
 import { setExBank } from '../../../redux-setup/action';
 import { useDispatch } from 'react-redux';
+import { getExBank } from '../../../services/api';
+import { errors, success, warning } from '../../../components/ui/notifications';
+import { SYSTEM_ERROR_MESSAGE } from '../../../share/constrains';
 
 const ExBank = () => {
     const [loading, setLoading] = useState(false);
@@ -17,33 +20,41 @@ const ExBank = () => {
     useEffect(() => {
         const loadTestData = async () => {
             setLoading(true);
-            const testData = [
-                {
-                    id: 1,
-                    name: 'example',
-                    ticket: {
-                        id: 2,
-                        name: 'example ticket',
-                        status: true,
-                    }
-                },
-                {
-                    id: 2,
-                    name: 'example2',
-                    ticket: {
-                        id: 3,
-                        name: 'example ticket 2',
-                        status: false,
-                    }
-                },
-                {
-                    id: 3,
-                    name: 'example2',
-                    ticket: null
-                }
-            ];
-            setBanks(testData);
-            setLoading(false);
+            try {
+                const response = await getExBank();
+                setBanks(response.data);
+                setLoading(false);
+
+            } catch (error) {
+                errors(SYSTEM_ERROR_MESSAGE, 2);
+            }
+
+            // const testData = [
+            //     {
+            //         id: 1,
+            //         name: 'example',
+            //         ticket: {
+            //             id: 2,
+            //             name: 'example ticket',
+            //             status: true,
+            //         }
+            //     },
+            //     {
+            //         id: 2,
+            //         name: 'example2',
+            //         ticket: {
+            //             id: 3,
+            //             name: 'example ticket 2',
+            //             status: false,
+            //         }
+            //     },
+            //     {
+            //         id: 3,
+            //         name: 'example2',
+            //         ticket: null
+            //     }
+            // ];
+
         };
 
         loadTestData();
@@ -104,7 +115,7 @@ const ExBank = () => {
             align: 'right',
             render: (text, record) => (
                 <div>
-                    {record.ticket === null ? (
+                    {record.ticket === "null" ? (
                         <Tag color="red" onClick={() => showTicketModal(record.id)} style={{ cursor: 'pointer' }}>
                             Chưa mở khóa
                         </Tag>
