@@ -8,5 +8,6 @@
         public string? Solution { get; set; }
         public int? Secid { get; set; }
         public int? Modeid { get; set; }
+        public List<String> Answers { get; set; }
     }
 }

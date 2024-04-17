@@ -24,13 +24,17 @@ namespace ExamBanking.Repositories
                 Type = request.Type,
                 Solution = request.Solution,
                 Secid = request.Secid,
-                Modeid = request.Modeid
+                Modeid = request.Modeid,
+                Answers = request.Answers.Select(a => new Answer
+                {
+                    Anscontent = a
+                }).ToList()
             };
             _context.Questions.Add(question);
             _context.SaveChanges();
             return question.Quesid;
         }
-        
+
         public int EditQuestion(int Quesid, string Quescontent)
         {
             var question = _context.Questions.Find(Quesid);

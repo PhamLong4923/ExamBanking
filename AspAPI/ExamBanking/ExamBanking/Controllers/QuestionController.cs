@@ -60,7 +60,24 @@ namespace ExamBanking.Controllers
         public IActionResult CreateQuestion(CreateQuestionRequest question)
         {
             var questionid = _rquestion.CreateQuestion(question);
-            return Ok(questionid);
+            var questionname = _context.Questions.Find(questionid);
+
+            var answers = questionname.Answers.Select(a => new AnswerOutput
+            {
+                ansid = a.Ansid,
+                anscontent = a.Anscontent
+            }).ToList();
+
+            var questionOutput = new listQuestionDto
+            {
+                quesid = questionname.Quesid,
+                quescontent = questionname.Quescontent,
+                answers = answers,
+                solution = questionname.Solution,
+                type = questionname.Type,
+                modeid = questionname.Modeid
+            };
+            return Ok(questionOutput);
         }
 
         [HttpPut("EditQuestion")]

@@ -44,6 +44,8 @@ const Section = () => {
 
     const [selectSec, setSelectSec] = useState(null);
 
+    const [questions, setQuestions] = useState([]);
+
     useEffect(() => {
         if (bankType === SYSTEM_BANK) {
             setIsallow(true);
@@ -192,6 +194,15 @@ const Section = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const isQuesLimitReached = await setLimit('sec', questions.length);
+            setSeclimit(isQuesLimitReached);
+        };
+
+        fetchData();
+    }, [questions]);
+
 
     const handleOpenQuesModal = () => {
         if (selectSec !== null) {
@@ -212,12 +223,21 @@ const Section = () => {
 
     const handleOnSaveQues = async (data) => {
         try {
-            const response = await addQuestion({ quescontent: data.content, type: parseInt(data.type), solution: data.solution, modeid: parseInt(data.difficulty), secid: selectSec });
+            const response = await addQuestion({
+                quescontent: data.content, type: parseInt(data.type), solution: data.solution,
+                modeid: parseInt(data.difficulty), secid: selectSec, answers: data.answers
+            });
+            const newQuestion = response.data;
+            console.log(newQuestion);
 
+            // Cập nhật state questions bằng cách thêm câu hỏi mới vào mảng hiện tại
+            setQuestions(prevQuestions => [...prevQuestions, newQuestion]);
         } catch (error) {
-
+            // Xử lý lỗi nếu có
+            console.error(error);
         }
     }
+
 
     const handleDeleteQuestion = async (id) => {
         try {
@@ -252,7 +272,7 @@ const Section = () => {
 
     //==========================End Question Tool Area==========================//
 
-    const [questions, setQuestions] = useState([]);
+
 
 
     const handleFilter1Change = (value) => {
@@ -364,7 +384,7 @@ const Section = () => {
                                         <div style={{ flex: '70%', padding: '20px', overflowY: 'auto' }}>
                                             {question.answers.map((answer, idx) => (
                                                 <div key={idx}>
-                                                    <Text>{answer.anscontent}</Text>
+                                                    <Text>{parse(answer.anscontent)}</Text>
                                                 </div>
                                             ))}
 
@@ -372,7 +392,7 @@ const Section = () => {
                                                 <div style={{ marginTop: '10px', maxHeight: '300px', overflowY: 'auto', backgroundColor: 'azure' }}>
                                                     <Collapse ghost>
                                                         <Panel header="Solution" key="1">
-                                                            <Text>{question.solution}</Text>
+                                                            <Text>{parse(question.solution)}</Text>
                                                         </Panel>
                                                     </Collapse>
                                                 </div>
