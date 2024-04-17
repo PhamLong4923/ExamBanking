@@ -1,5 +1,6 @@
 ﻿using ExamBanking.DTO.AccountDto;
 using ExamBanking.Models;
+using ExamBanking.Utils;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -168,7 +169,22 @@ namespace ExamBanking.Controllers
             return Ok("Password change succes!!");
         }
 
+        [HttpPut("Update_bankMode")]
+        public async Task<IActionResult> UpdateBankMode(int bankid, int mode)
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
 
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+
+            var edit = _context.Accounts.FirstOrDefault(a => a.Accid == user.Accid);
+            if (edit == null)
+            {
+                return BadRequest("dont exist");
+            }
+            edit.Bankmode = mode;
+            _context.SaveChangesAsync();
+            return Ok(edit.Bankmode);
+        }
 
         private string CreateRandomToken()
         {
@@ -188,7 +204,7 @@ namespace ExamBanking.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-                   
+
                     claims: claims,
                     expires: DateTime.Now.AddMinutes(30),
                     signingCredentials: creds
@@ -198,5 +214,6 @@ namespace ExamBanking.Controllers
 
             return jwt;
         }
+
     }
 }

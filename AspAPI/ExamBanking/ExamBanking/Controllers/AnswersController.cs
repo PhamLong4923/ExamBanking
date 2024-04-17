@@ -32,15 +32,15 @@ namespace ExamBanking.Controllers
 
         // edit answer
         [HttpPost("EditAnswer")]
-        public async Task<IActionResult> EditAnswer(int aid, string content)
+        public async Task<IActionResult> EditAnswer(EditAnswerRequest request)
         {
-            var answer = await _context.Answers.FirstOrDefaultAsync(a => a.Ansid == aid);
+            var answer = await _context.Answers.FirstOrDefaultAsync(a => a.Ansid == request.Answerid);
             if (answer == null)
             {
                 return BadRequest();
             }
-            answer.Anscontent = content;
-            answer.Ansstatus = 0;
+            answer.Anscontent = request.Content;
+            answer.Ansstatus = request.Ansstatus;
             await _context.SaveChangesAsync();
             return Ok(answer.Ansid);
         }

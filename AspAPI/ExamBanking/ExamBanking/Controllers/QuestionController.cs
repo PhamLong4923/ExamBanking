@@ -76,8 +76,7 @@ namespace ExamBanking.Controllers
             _rquestion.EditSolution(question, solution);
             return Ok(solution);
         }
-
-        [HttpPut("EditQMode")]
+        [HttpPut]
         public IActionResult EditMode(int question, int modeid)
         {
             _rquestion.EditMode(question, modeid);

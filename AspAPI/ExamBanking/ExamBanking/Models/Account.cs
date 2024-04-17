@@ -15,17 +15,17 @@ namespace ExamBanking.Models
         }
 
         public decimal Accid { get; set; }
-        public string? Email { get; set; }
+        public string? Username { get; set; }
         public string? Userpass { get; set; }
         public string? Accname { get; set; }
-        public int? Accmode { get; set; }
-        public string? VerificationToken { get; set; }
+        public int? Bankmode { get; set; }
+        public string? Email { get; set; }
         public DateTime? Datejoin { get; set; }
+        public int? Roleid { get; set; }
         public string? PasswordResetToken { get; set; }
         public DateTime? ResetTokenExpires { get; set; }
-        public int? Roleid { get; set; }
-        public int? Bankmode { get; set; }
         public int? Isnewbie { get; set; }
+        public string? VerificationToken { get; set; }
 
         public virtual Role? Role { get; set; }
         public virtual ICollection<Access> AccessFroms { get; set; }

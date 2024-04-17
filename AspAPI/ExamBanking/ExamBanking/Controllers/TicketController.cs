@@ -39,7 +39,7 @@ namespace ExamBanking.Controllers
             return Ok(ticket);
         }
         [HttpDelete("deleteTicket")]
-        public async Task<IActionResult> DeleteTicket(int tkid)
+        public async Task<IActionResult> DeleteTicket(DeleteTicketRequest request)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
@@ -47,7 +47,7 @@ namespace ExamBanking.Controllers
             {
                 return Ok("User not found or token is invalid.");
             }
-            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == tkid);
+            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == request.Ticketid);
             if (ticket == null)
             {
                 return Ok("Ticket not found.");
@@ -58,7 +58,7 @@ namespace ExamBanking.Controllers
             }
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
-            return Ok(tkid);
+            return Ok("Ticket deleted.");
         }
         [HttpGet("ListAll")]
         public async Task<IActionResult> findTickets()
