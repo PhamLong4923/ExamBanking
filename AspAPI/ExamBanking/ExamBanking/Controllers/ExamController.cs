@@ -19,72 +19,81 @@ namespace ExamBanking.Controllers
 
 
         [HttpGet("ShowExam")]
-        public IActionResult CreateExam(int repoId)
+        public IActionResult CreateExam([FromQuery] List<int> repoIds)
         {
-            var selectedQuestions = new List<object>();
+            var selectedRepos = new List<object>();
 
-            // Tìm repo từ repoid trong cơ sở dữ liệu
-            var repo = _context.Repos.FirstOrDefault(r => r.Repoid == repoId);
-
-            if (repo == null)
+            foreach (var repoId in repoIds)
             {
-                // Trả về NotFound nếu không tìm thấy repo
-                return NotFound($"Repo with ID '{repoId}' not found.");
-            }
+                var selectedQuestions = new List<object>();
 
-            var sections = _context.Sections.ToList(); // Lấy danh sách các section từ database
+                // Tìm repo từ repoid trong cơ sở dữ liệu
+                var repo = _context.Repos.FirstOrDefault(r => r.Repoid == repoId);
 
-            foreach (var sec in sections)
-            {
-                var sectionObject = new
+                if (repo == null)
                 {
-                    secid = sec.Secid,
-                    secname = sec.Secname,
-                    level = new List<object>()
-                };
-
-                var modeCountsType1 = new List<object>();
-                var modeCountsType2 = new List<object>();
-
-                // Đếm số lượng câu hỏi cho từng modeid của type 1 trong mỗi section
-                var modesType1 = _context.Questions
-                                    .Where(q => q.Secid == sec.Secid && q.Type == 1)
-                                    .Select(q => new { q.Modeid, q.Mode.Qmode })
-                                    .Distinct()
-                                    .ToList();
-
-                foreach (var mode in modesType1)
-                {
-                    var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
-                    modeCountsType1.Add(new { modename = mode.Qmode, count = questionCount });
+                    // Bỏ qua repo không tìm thấy và tiếp tục vòng lặp
+                    continue;
                 }
 
-                // Đếm số lượng câu hỏi cho từng modeid của type 2 trong mỗi section
-                var modesType2 = _context.Questions
-                                    .Where(q => q.Secid == sec.Secid && q.Type == 2)
-                                    .Select(q => new { q.Modeid, q.Mode.Qmode })
-                                    .Distinct()
-                                    .ToList();
+                var sections = _context.Sections.ToList(); // Lấy danh sách các section từ database
 
-                foreach (var mode in modesType2)
+                foreach (var sec in sections)
                 {
-                    var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
-                    modeCountsType2.Add(new { modename = mode.Qmode, count = questionCount });
+                    var sectionObject = new
+                    {
+                        secid = sec.Secid,
+                        secname = sec.Secname,
+                        level = new List<object>()
+                    };
+
+                    var modeCountsType1 = new List<object>();
+                    var modeCountsType2 = new List<object>();
+
+                    // Đếm số lượng câu hỏi cho từng modeid của type 1 trong mỗi section
+                    var modesType1 = _context.Questions
+                                        .Where(q => q.Secid == sec.Secid && q.Type == 1)
+                                        .Select(q => new { q.Modeid, q.Mode.Qmode })
+                                        .Distinct()
+                                        .ToList();
+
+                    foreach (var mode in modesType1)
+                    {
+                        var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
+                        modeCountsType1.Add(new { modename = mode.Qmode, count = questionCount });
+                    }
+
+                    // Đếm số lượng câu hỏi cho từng modeid của type 2 trong mỗi section
+                    var modesType2 = _context.Questions
+                                        .Where(q => q.Secid == sec.Secid && q.Type == 2)
+                                        .Select(q => new { q.Modeid, q.Mode.Qmode })
+                                        .Distinct()
+                                        .ToList();
+
+                    foreach (var mode in modesType2)
+                    {
+                        var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
+                        modeCountsType2.Add(new { modename = mode.Qmode, count = questionCount });
+                    }
+
+                    sectionObject.level.Add(new { multi = modeCountsType1 });
+                    sectionObject.level.Add(new { text = modeCountsType2 });
+
+                    selectedQuestions.Add(sectionObject);
                 }
 
-                sectionObject.level.Add(new { multi = modeCountsType1 });
-                sectionObject.level.Add(new { text = modeCountsType2 });
-
-                selectedQuestions.Add(sectionObject);
+                // Thêm thông tin của repo và các câu hỏi đã chọn vào danh sách kết quả
+                selectedRepos.Add(new
+                {
+                    repoid = repoId,
+                    reponame = repo.Reponame,
+                    secs = selectedQuestions
+                });
             }
 
-            return Ok(new
-            {
-                repoid = repoId, // Sử dụng repoid từ yêu cầu HTTP
-                reponame = repo.Reponame, // Sử dụng reponame từ repo được tìm thấy
-                secs = selectedQuestions
-            });
+            return Ok(selectedRepos);
         }
+
 
 
 
