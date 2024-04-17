@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "getBankMode",
+    "RelativePath": "api/Account/getBankMode",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
     "Method": "getIsnewbie",
     "RelativePath": "api/Account/NewBie",
     "HttpMethod": "GET",
@@ -114,96 +124,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "forgotPass",
-    "RelativePath": "api/Auth/forgotPass",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "Login",
-    "RelativePath": "api/Auth/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.UserLoginRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "RefreshToken",
-    "RelativePath": "api/Auth/refresh-token",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "Regeister",
-    "RelativePath": "api/Auth/register",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.UserRegisterRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "resetPass",
-    "RelativePath": "api/Auth/resetPass",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.AccountDto.ResetPasswordRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.AuthController",
-    "Method": "Verify",
-    "RelativePath": "api/Auth/verify",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "token",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "ExamBanking.Controllers.BankController",
     "Method": "CreateBank",
     "RelativePath": "api/Bank/CreateBank",
@@ -264,27 +184,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.BankController",
-    "Method": "UpdateBankMode",
-    "RelativePath": "api/Bank/Update_bankMode",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "bankid",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "mode",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
     "ReturnTypes": []
   },
   {
@@ -417,23 +316,8 @@
         "IsRequired": false
       },
       {
-        "Name": "Quescontent",
+        "Name": "quescontent",
         "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "type",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "solution",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "modeid",
-        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -616,8 +500,29 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
-    "Method": "CreateTicket",
+    "Method": "AproveTicket",
     "RelativePath": "api/Ticket",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "BankId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ticketId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "CreateTicket",
+    "RelativePath": "api/Ticket/createTicket",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -633,7 +538,7 @@
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
     "Method": "DeleteTicket",
-    "RelativePath": "api/Ticket",
+    "RelativePath": "api/Ticket/deleteTicket",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -644,6 +549,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "findTickets",
+    "RelativePath": "api/Ticket/ListAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]
