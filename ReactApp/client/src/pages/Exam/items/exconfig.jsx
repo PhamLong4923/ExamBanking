@@ -16,10 +16,9 @@ export default function ExamConfig({ selectedIds }) {
     useEffect(() => {
         const loadRepoData = async () => {
             try {
-                console.log(selectedIds + "================");
                 const response = await configExam(selectedIds);
                 console.log(response.data);
-
+                setData(response.data);
             } catch (error) {
 
             }
@@ -27,87 +26,87 @@ export default function ExamConfig({ selectedIds }) {
 
         loadRepoData();
         // Mock data for sections
-        const mockData = [
+        // const mockData = [
 
-            {
-                repoid: 2,
-                reponame: "c2",
-                secs: [
-                    {
-                        secid: 1,
-                        secname: "b1",
-                        level: [
-                            {
-                                multi: [
-                                    {
-                                        modename: "Nhận biết",
-                                        count: 1
-                                    },
-                                    {
-                                        modename: "Thông hiểu",
-                                        count: 1
-                                    },
-                                    {
-                                        modename: "V?n d?ng",
-                                        count: 1
-                                    },
-                                    {
-                                        modename: "V?n d?ng cao",
-                                        count: 1
-                                    }
-                                ]
-                            },
-                            {
-                                text: [
-                                    {
-                                        modename: "Dễ",
-                                        count: 3
-                                    },
-                                    {
-                                        modename: "Trung bình",
-                                        count: 3
-                                    },
-                                    {
-                                        modename: "Khó",
-                                        count: 3
-                                    },
-                                    {
-                                        modename: "Nâng cao",
-                                        count: 3
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    // {
-                    //     "secid": 2,
-                    //     "secname": "b2",
-                    //     "level": [
-                    //         {
-                    //             "multi": []
-                    //         },
-                    //         {
-                    //             "text": []
-                    //         }
-                    //     ]
-                    // },
-                    // {
-                    //     "secid": 3,
-                    //     "secname": "b3",
-                    //     "level": [
-                    //         {
-                    //             "multi": []
-                    //         },
-                    //         {
-                    //             "text": []
-                    //         }
-                    //     ]
-                    // }
-                ]
+        //     {
+        //         repoid: 2,
+        //         reponame: "c2",
+        //         secs: [
+        //             {
+        //                 secid: 1,
+        //                 secname: "b1",
+        //                 level: [
+        //                     {
+        //                         multi: [
+        //                             {
+        //                                 modename: "Nhận biết",
+        //                                 count: 1
+        //                             },
+        //                             {
+        //                                 modename: "Thông hiểu",
+        //                                 count: 1
+        //                             },
+        //                             {
+        //                                 modename: "V?n d?ng",
+        //                                 count: 1
+        //                             },
+        //                             {
+        //                                 modename: "V?n d?ng cao",
+        //                                 count: 1
+        //                             }
+        //                         ]
+        //                     },
+        //                     {
+        //                         text: [
+        //                             {
+        //                                 modename: "Dễ",
+        //                                 count: 3
+        //                             },
+        //                             {
+        //                                 modename: "Trung bình",
+        //                                 count: 3
+        //                             },
+        //                             {
+        //                                 modename: "Khó",
+        //                                 count: 3
+        //                             },
+        //                             {
+        //                                 modename: "Nâng cao",
+        //                                 count: 3
+        //                             }
+        //                         ]
+        //                     }
+        //                 ]
+        //             },
+        //             // {
+        //             //     "secid": 2,
+        //             //     "secname": "b2",
+        //             //     "level": [
+        //             //         {
+        //             //             "multi": []
+        //             //         },
+        //             //         {
+        //             //             "text": []
+        //             //         }
+        //             //     ]
+        //             // },
+        //             // {
+        //             //     "secid": 3,
+        //             //     "secname": "b3",
+        //             //     "level": [
+        //             //         {
+        //             //             "multi": []
+        //             //         },
+        //             //         {
+        //             //             "text": []
+        //             //         }
+        //             //     ]
+        //             // }
+        //         ]
 
-            }
-        ];
-        setData(mockData);
+        //     }
+        // ];
+
     }, []);
 
     const handleInputChange = (sectionId, type, mode, value) => {
