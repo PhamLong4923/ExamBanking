@@ -149,12 +149,7 @@ namespace ExamBanking.Controllers
 
                     blist.Add(bankResponse);
                 }
-                
-                
-                    
 
-                
-                
             }
             return Ok(blist.ToArray());
 
