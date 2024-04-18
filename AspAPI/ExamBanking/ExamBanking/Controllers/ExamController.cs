@@ -17,7 +17,6 @@ namespace ExamBanking.Controllers
             _context = context;
         }
 
-
         [HttpGet("ShowExam")]
         public IActionResult CreateExam([FromQuery] List<int> repoIds)
         {
@@ -97,37 +96,49 @@ namespace ExamBanking.Controllers
 
 
 
-
         [HttpPost("CreateExam")]
-        public IActionResult CreateExam(int section, int recognizeCount, int understandCount, int applyCount)
+        public IActionResult CreateExam([FromQuery] List<int> repoIds, int recognizeCount, int understandCount, int applyCount)
         {
             Random rnd = new Random();
+            var selectedQuestions = new List<List<Question>>();
 
-            //cảm ơn chatgpt
-            var selectedQuestions = new List<List<Question>>
+            foreach (var repoId in repoIds)
             {
-                GetRandomQuestions(section, 1, recognizeCount, rnd), 
-                GetRandomQuestions(section, 2, understandCount, rnd), 
-                GetRandomQuestions(section, 3, applyCount, rnd) 
-            };
+                var repoQuestions = new List<Question>();
 
-           
+                // Lấy danh sách các câu hỏi từ repo
+                var repoQuestion = _context.Questions
+                    .Where(q => q.Sec.Repoid == repoId)
+                    .ToList();
+
+                // Lấy số lượng câu hỏi cho mỗi mức độ từ repo đã chọn
+                var recognizeQuestions = GetRandomQuestions(repoQuestions, 1, recognizeCount, rnd);
+                var understandQuestions = GetRandomQuestions(repoQuestions, 2, understandCount, rnd);
+                var applyQuestions = GetRandomQuestions(repoQuestions, 3, applyCount, rnd);
+
+                // Thêm các câu hỏi vào danh sách kết quả
+                selectedQuestions.Add(recognizeQuestions);
+                selectedQuestions.Add(understandQuestions);
+                selectedQuestions.Add(applyQuestions);
+            }
+
             return Ok(selectedQuestions);
         }
 
-        
-        private List<Question> GetRandomQuestions(int section, int modeId, int count, Random rnd)
+        private List<Question> GetRandomQuestions(List<Question> questions, int modeId, int count, Random rnd)
         {
-           
-            var questions = _context.Questions
-                .Where(x => x.Secid == section && x.Modeid == modeId)
-                .ToList();
+            // Lọc câu hỏi theo modeId
+            var filteredQuestions = questions.Where(q => q.Modeid == modeId).ToList();
 
-            
-            var randomizedQuestions = questions.OrderBy(x => rnd.Next()).Take(count).ToList();
+            // Nếu số lượng câu hỏi cần lớn hơn số lượng câu hỏi có sẵn, chỉ lấy số lượng tối đa có thể
+            count = Math.Min(count, filteredQuestions.Count);
+
+            // Trộn câu hỏi và lấy số lượng câu hỏi cần
+            var randomizedQuestions = filteredQuestions.OrderBy(x => rnd.Next()).Take(count).ToList();
 
             return randomizedQuestions;
         }
+
 
     }
 }

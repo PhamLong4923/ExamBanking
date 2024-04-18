@@ -30,37 +30,37 @@ const items = [
   {
     key: '0',
     icon: <AppstoreOutlined />,
-    label: 'Home',
+    label: 'Trang chủ',
     link: '/home',
   },
   {
     key: '1',
     icon: <UserOutlined />,
-    label: 'Profile',
+    label: 'Hồ sơ',
     link: '/profile',
   },
   {
     key: '2',
     icon: <BarChartOutlined />,
-    label: 'Analysis',
+    label: 'Thống kê',
     link: '/analysis',
   },
   {
     key: '3',
     icon: <CloudOutlined />,
-    label: 'System Bank',
+    label: 'Ngân hàng chủ',
     link: '/system_bank',
   },
   {
     key: '4',
     icon: <TeamOutlined />,
-    label: 'Account',
+    label: 'Quản lý tài khoản',
     link: '/account_management',
   },
   {
     key: '5',
     icon: <ShopOutlined />,
-    label: 'Payment',
+    label: 'Quản lý đơn',
     link: '/payment_management',
   },
   {
@@ -157,8 +157,25 @@ const App = () => {
           style={{
             padding: 0,
             background: colorBgContainer,
+            font: 'caption',
+            fontSize: '30px',
+            paddingLeft: '1%',
+            paddingTop: '1%'
           }}
-        />
+        >
+          {
+            selectedMenu < 6 && items[selectedMenu].label
+          }
+          {/* {
+            selectedMenu == 6 && "Ngân hàng chủ - kho"
+          }
+          {
+            selectedMenu == 7 && "Ngân hàng chủ - kho - bài"
+          }
+          {
+            selectedMenu == 8 && "Ngân hàng chủ - quyền"
+          } */}
+        </Header>
         <Content
           style={{
             margin: '24px 16px 0',
@@ -202,7 +219,7 @@ const App = () => {
             textAlign: 'center',
           }}
         >
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          {/* ASP .NET Core API sẽ không tha cho bạn */}
         </Footer>
       </Layout>
     </Layout>

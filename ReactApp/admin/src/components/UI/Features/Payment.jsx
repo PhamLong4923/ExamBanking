@@ -11,38 +11,38 @@ const Payment = () => {
       key: '1',
       invoice: 'INV-001',
       amount: 100,
-      status: 'Pending',
+      status: 'chưa xử lý',
     },
     {
       key: '2',
       invoice: 'INV-002',
       amount: 150,
-      status: 'Paid',
+      status: 'chưa xử lý',
     },
     // More payments...
   ]);
 
   const columns = [
     {
-      title: 'Invoice',
+      title: 'Mã hóa đơn',
       dataIndex: 'invoice',
       key: 'invoice',
     },
     {
-      title: 'Amount',
+      title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (text, record) => (
-        <Button onClick={() => handleDelete(record.key)}>Delete</Button>
+        <Button onClick={() => handleDelete(record.key)}>Duyệt</Button>
       ),
     },
   ];
@@ -72,9 +72,6 @@ const Payment = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Add Payment(for develovper test only)
-      </Button>
       <Table dataSource={dataSource} columns={columns} />
 
       <Modal
