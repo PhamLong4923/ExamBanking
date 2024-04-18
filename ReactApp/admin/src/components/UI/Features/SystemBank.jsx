@@ -146,10 +146,10 @@ const SystemBank = () => {
                             // subject: 'Toán',
                         }}
                     >
-                        <Form.Item label="Tên" name="name" rules={[{ required: true, message: 'Please input the name!' }]}>
+                        <Form.Item label="Tên" name="name" rules={[{ required: true, message: 'Vui lòng nhập vào tên!' }]}>
                             <Input />
                         </Form.Item>
-                        <Form.Item label="Môn học" name="subject" rules={[{ required: true, message: 'Please input subject!' }]}>
+                        <Form.Item label="Môn học" name="subject" rules={[{ required: true, message: 'Vui lòng nhập môn học!' }]}>
                             <Input />
                         </Form.Item>
                         <Form.Item label="Ngày lập" name="date">
