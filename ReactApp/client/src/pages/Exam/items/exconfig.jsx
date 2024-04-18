@@ -4,8 +4,9 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from "axios";
 import Export from "./export";
 import { ADA, ADV, APP, COMP, EASY, ESS, HARD, MCQ, NOR, REG } from "../../../share/constrains";
+import { configExam } from "../../../services/api";
 
-export default function ExamConfig({ seclectedIds }) {
+export default function ExamConfig({ selectedIds }) {
     const [data, setData] = useState([]);
     const [dataConfig, setDataConfig] = useState([]);
     const [rowSpanArr, setRowSpanArr] = useState([]);
@@ -15,30 +16,95 @@ export default function ExamConfig({ seclectedIds }) {
     useEffect(() => {
         const loadRepoData = async () => {
             try {
-                //const response = 
+                console.log(selectedIds + "================");
+                const response = await configExam(selectedIds);
+                console.log(response.data);
 
             } catch (error) {
 
             }
         }
+
+        loadRepoData();
         // Mock data for sections
         const mockData = [
 
             {
-                repoid: 3, reponame: 'Chuong tes',
+                repoid: 2,
+                reponame: "c2",
                 secs: [
                     {
-                        secid: 4, secname: 'Bai 4', count: [
-                            { essay: [{ easy: 20, normal: 20, hard: 20, advanced: 20 }] },
-                            { mcq: [{ recognition: 20, comprehension: 20, application: 30, advanced: 50 }] }
+                        secid: 1,
+                        secname: "b1",
+                        level: [
+                            {
+                                multi: [
+                                    {
+                                        modename: "Nhận biết",
+                                        count: 1
+                                    },
+                                    {
+                                        modename: "Thông hiểu",
+                                        count: 1
+                                    },
+                                    {
+                                        modename: "V?n d?ng",
+                                        count: 1
+                                    },
+                                    {
+                                        modename: "V?n d?ng cao",
+                                        count: 1
+                                    }
+                                ]
+                            },
+                            {
+                                text: [
+                                    {
+                                        modename: "Dễ",
+                                        count: 3
+                                    },
+                                    {
+                                        modename: "Trung bình",
+                                        count: 3
+                                    },
+                                    {
+                                        modename: "Khó",
+                                        count: 3
+                                    },
+                                    {
+                                        modename: "Nâng cao",
+                                        count: 3
+                                    }
+                                ]
+                            }
                         ]
                     },
-                    {
-                        secid: 5, secname: 'Bai 5', count: [
-                            { essay: [{ easy: 20, normal: 20, hard: 20, advanced: 20 }] },
-                            { mcq: [{ recognition: 20, comprehension: 20, application: 30, advanced: 40 }] }
-                        ]
-                    }]
+                    // {
+                    //     "secid": 2,
+                    //     "secname": "b2",
+                    //     "level": [
+                    //         {
+                    //             "multi": []
+                    //         },
+                    //         {
+                    //             "text": []
+                    //         }
+                    //     ]
+                    // },
+                    // {
+                    //     "secid": 3,
+                    //     "secname": "b3",
+                    //     "level": [
+                    //         {
+                    //             "multi": []
+                    //         },
+                    //         {
+                    //             "text": []
+                    //         }
+                    //     ]
+                    // }
+                ]
+
             }
         ];
         setData(mockData);
@@ -84,7 +150,7 @@ export default function ExamConfig({ seclectedIds }) {
                     reponame: repo.reponame,
                     secid: sec.secid,
                     secname: sec.secname,
-                    total: sec.count
+                    total: sec.level
                 });
             });
         });
@@ -146,7 +212,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, REG, e.target.value)} />
-                            <Input disabled='true' value={record.total[1].mcq[0].recognition} />
+                            <Input disabled='true' value={record.total[MCQ].multi[REG].count} />
                         </div>
                     ),
                 },
@@ -157,7 +223,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, COMP, e.target.value)} />
-                            <Input disabled='true' value={record.total[1].mcq[0].comprehension} />
+                            <Input disabled='true' value={record.total[MCQ].multi[COMP].count} />
                         </div>
                     ),
                 },
@@ -168,7 +234,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, APP, e.target.value)} />
-                            <Input disabled='true' value={record.total[1].mcq[0].application} />
+                            <Input disabled='true' value={record.total[MCQ].multi[APP].count} />
                         </div>
                     ),
                 },
@@ -179,7 +245,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, ADA, e.target.value)} />
-                            <Input disabled='true' value={record.total[1].mcq[0].advanced} />
+                            <Input disabled='true' value={record.total[MCQ].multi[ADA].count} />
                         </div>
                     ),
                 },
@@ -202,7 +268,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, EASY, e.target.value)} />
-                            <Input disabled='true' value={record.total[0].essay[0].easy} />
+                            <Input disabled='true' value={record.total[ESS].text[0].count} />
                         </div>
                     ),
                 },
@@ -213,7 +279,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, NOR, e.target.value)} />
-                            <Input disabled='true' value={record.total[0].essay[0].normal} />
+                            <Input disabled='true' value={record.total[ESS].text[1].count} />
                         </div>
                     ),
                 },
@@ -224,7 +290,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, HARD, e.target.value)} />
-                            <Input disabled='true' value={record.total[0].essay[0].hard} />
+                            <Input disabled='true' value={record.total[ESS].text[2].count} />
                         </div>
                     ),
                 },
@@ -235,7 +301,7 @@ export default function ExamConfig({ seclectedIds }) {
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, ADV, e.target.value)} />
-                            <Input disabled='true' value={record.total[0].essay[0].advanced} />
+                            <Input disabled='true' value={record.total[ESS].text[3].count} />
                         </div>
                     ),
                 },
@@ -250,7 +316,10 @@ export default function ExamConfig({ seclectedIds }) {
 
     if (submit) {
         return (
-            <Export></Export>
+            <div style={{ overflow: 'auto', height: '99%' }}>
+                <Export></Export>
+            </div>
+
         )
 
     }

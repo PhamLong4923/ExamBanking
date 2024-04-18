@@ -30,7 +30,12 @@ export const getBankMode = () => Http.get("/Account/getBankMode");
 
 export const getExBank = () => Http.get("/Ticket/getExTicket");
 
-export const getExRepo = () => Http.get("")
+export const configExam = (ids) => {
+    const queryParams = ids.map(id => `repoIds=${id}`).join('&');
+    return Http.get(`/Exam/ShowExam?${queryParams}`);
+}
+
+
 
 //create-api
 

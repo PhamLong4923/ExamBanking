@@ -4,6 +4,7 @@ import { CloseOutlined, ArrowLeftOutlined, ArrowRightOutlined } from '@ant-desig
 import { useSelector } from 'react-redux';
 import ExConfig from './exconfig';
 import ExMyBreadCrumb from '../../../components/ui/exbreadcrumb';
+import { getRepository } from '../../../services/api';
 
 const ExRepo = () => {
     const exBank = useSelector(state => state.exBank); // Lấy state exBank từ Redux
@@ -13,26 +14,31 @@ const ExRepo = () => {
     const [next, setNext] = useState(false);
 
     useEffect(() => {
-        // Gọi API để load danh sách repo của exBank tại đây
-        // Cập nhật repoList khi nhận được dữ liệu từ API
-        // Ví dụ sử dụng dữ liệu mẫu
-        const sampleRepoData = [
-            { id: 1, name: 'Repo 1' },
-            { id: 2, name: 'Repo 2' },
-            { id: 3, name: 'Repo 3' },
-            { id: 4, name: 'Repo 4' },
-            { id: 5, name: 'Repo 5' },
-            // Thêm các repo khác nếu cần
-        ];
-        setRepoList(sampleRepoData);
+        const fetchRepoList = async () => {
+            try {
+                // Gọi API để lấy danh sách repo của exBank
+                const response = await getRepository(parseInt(exBank)); // Gọi API với tham số exBank
+                const data = response.data; // Giả sử dữ liệu trả về từ API là một mảng các đối tượng repo
+
+                // Cập nhật repoList với dữ liệu từ API
+                setRepoList(data);
+            } catch (error) {
+                console.error('Error fetching repo list:', error);
+            }
+        };
+
+
+        if (exBank) {
+            fetchRepoList();
+        }
     }, [exBank]);
 
     const handleRowClick = (record) => {
-        const { id } = record;
-        if (selectedIds.includes(id)) {
-            setSelectedIds(selectedIds.filter(item => item !== id));
+        const { repoid } = record; // Truy cập trực tiếp vào repoid của mỗi mục
+        if (selectedIds.includes(repoid)) {
+            setSelectedIds(selectedIds.filter(item => item !== repoid));
         } else {
-            setSelectedIds([...selectedIds, id]);
+            setSelectedIds([...selectedIds, repoid]);
         }
     };
 
@@ -50,7 +56,7 @@ const ExRepo = () => {
 
     if (next) {
         return (
-            <div>
+            <div style={{ height: '98%' }}>
                 <Button type="text" icon={<ArrowLeftOutlined />} onClick={handleBack}>Back</Button>
                 <ExConfig selectedIds={selectedIds} />
             </div>
@@ -78,9 +84,9 @@ const ExRepo = () => {
                     renderItem={item => (
                         <List.Item
                             onClick={() => handleRowClick(item)}
-                            style={{ backgroundColor: selectedIds.includes(item.id) ? '#f0f0f0' : 'inherit', cursor: 'pointer' }}
+                            style={{ backgroundColor: selectedIds.includes(item.repoid) ? '#f0f0f0' : 'inherit', cursor: 'pointer' }}
                         >
-                            {item.name}
+                            {item.reponame}
                         </List.Item>
                     )}
                 />
