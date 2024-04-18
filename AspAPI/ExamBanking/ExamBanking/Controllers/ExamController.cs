@@ -25,18 +25,15 @@ namespace ExamBanking.Controllers
 
             foreach (var repoId in repoIds)
             {
-                var selectedQuestions = new List<object>();
-
-                // Tìm repo từ repoid trong cơ sở dữ liệu
+                var selectedSections = new List<object>();
                 var repo = _context.Repos.FirstOrDefault(r => r.Repoid == repoId);
 
                 if (repo == null)
                 {
-                    // Bỏ qua repo không tìm thấy và tiếp tục vòng lặp
                     continue;
                 }
 
-                var sections = _context.Sections.ToList(); // Lấy danh sách các section từ database
+                var sections = _context.Sections.ToList();
 
                 foreach (var sec in sections)
                 {
@@ -44,32 +41,43 @@ namespace ExamBanking.Controllers
                     {
                         secid = sec.Secid,
                         secname = sec.Secname,
-                        level = new List<object>()
+                        text = new List<object>(),
+                        multi = new List<object>()
                     };
 
-                    var allModes = _context.Modes.ToList(); // Lấy tất cả các mode từ database
+                    var allModes = _context.Modes.ToList();
 
                     foreach (var mode in allModes)
                     {
                         var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
+
+                        // Tạo modeObject dựa trên giá trị của modeid
                         var modeObject = new { modename = mode.Qmode, count = questionCount };
-                        sectionObject.level.Add(modeObject);
+
+                       
+                        if (mode.Modeid <= 3)
+                        {
+                            sectionObject.multi.Add(modeObject);
+                        }
+                        else
+                        {
+                            sectionObject.text.Add(modeObject);
+                        }
                     }
 
-                    selectedQuestions.Add(sectionObject);
+                    selectedSections.Add(sectionObject);
                 }
-                // Thêm thông tin của repo và các câu hỏi đã chọn vào danh sách kết quả
+
                 selectedRepos.Add(new
                 {
                     repoid = repoId,
                     reponame = repo.Reponame,
-                    secs = selectedQuestions
+                    secs = selectedSections
                 });
             }
 
             return Ok(selectedRepos);
         }
-
 
 
 
