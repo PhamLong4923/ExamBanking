@@ -17,6 +17,7 @@ namespace ExamBanking.Controllers
             _context = context;
         }
 
+        // list het tat ca cac mode
         [HttpGet("ShowExam")]
         public IActionResult CreateExam([FromQuery] List<int> repoIds)
         {
@@ -46,41 +47,17 @@ namespace ExamBanking.Controllers
                         level = new List<object>()
                     };
 
-                    var modeCountsType1 = new List<object>();
-                    var modeCountsType2 = new List<object>();
+                    var allModes = _context.Modes.ToList(); // Lấy tất cả các mode từ database
 
-                    // Đếm số lượng câu hỏi cho từng modeid của type 1 trong mỗi section
-                    var modesType1 = _context.Questions
-                                        .Where(q => q.Secid == sec.Secid && q.Type == 1)
-                                        .Select(q => new { q.Modeid, q.Mode.Qmode })
-                                        .Distinct()
-                                        .ToList();
-
-                    foreach (var mode in modesType1)
+                    foreach (var mode in allModes)
                     {
                         var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
-                        modeCountsType1.Add(new { modename = mode.Qmode, count = questionCount });
+                        var modeObject = new { modename = mode.Qmode, count = questionCount };
+                        sectionObject.level.Add(modeObject);
                     }
-
-                    // Đếm số lượng câu hỏi cho từng modeid của type 2 trong mỗi section
-                    var modesType2 = _context.Questions
-                                        .Where(q => q.Secid == sec.Secid && q.Type == 2)
-                                        .Select(q => new { q.Modeid, q.Mode.Qmode })
-                                        .Distinct()
-                                        .ToList();
-
-                    foreach (var mode in modesType2)
-                    {
-                        var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
-                        modeCountsType2.Add(new { modename = mode.Qmode, count = questionCount });
-                    }
-
-                    sectionObject.level.Add(new { multi = modeCountsType1 });
-                    sectionObject.level.Add(new { text = modeCountsType2 });
 
                     selectedQuestions.Add(sectionObject);
                 }
-
                 // Thêm thông tin của repo và các câu hỏi đã chọn vào danh sách kết quả
                 selectedRepos.Add(new
                 {
@@ -92,6 +69,7 @@ namespace ExamBanking.Controllers
 
             return Ok(selectedRepos);
         }
+
 
 
 
