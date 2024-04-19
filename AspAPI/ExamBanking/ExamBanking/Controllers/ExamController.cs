@@ -1,4 +1,5 @@
-﻿using ExamBanking.Models;
+﻿using ExamBanking.DTO.ExamDto;
+using ExamBanking.Models;
 using ExamBanking.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,14 +88,12 @@ namespace ExamBanking.Controllers
         public IActionResult CreateExam([FromQuery] List<int> repoIds, int recognizeCount, int understandCount, int applyCount)
         {
             Random rnd = new Random();
-            var selectedQuestions = new List<List<Question>>();
+            var selectedQuestions = new List<ExamQuestion>();
 
             foreach (var repoId in repoIds)
             {
-                var repoQuestions = new List<Question>();
-
                 // Lấy danh sách các câu hỏi từ repo
-                var repoQuestion = _context.Questions
+                var repoQuestions = _context.Questions
                     .Where(q => q.Sec.Repoid == repoId)
                     .ToList();
 
@@ -104,13 +103,14 @@ namespace ExamBanking.Controllers
                 var applyQuestions = GetRandomQuestions(repoQuestions, 3, applyCount, rnd);
 
                 // Thêm các câu hỏi vào danh sách kết quả
-                selectedQuestions.Add(recognizeQuestions);
-                selectedQuestions.Add(understandQuestions);
-                selectedQuestions.Add(applyQuestions);
+                selectedQuestions.AddRange(CreateExamQuestions(recognizeQuestions, 1, 1));
+                selectedQuestions.AddRange(CreateExamQuestions(understandQuestions, 1, 0));
+                selectedQuestions.AddRange(CreateExamQuestions(applyQuestions, 1, 6));
             }
 
             return Ok(selectedQuestions);
         }
+
 
         private List<Question> GetRandomQuestions(List<Question> questions, int modeId, int count, Random rnd)
         {
@@ -124,6 +124,29 @@ namespace ExamBanking.Controllers
             var randomizedQuestions = filteredQuestions.OrderBy(x => rnd.Next()).Take(count).ToList();
 
             return randomizedQuestions;
+        }
+        private List<ExamQuestion> CreateExamQuestions(List<Question> questions, int sectionId, int mode)
+        {
+            var examQuestions = new List<ExamQuestion>();
+            var groupedQuestions = questions.GroupBy(q => q.Modeid);
+
+            foreach (var group in groupedQuestions)
+            {
+                var count = group.Count();
+                if (count > 0)
+                {
+                    var examQuestion = new ExamQuestion
+                    {
+                        SectionId = sectionId,
+                        Type = 0, // Type is not specified in your desired output, so I've set it to 0.
+                        Mode = mode,
+                        Count = count
+                    };
+                    examQuestions.Add(examQuestion);
+                }
+            }
+
+            return examQuestions;
         }
 
 
