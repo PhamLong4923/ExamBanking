@@ -33,10 +33,16 @@ namespace ExamBanking.Controllers
                     continue;
                 }
 
-                var sections = _context.Sections.ToList();
+                var sections = _context.Sections
+                    .Where(s => s.Repoid == repoId) // Lọc các sec theo repoId
+                    .GroupBy(s => s.Secid) // Nhóm các sec theo Secid
+                    .Select(group => group.First()) // Chọn sec đầu tiên trong mỗi nhóm
+                    .ToList();
+                
 
                 foreach (var sec in sections)
                 {
+                   
                     var sectionObject = new
                     {
                         secid = sec.Secid,
@@ -51,9 +57,7 @@ namespace ExamBanking.Controllers
                     {
                         var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
 
-                        // Tạo modeObject dựa trên giá trị của modeid
                         var modeObject = new { modename = mode.Qmode, count = questionCount };
-
 
                         if (mode.Modeid <= 3)
                         {
@@ -67,13 +71,16 @@ namespace ExamBanking.Controllers
 
                     selectedSections.Add(sectionObject);
                 }
-
-                selectedRepos.Add(new
+                if(selectedSections.Count > 0)
                 {
-                    repoid = repoId,
-                    reponame = repo.Reponame,
-                    secs = selectedSections
-                });
+                    selectedRepos.Add(new
+                    {
+                        repoid = repoId,
+                        reponame = repo.Reponame,
+                        secs = selectedSections
+                    });
+                }
+                
             }
 
             return Ok(selectedRepos);
@@ -81,10 +88,8 @@ namespace ExamBanking.Controllers
 
 
 
-
-
         [HttpPost("CreateExam")]
-        public IActionResult CreateExam([FromQuery] List<int> repoIds, int recognizeCount, int understandCount, int applyCount)
+        public IActionResult CreateExam([FromQuery] List<int> repoIds, int recognizeCount, int understandCount, int applyCount, int highAply, int easy, int medium, int hard, int advandce)
         {
             Random rnd = new Random();
             var selectedQuestions = new List<List<Question>>();
@@ -93,17 +98,32 @@ namespace ExamBanking.Controllers
             {
                 var repoQuestions = new List<Question>();
 
-                // Lấy danh sách các câu hỏi từ repo
-                var repoQuestion = _context.Questions
-                    .Where(q => q.Sec.Repoid == repoId)
+                // Get all sections for the current repo
+                var sections = _context.Sections
+                    .Where(s => s.Repoid == repoId)
                     .ToList();
 
-                // Lấy số lượng câu hỏi cho mỗi mức độ từ repo đã chọn
-                var recognizeQuestions = GetRandomQuestions(repoQuestions, 1, recognizeCount, rnd);
-                var understandQuestions = GetRandomQuestions(repoQuestions, 2, understandCount, rnd);
-                var applyQuestions = GetRandomQuestions(repoQuestions, 3, applyCount, rnd);
+                foreach (var sec in sections)
+                {
 
-                // Thêm các câu hỏi vào danh sách kết quả
+                    var sectionQuestions = _context.Questions
+                        .Where(q => q.Secid == sec.Secid)
+                        .ToList();
+
+                    repoQuestions.AddRange(sectionQuestions);
+                }
+
+
+                var recognizeQuestions = GetRandomQuestions(repoQuestions, 0, recognizeCount, rnd);
+                var understandQuestions = GetRandomQuestions(repoQuestions, 1, understandCount, rnd);
+                var applyQuestions = GetRandomQuestions(repoQuestions, 2, applyCount, rnd);
+                var highApplyQuestions = GetRandomQuestions(repoQuestions, 3, highAply, rnd);
+                var easyQuestions = GetRandomQuestions(repoQuestions, 4, easy, rnd);
+                var mediumQuestions = GetRandomQuestions(repoQuestions, 5, medium, rnd);
+                var hardQuestions = GetRandomQuestions(repoQuestions, 6, hard, rnd);
+                var advanceQuestions = GetRandomQuestions(repoQuestions, 7, advandce, rnd);
+
+
                 selectedQuestions.Add(recognizeQuestions);
                 selectedQuestions.Add(understandQuestions);
                 selectedQuestions.Add(applyQuestions);
@@ -111,6 +131,7 @@ namespace ExamBanking.Controllers
 
             return Ok(selectedQuestions);
         }
+
 
         private List<Question> GetRandomQuestions(List<Question> questions, int modeId, int count, Random rnd)
         {
@@ -129,3 +150,5 @@ namespace ExamBanking.Controllers
 
     }
 }
+
+

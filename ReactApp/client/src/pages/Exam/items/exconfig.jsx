@@ -11,107 +11,32 @@ export default function ExamConfig({ selectedIds }) {
     const [dataConfig, setDataConfig] = useState([]);
     const [rowSpanArr, setRowSpanArr] = useState([]);
     const [submit, setSubmit] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadRepoData = async () => {
             try {
                 const response = await configExam(selectedIds);
-                console.log(response.data);
                 setData(response.data);
+                setIsLoading(false);
             } catch (error) {
 
             }
         }
 
         loadRepoData();
-        // Mock data for sections
-        // const mockData = [
-
-        //     {
-        //         repoid: 2,
-        //         reponame: "c2",
-        //         secs: [
-        //             {
-        //                 secid: 1,
-        //                 secname: "b1",
-        //                 level: [
-        //                     {
-        //                         multi: [
-        //                             {
-        //                                 modename: "Nhận biết",
-        //                                 count: 1
-        //                             },
-        //                             {
-        //                                 modename: "Thông hiểu",
-        //                                 count: 1
-        //                             },
-        //                             {
-        //                                 modename: "V?n d?ng",
-        //                                 count: 1
-        //                             },
-        //                             {
-        //                                 modename: "V?n d?ng cao",
-        //                                 count: 1
-        //                             }
-        //                         ]
-        //                     },
-        //                     {
-        //                         text: [
-        //                             {
-        //                                 modename: "Dễ",
-        //                                 count: 3
-        //                             },
-        //                             {
-        //                                 modename: "Trung bình",
-        //                                 count: 3
-        //                             },
-        //                             {
-        //                                 modename: "Khó",
-        //                                 count: 3
-        //                             },
-        //                             {
-        //                                 modename: "Nâng cao",
-        //                                 count: 3
-        //                             }
-        //                         ]
-        //                     }
-        //                 ]
-        //             },
-        //             // {
-        //             //     "secid": 2,
-        //             //     "secname": "b2",
-        //             //     "level": [
-        //             //         {
-        //             //             "multi": []
-        //             //         },
-        //             //         {
-        //             //             "text": []
-        //             //         }
-        //             //     ]
-        //             // },
-        //             // {
-        //             //     "secid": 3,
-        //             //     "secname": "b3",
-        //             //     "level": [
-        //             //         {
-        //             //             "multi": []
-        //             //         },
-        //             //         {
-        //             //             "text": []
-        //             //         }
-        //             //     ]
-        //             // }
-        //         ]
-
-        //     }
-        // ];
 
     }, []);
 
-    const handleInputChange = (sectionId, type, mode, value) => {
-        const existingIndex = dataConfig.findIndex(item => item.sectionId === sectionId && item.type === type && item.mode === mode);
+    const handleInputChange = (sectionId, type, mode, value, max) => {
 
+        const existingIndex = dataConfig.findIndex(item => item.sectionId === sectionId && item.type === type && item.mode === mode);
+        if (value > max) {
+            value = max;
+        }
+        if (value < 0) {
+            value = 0;
+        }
         if (existingIndex !== -1) {
             const updatedData = [...dataConfig];
             updatedData[existingIndex].count = value;
@@ -142,20 +67,23 @@ export default function ExamConfig({ selectedIds }) {
     const generateMockData = () => {
         const mockData = [];
         data.forEach(repo => {
-            repo.secs.forEach(sec => {
-
-                mockData.push({
-                    repoid: repo.repoid,
-                    reponame: repo.reponame,
-                    secid: sec.secid,
-                    secname: sec.secname,
-                    total: sec.level
+            if (repo.secs.length !== 0) {
+                repo.secs.forEach(sec => {
+                    mockData.push({
+                        repoid: repo.repoid,
+                        reponame: repo.reponame,
+                        secid: sec.secid,
+                        secname: sec.secname,
+                        total: sec
+                    });
                 });
-            });
+            }
         });
 
         return mockData;
     };
+
+
 
 
     useEffect(() => {
@@ -167,19 +95,11 @@ export default function ExamConfig({ selectedIds }) {
                     newRowSpanArr.push(0);
                 }
             });
-            console.log(rowSpanArr);
             setRowSpanArr(newRowSpanArr);
         };
 
         calculateRowSpanArr();
     }, [data]);
-
-    const countRowSpan = (data, repoid) => {
-        const chapter = data.find(item => item.repoid === repoid);
-        return chapter ? chapter.secs.length : 0;
-    };
-
-    let index = 0;
 
     const columns = [
         {
@@ -210,8 +130,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'nbiet',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, REG, e.target.value)} />
-                            <Input disabled='true' value={record.total[MCQ].multi[REG].count} />
+                            <Input type="number" max={record.total.multi[REG].count} min={0} onChange={(e) => handleInputChange(record.secid, MCQ, REG, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.multi[REG].count} />
                         </div>
                     ),
                 },
@@ -221,8 +141,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'thong_hieu',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, COMP, e.target.value)} />
-                            <Input disabled='true' value={record.total[MCQ].multi[COMP].count} />
+                            <Input type="number" max={record.total.multi[COMP].count} min={0} onChange={(e) => handleInputChange(record.secid, MCQ, COMP, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.multi[COMP].count} />
                         </div>
                     ),
                 },
@@ -232,8 +152,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'van_dung',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, APP, e.target.value)} />
-                            <Input disabled='true' value={record.total[MCQ].multi[APP].count} />
+                            <Input type="number" max={record.total.multi[APP].count} min={0} onChange={(e) => handleInputChange(record.secid, MCQ, APP, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.multi[APP].count} />
                         </div>
                     ),
                 },
@@ -243,8 +163,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'van_dung_cao',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, MCQ, ADA, e.target.value)} />
-                            <Input disabled='true' value={record.total[MCQ].multi[ADA].count} />
+                            <Input type="number" max={record.total.multi[ADA].count} min={0} onChange={(e) => handleInputChange(record.secid, MCQ, ADA, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.multi[ADA].count} />
                         </div>
                     ),
                 },
@@ -266,8 +186,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'de',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, EASY, e.target.value)} />
-                            <Input disabled='true' value={record.total[ESS].text[0].count} />
+                            <Input type="number" max={record.total.text[0].count} min={0} onChange={(e) => handleInputChange(record.secid, ESS, EASY, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.text[0].count} />
                         </div>
                     ),
                 },
@@ -277,8 +197,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'trung_binh',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, NOR, e.target.value)} />
-                            <Input disabled='true' value={record.total[ESS].text[1].count} />
+                            <Input type="number" max={record.total.text[1].count} min={0} onChange={(e) => handleInputChange(record.secid, ESS, NOR, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.text[1].count} />
                         </div>
                     ),
                 },
@@ -288,8 +208,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'kho',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, HARD, e.target.value)} />
-                            <Input disabled='true' value={record.total[ESS].text[2].count} />
+                            <Input type="number" max={record.total.text[2].count} min={0} onChange={(e) => handleInputChange(record.secid, ESS, HARD, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.text[2].count} />
                         </div>
                     ),
                 },
@@ -299,8 +219,8 @@ export default function ExamConfig({ selectedIds }) {
                     key: 'nang_cao',
                     render: (_, record) => (
                         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Input type="number" onChange={(e) => handleInputChange(record.secid, ESS, ADV, e.target.value)} />
-                            <Input disabled='true' value={record.total[ESS].text[3].count} />
+                            <Input type="number" max={record.total.text[3].count} min={0} onChange={(e) => handleInputChange(record.secid, ESS, ADV, e.target.value, e.target.max)} />
+                            <Input type="number" disabled value={record.total.text[3].count} />
                         </div>
                     ),
                 },
@@ -331,7 +251,8 @@ export default function ExamConfig({ selectedIds }) {
                     dataSource={generateMockData()}
                     bordered
                     pagination={false}
-                    scroll={{ y: 400 }}
+                    loading={isLoading}
+
                 />
             </div>
 

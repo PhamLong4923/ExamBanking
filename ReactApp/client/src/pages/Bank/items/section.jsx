@@ -264,7 +264,7 @@ const Section = () => {
                 return question; // Giữ nguyên dữ liệu cũ cho các câu hỏi khác
             }
         });
-
+        setEditQuesId(null);
         setQuestions(updatedQuestions);
         success(SYSTEM_SUCCESS_MESSAGE, 2);
     }

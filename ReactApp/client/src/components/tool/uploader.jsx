@@ -10,6 +10,7 @@ const uploadImageToFirebase = async (src) => {
     const storage = getStorage(firebase);
 
     if (checkFileExists(src)) {
+        console.log(src + "=====================");
         return src; // trả về nếu tồn tại
     }
 

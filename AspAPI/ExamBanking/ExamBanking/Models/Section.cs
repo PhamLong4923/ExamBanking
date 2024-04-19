@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ExamBanking.Models
 {
@@ -15,6 +16,7 @@ namespace ExamBanking.Models
         public int? Repoid { get; set; }
 
         public virtual Repo? Repo { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Question> Questions { get; set; }
     }
 }

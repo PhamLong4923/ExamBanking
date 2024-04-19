@@ -53,7 +53,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         }
         if (comparedata.quescontent !== data.quescontent) {
             updateQuestionf(qdata.quesid, data.quescontent);
-            console.log(qdata.quescontent);
+            console.log(data.quescontent);
         }
         for (let i = 0; i < data.answers.length; i++) {
             const newAnswer = data.answers[i];
@@ -168,6 +168,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
         try {
             // Check and upload images in question content
             const updatedQcontent = await uploadImagesInContent(qcontent);
+            console.log('[kk==' + updatedQcontent);
             // Check and upload images in solution content
             const updatedSolutionData = await uploadImagesInContent(solutionData);
 
@@ -208,6 +209,7 @@ const EditQuestionModal = ({ onCancel, onSave, qdata }) => {
             const src = imgTag.match(/src="([^"]+)"/)[1];
             const newSrc = await uploadImageToFirebase(src);
             if (newSrc) {
+                console.log('news:' + newSrc);
                 updatedContent = updatedContent.replace(src, newSrc);
             }
         }
