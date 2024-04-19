@@ -3,7 +3,7 @@ import { Modal, Select, Button, Table, Space } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import Ckeditor from '../tool/ckeditor';
 import { errors, warning } from './notifications';
-import { SYSTEM_ERROR_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../share/constrains';
+import { ESS, MCQ, SYSTEM_ERROR_MESSAGE, SYSTEM_WARNING_MESSAGE_NOSELECT } from '../../share/constrains';
 import { uploadImageToFirebase } from '../tool/uploader';
 
 const { Option } = Select;
@@ -159,8 +159,8 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                 placeholder="Chọn loại câu hỏi"
                 onChange={(value) => setQuestionType(value)}
             >
-                <Option value="2">Tự luận</Option>
-                <Option value="1">Trắc nhiệm</Option>
+                <Option value='1'>Tự luận</Option>
+                <Option value='0'>Trắc nhiệm</Option>
             </Select>
 
             {questionType && (
@@ -169,14 +169,14 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                     placeholder="Chọn mức độ"
                     onChange={(value) => setDifficultyLevel(value)}
                 >
-                    {questionType === '1' ? (
+                    {questionType === '0' ? (
                         <>
                             <Option value="1">Nhận biết</Option>
                             <Option value="2">Thông hiểu</Option>
                             <Option value="3">Vận dụng</Option>
                             <Option value="4">Vận dụng cao</Option>
                         </>
-                    ) : questionType === '2' ? (
+                    ) : questionType === '1' ? (
                         <>
                             <Option value="5">Dễ</Option>
                             <Option value="6">Trung bình</Option>
@@ -189,7 +189,7 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
 
             <Ckeditor title={'Câu hỏi'} dataOnChange={getEditorData} editorId={'question_editor'} cdata={''} />
 
-            {questionType === '1' && (
+            {questionType === '0' && (
                 <>
                     <Table
                         dataSource={answers}

@@ -35,6 +35,8 @@ export const configExam = (ids) => {
     return Http.get(`/Exam/ShowExam?${queryParams}`);
 }
 
+export const exportExam = (data) => Http.post("/Exam/CreateExam", data);
+
 
 
 //create-api

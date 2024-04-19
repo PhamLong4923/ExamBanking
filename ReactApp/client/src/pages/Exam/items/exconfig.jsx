@@ -4,7 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from "axios";
 import Export from "./export";
 import { ADA, ADV, APP, COMP, EASY, ESS, HARD, MCQ, NOR, REG } from "../../../share/constrains";
-import { configExam } from "../../../services/api";
+import { configExam, exportExam } from "../../../services/api";
 
 export default function ExamConfig({ selectedIds }) {
     const [data, setData] = useState([]);
@@ -50,8 +50,14 @@ export default function ExamConfig({ selectedIds }) {
         console.log(dataConfig);
     }, [dataConfig]);
 
-    const handleSubmit = () => {
-        setSubmit(true);
+    const handleSubmit = async () => {
+        try {
+            console.log(dataConfig);
+            const response = await exportExam(dataConfig);
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
 
         // const dataToSend = dataConfig.filter(item => item.count !== '' && item.count !== '0');
         // console.log(dataToSend);
