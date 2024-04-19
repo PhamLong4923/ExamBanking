@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+100fd2d9db6196d087bec14237eb836f9e5099d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExamBanking")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

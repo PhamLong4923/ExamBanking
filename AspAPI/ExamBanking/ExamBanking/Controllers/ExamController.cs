@@ -1,4 +1,5 @@
-﻿using ExamBanking.Models;
+﻿using ExamBanking.DTO.ExamDto;
+using ExamBanking.Models;
 using ExamBanking.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -92,41 +93,24 @@ namespace ExamBanking.Controllers
         public IActionResult CreateExam([FromQuery] List<int> repoIds, int recognizeCount, int understandCount, int applyCount, int highAply, int easy, int medium, int hard, int advandce)
         {
             Random rnd = new Random();
-            var selectedQuestions = new List<List<Question>>();
+            var selectedQuestions = new List<ExamQuestion>();
 
             foreach (var repoId in repoIds)
             {
-                var repoQuestions = new List<Question>();
-
-                // Get all sections for the current repo
-                var sections = _context.Sections
-                    .Where(s => s.Repoid == repoId)
+                // Lấy danh sách các câu hỏi từ repo
+                var repoQuestions = _context.Questions
+                    .Where(q => q.Sec.Repoid == repoId)
                     .ToList();
 
-                foreach (var sec in sections)
-                {
+                // Lấy số lượng câu hỏi cho mỗi mức độ từ repo đã chọn
+                var recognizeQuestions = GetRandomQuestions(repoQuestions, 1, recognizeCount, rnd);
+                var understandQuestions = GetRandomQuestions(repoQuestions, 2, understandCount, rnd);
+                var applyQuestions = GetRandomQuestions(repoQuestions, 3, applyCount, rnd);
 
-                    var sectionQuestions = _context.Questions
-                        .Where(q => q.Secid == sec.Secid)
-                        .ToList();
-
-                    repoQuestions.AddRange(sectionQuestions);
-                }
-
-
-                var recognizeQuestions = GetRandomQuestions(repoQuestions, 0, recognizeCount, rnd);
-                var understandQuestions = GetRandomQuestions(repoQuestions, 1, understandCount, rnd);
-                var applyQuestions = GetRandomQuestions(repoQuestions, 2, applyCount, rnd);
-                var highApplyQuestions = GetRandomQuestions(repoQuestions, 3, highAply, rnd);
-                var easyQuestions = GetRandomQuestions(repoQuestions, 4, easy, rnd);
-                var mediumQuestions = GetRandomQuestions(repoQuestions, 5, medium, rnd);
-                var hardQuestions = GetRandomQuestions(repoQuestions, 6, hard, rnd);
-                var advanceQuestions = GetRandomQuestions(repoQuestions, 7, advandce, rnd);
-
-
-                selectedQuestions.Add(recognizeQuestions);
-                selectedQuestions.Add(understandQuestions);
-                selectedQuestions.Add(applyQuestions);
+                // Thêm các câu hỏi vào danh sách kết quả
+                selectedQuestions.AddRange(CreateExamQuestions(recognizeQuestions, 1, 1));
+                selectedQuestions.AddRange(CreateExamQuestions(understandQuestions, 1, 0));
+                selectedQuestions.AddRange(CreateExamQuestions(applyQuestions, 1, 6));
             }
 
             return Ok(selectedQuestions);
@@ -145,6 +129,29 @@ namespace ExamBanking.Controllers
             var randomizedQuestions = filteredQuestions.OrderBy(x => rnd.Next()).Take(count).ToList();
 
             return randomizedQuestions;
+        }
+        private List<ExamQuestion> CreateExamQuestions(List<Question> questions, int sectionId, int mode)
+        {
+            var examQuestions = new List<ExamQuestion>();
+            var groupedQuestions = questions.GroupBy(q => q.Modeid);
+
+            foreach (var group in groupedQuestions)
+            {
+                var count = group.Count();
+                if (count > 0)
+                {
+                    var examQuestion = new ExamQuestion
+                    {
+                        SectionId = sectionId,
+                        Type = 0, // Type is not specified in your desired output, so I've set it to 0.
+                        Mode = mode,
+                        Count = count
+                    };
+                    examQuestions.Add(examQuestion);
+                }
+            }
+
+            return examQuestions;
         }
 
 
