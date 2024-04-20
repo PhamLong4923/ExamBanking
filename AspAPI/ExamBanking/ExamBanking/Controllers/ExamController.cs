@@ -95,24 +95,6 @@ namespace ExamBanking.Controllers
                 response.AddRange(GetRandomQuestions(item.SectionId, item.Type, item.Mode, Int32.Parse(item.Count)));
             }
 
-            //foreach (var repoId in repoIds)
-            //{
-            //    // Lấy danh sách các câu hỏi từ repo
-            //    var repoQuestions = _context.Questions
-            //        .Where(q => q.Sec.Repoid == repoId)
-            //        .ToList();
-
-            //    // Lấy số lượng câu hỏi cho mỗi mức độ từ repo đã chọn
-            //    var recognizeQuestions = GetRandomQuestions(repoQuestions, 1, recognizeCount, rnd);
-            //    var understandQuestions = GetRandomQuestions(repoQuestions, 2, understandCount, rnd);
-            //    var applyQuestions = GetRandomQuestions(repoQuestions, 3, applyCount, rnd);
-
-            //    // Thêm các câu hỏi vào danh sách kết quả
-            //    selectedQuestions.AddRange(CreateExamQuestions(recognizeQuestions, 1, 1));
-            //    selectedQuestions.AddRange(CreateExamQuestions(understandQuestions, 1, 0));
-            //    selectedQuestions.AddRange(CreateExamQuestions(applyQuestions, 1, 6));
-            //}
-
             return Ok(response);
         }
 

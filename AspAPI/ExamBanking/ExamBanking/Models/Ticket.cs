@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace ExamBanking.Models
 {
@@ -12,7 +11,8 @@ namespace ExamBanking.Models
         public DateTime? Startdate { get; set; }
         public int? Expire { get; set; }
         public int? Ticketmode { get; set; }
-        [JsonIgnore]
+        public string? Ticketname { get; set; }
+
         public virtual Account? Acc { get; set; }
         public virtual Bank? Bank { get; set; }
     }
