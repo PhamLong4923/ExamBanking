@@ -17,6 +17,7 @@ namespace ExamBanking.Models
         public string? Solution { get; set; }
         public int? Secid { get; set; }
         public int? Modeid { get; set; }
+
         public virtual Mode? Mode { get; set; }
         public virtual Section? Sec { get; set; }
         [JsonIgnore]

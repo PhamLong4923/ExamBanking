@@ -1,27 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Menu, Dropdown, Space, Tag } from "antd";
+import { Button, Table, Menu, Dropdown, Space, Tag, Modal } from "antd";
 import { PlusOutlined, EllipsisOutlined, GiftOutlined } from "@ant-design/icons";
 import KitNewbie from "../../../components/ui/kitnewbie";
 import TicketPaymentModal from "../../../components/ui/ticketpaymentui";
 import TicketRenewPaymentModal from "../../../components/ui/ticketrenewmodal";
-import { delTicket, isnew, updateisnew } from "../../../services/api";
+import { delTicket, getallTicket, getkit, isnew, updateisnew } from "../../../services/api";
 import { success } from "../../../components/ui/notifications";
 import { SYSTEM_SUCCESS_MESSAGE } from "../../../share/constrains";
+import { calculateDaysRemaining } from "../../../ultils/ticketcaldatetime";
 
 const { Column } = Table;
+const { confirm } = Modal;
 
 const TicketManager = () => {
 
     const [isnewbie, setIsnewbie] = useState(true);
     const [visible, setVisible] = useState(false);
+    const [load, setLoad] = useState(true);
     const [tid, setTid] = useState();
 
     const [tickets, setTicket] = useState([
-        { id: 1, name: "Ticket 1", bank: "Bank F", createdAt: new Date("2024-03-15"), expiry: 30 }, // Ticket này đã hết hạn
-        { id: 2, name: "Ticket 2", bank: "Bank B", createdAt: new Date("2024-03-20"), expiry: 40 },
-        { id: 4, name: "Ticket 4", bank: null, createdAt: new Date("2024-03-25"), expiry: 60 },
-        { id: 3, name: "Ticket 3", bank: "Bank C", createdAt: new Date("2024-03-25"), expiry: 0 }
+        // { id: 1, name: "Ticket 1", bank: "Bank F", createdAt: new Date("2024-03-15"), expiry: 30 }, // Ticket này đã hết hạn
+        // { id: 2, name: "Ticket 2", bank: "Bank B", createdAt: new Date("2024-03-20"), expiry: 40 },
+        // { id: 4, name: "Ticket 4", bank: null, createdAt: new Date("2024-03-25"), expiry: 60 },
+        // { id: 3, name: "Ticket 3", bank: "Bank C", createdAt: new Date("2024-03-25"), expiry: 0 }
     ]);
+
+    useEffect(() => {
+        const fetchTicket = async () => {
+            try {
+                const response = await getallTicket();
+                console.log(response.data);
+                setLoad(false);
+                setTicket(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchTicket();
+    }, []);
 
 
     const handleMenuClick = (ticketId, action) => {
@@ -53,8 +71,9 @@ const TicketManager = () => {
     const handleAcceptKit = () => {
         const updateNew = async () => {
             try {
+                const response2 = await getkit();
+                setTicket(response2.data);
                 const response = await updateisnew();
-                console.log(response.data);
                 setIsnewbie(false);
             } catch (error) {
                 console.log(error);
@@ -63,15 +82,6 @@ const TicketManager = () => {
         }
         updateNew();
     }
-
-
-    const getDaysDiff = (start, end) => {
-        const oneDay = 24 * 60 * 60 * 1000;
-        const startDate = new Date(start);
-        const endDate = new Date(end);
-        const diffDays = Math.round(Math.abs((startDate - endDate) / oneDay));
-        return diffDays;
-    };
 
     useEffect(() => {
         const loadIsNew = async () => {
@@ -96,15 +106,32 @@ const TicketManager = () => {
         }
     })
 
-    const handleDeleteTicket = async (tkid) => {
-        try {
-            //const response = await delTicket(tkid);
-            const updateTk = tickets.filter(tk => tk.id !== tkid);
-            setTicket(updateTk);
-            success(SYSTEM_SUCCESS_MESSAGE, 2);
-        } catch (error) {
+    const handleDeleteTicket = (tkid) => {
+        confirm({
+            title: 'Xác nhận xóa',
+            content: 'Bạn có chắc muốn xóa ticket này?',
+            okText: 'Xóa',
+            okType: 'danger',
+            cancelText: 'Hủy',
+            onOk() {
+                const delticketf = async () => {
+                    try {
+                        const response = await delTicket(tkid);
+                        const updateTk = tickets.filter(tk => tk.ticketid !== tkid);
+                        setTicket(updateTk);
+                        success(SYSTEM_SUCCESS_MESSAGE, 2);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                };
 
-        }
+                delticketf();
+
+            },
+            onCancel() {
+
+            },
+        });
     }
 
 
@@ -124,23 +151,34 @@ const TicketManager = () => {
                 :
                 (<Button style={{ marginBottom: '5px' }} type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
             <KitNewbie visible={visible} onCancel={handleCloseKit} onApply={handleAcceptKit}></KitNewbie>
-            <Table dataSource={tickets} pagination={false}>
-                <Column title="Tên Ticket" dataIndex="name" key="name" />
-                <Column title="Ngân hàng" dataIndex="bank" key="bank" />
-                <Column title="Ngày bắt đầu" dataIndex="createdAt" key="createdAt" render={(text, record) => new Date(record.createdAt).toLocaleDateString()} />
-                <Column title="Hạn sử dụng" dataIndex="expiry" key="expiry" render={(text, record) => new Date(record.expiry).toLocaleDateString()} />
+            <Table dataSource={tickets} pagination={false} loading={load}>
+                <Column title="Tên Ticket" dataIndex="ticketname" key="Ticketname" />
+                <Column title="Ngân hàng" dataIndex="bankName" key="BankName" />
+                <Column title="Ngày bắt đầu" dataIndex="startDate" key="Startdate" render={(text, record) => { if (record.startDate !== null) { return new Date(record.startDate).toLocaleString() } else { return "" } }} />
+                <Column
+                    title="Hạn sử dụng"
+                    dataIndex="Expire"
+                    key="Expire"
+                    render={(text, record) => {
+
+                        const daysRemaining = calculateDaysRemaining(record.startDate, record.expire);
+                        return `${daysRemaining} ngày`;
+
+                    }}
+                />
                 <Column
                     title="Trạng thái"
                     dataIndex="bank"
                     key="status"
                     render={(text, record) => {
-                        const expired = new Date(record.expiry) < new Date();
-                        if (!record.bank) {
+                        const expired = calculateDaysRemaining(record.startDate, record.expire);
+
+                        if (!record.bankName) {
                             return <Tag color="blue">Chưa sử dụng</Tag>;
                         } else {
                             return (
                                 <Space>
-                                    {expired ? (
+                                    {expired === 0 ? (
                                         <Tag color="red">Hết hạn</Tag>
                                     ) : (
                                         <Tag color="green">Còn hạn</Tag>
@@ -156,7 +194,7 @@ const TicketManager = () => {
                     key="action"
                     render={(text, record) => (
                         <Space size="middle">
-                            <Dropdown overlay={menu(record.id)} trigger={["click"]} placement="bottomRight">
+                            <Dropdown overlay={menu(record.ticketid)} trigger={["click"]} placement="bottomRight">
                                 <Button type="text" icon={<EllipsisOutlined />} />
                             </Dropdown>
                         </Space>

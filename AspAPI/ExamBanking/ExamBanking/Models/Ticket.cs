@@ -12,6 +12,7 @@ namespace ExamBanking.Models
         public DateTime? Startdate { get; set; }
         public int? Expire { get; set; }
         public int? Ticketmode { get; set; }
+        public string? Ticketname { get; set; }
         [JsonIgnore]
         public virtual Account? Acc { get; set; }
         public virtual Bank? Bank { get; set; }
