@@ -306,24 +306,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "repoIds",
-        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
-        "IsRequired": false
-      },
-      {
-        "Name": "recognizeCount",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "understandCount",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "applyCount",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "data",
+        "Type": "System.Collections.Generic.List\u00601[[ExamBanking.DTO.ExamDto.ExamQuestion, ExamBanking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -355,6 +340,22 @@
       {
         "Name": "request",
         "Type": "ExamBanking.DTO.AccountDto.TokenRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.PaymentController",
+    "Method": "CreatePayment",
+    "RelativePath": "api/Payment/createPayment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ExamBanking.DTO.PaymentDto.CreatePaymentRequest",
         "IsRequired": true
       }
     ],
@@ -655,9 +656,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "request",
-        "Type": "ExamBanking.DTO.TicketDto.DeleteTicketRequest",
-        "IsRequired": true
+        "Name": "tkid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -674,8 +675,28 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "kitNewBie",
+    "RelativePath": "api/Ticket/kitnewbie",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
+    "Method": "listAllTickets",
+    "RelativePath": "api/Ticket/ListAllTicket",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.TicketController",
     "Method": "findTickets",
-    "RelativePath": "api/Ticket/ListAll",
+    "RelativePath": "api/Ticket/ListAviableTicket",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
