@@ -1,40 +1,42 @@
-import { Button, Flex, Form, Input, Modal, Popconfirm, Select, Table, Tag } from 'antd';
+import { Button, Flex, Form, Input, Modal, Popconfirm, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { addBank, delBank, getBank, updateBank } from '../../../services/Api';
+import { useParams } from 'react-router-dom';
+import { addRepository, delRepository, getRepository, updateRepository } from '../../../services/Api';
 
-const { Option } = Select;
-
-const SystemBank = () => {
+const AdminRepository = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
     const [loading, setLoading] = useState(false);
+    const { bankId } = useParams();
+
     const [dataSource, setDataSource] = useState([
-        //          {
-        //     "bankid": 1,
-        //     "bankname": "new",
-        //     "bankstatus": null,
-        //     "accid": 1,
-        //     "accesses": [],
-        //     "repos": [],
-        //     "tickets": []
-        //   },
         // {
-        //     bankid: '1',
-        //     bankname: 'Toán 9',
-        //     bankstatus: 1,
+        //     repoid: '1',
+        //     reponame: 'Chương 1',
+        //     bankId: 1,
         // },
         // {
-        //     bankid: '2',
-        //     bankname: 'Anh 9',
-        //     bankstatus: 0,
+        //     repoid: '2',
+        //     reponame: 'Chương 2',
+        //     bankId: 1,
+        // },
+        // {
+        //     repoid: '3',
+        //     reponame: 'Chapter 1',
+        //     bankId: 2,
+        // },
+        // {
+        //     repoid: '4',
+        //     reponame: 'Chapter 2',
+        //     bankId: 2,
         // },
     ]);
 
     useEffect(() => {
-        const loadBanks = async () => {
+        const loadRepos = async () => {
             try {
-                const response = await getBank();
+                const response = await getRepository(parseInt(bankId));
                 setDataSource(response.data);
                 setLoading(false);
             } catch (error) {
@@ -48,47 +50,31 @@ const SystemBank = () => {
                 }
             }
         };
-        loadBanks();
+        loadRepos();
     }, []);
 
     const columns = [
         {
             title: 'Tên',
-            dataIndex: 'bankname',
-            key: 'bankname',
-            render: (text, record) => <a href={`/system_bank/${record.bankid}/system_repo`}>{text}</a>
-        },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'bankstatus',
-            key: 'bankstatus',
-            render: (record) => (
-                <span>
-                    {record == 1 ?
-                        <Tag color="blue" >
-                            Công khai
-                        </Tag> :
-                        <Tag color="green" >
-                            Riêng tư
-                        </Tag>}
-                </span>
-            )
+            dataIndex: 'reponame',
+            key: 'reponame',
+            render: (text, record) => <a href={`/system_bank/${bankId}/system_repo/${record.repoid}/system_section`}>{text}</a>,
         },
         {
             title: 'Hành động',
             key: 'action',
+            width: '20%',
             render: (record) => (
-                <Flex gap="middle">
+                <Flex gap="middle" justifyContent="flex-end">
                     <Button onClick={() => handleEdit(record)}>Chỉnh sửa</Button>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa không?"
-                        onConfirm={() => handleDelete(record.bankid)}
+                        onConfirm={() => handleDelete(record.repoid)}
                         okText="Có"
                         cancelText="Không"
                     >
                         <Button>Xóa</Button>
                     </Popconfirm>
-                    <Button href={`/system_bank/${record.bankid}/access_management`}>Quản lý truy cập</Button>
                 </Flex>
             ),
         },
@@ -96,19 +82,18 @@ const SystemBank = () => {
 
     const handleEdit = (record) => {
         form.setFieldsValue({
-            bankname: '',
-            bankstatus: '',
+            reponame: '',
             ...record,
         });
-        setEditingKey(record.bankid);
+        setEditingKey(record.repoid);
         setVisible(true);
     };
 
     const handleDelete = async (keyToDelete) => {
         try {
-            const res = await delBank(keyToDelete);
+            const res = await delRepository(keyToDelete);
             const did = res.data;
-            const newData = dataSource.filter(item => item.bankid !== keyToDelete);
+            const newData = dataSource.filter(item => item.repoid !== keyToDelete);
             setDataSource(newData);
         } catch (error) {
             console.error(error);
@@ -128,11 +113,11 @@ const SystemBank = () => {
                     form.resetFields();
                     if (editingKey !== '') { // Nếu đang chỉnh sửa
                         const newData = [...dataSource];
-                        const index = newData.findIndex((item) => editingKey === item.bankid);
+                        const index = newData.findIndex((item) => editingKey === item.repoid);
                         if (index > -1) {
                             const fakeData = async () => {
                                 const item = newData[index];
-                                const res = await updateBank(editingKey, values.bankname);
+                                const res = await updateRepository(editingKey, values.reponame);
                                 newData.splice(index, 1, { ...item, ...values });
                                 setDataSource(newData);
                                 setEditingKey('');
@@ -142,9 +127,9 @@ const SystemBank = () => {
                         }
                     } else { // Nếu thêm mới
                         const fakeData = async () => {
-                            const res = await addBank({ bankname: values.bankname });
+                            const res = await addRepository({ repocontent: values.reponame, bankid: bankId });
                             const newid = res.data;
-                            setDataSource([...dataSource, { ...values, bankid: newid }]);
+                            setDataSource([...dataSource, { ...values, repoid: newid, bankid: bankId }]);
                             setVisible(false);
                         }
                         fakeData();
@@ -167,16 +152,19 @@ const SystemBank = () => {
 
     return (
         <div>
-
             <div>
                 <Button type="primary" onClick={showModal}>
-                    Thêm ngân hàng
+                    Thêm kho
                 </Button>
                 <br /><br />
-                <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} loading={loading} />
+                <Table
+                    dataSource={dataSource.filter(item => parseInt(item.bankid) === parseInt(bankId))}
+                    columns={columns}
+                    pagination={{ pageSize: 8 }}
+                />
 
                 <Modal
-                    title={typeof editingKey == "number" ? "Thêm ngân hàng" : "Chỉnh sửa ngân hàng"}
+                    title="Add repository"
                     open={visible}
                     onOk={handleOk}
                     onCancel={handleCancel}
@@ -185,24 +173,17 @@ const SystemBank = () => {
                         form={form}
                         layout="vertical"
                         initialValues={{
-                            // subject: 'Toán',
+                            // description: 'abc',
                         }}
                     >
-                        <Form.Item label="Tên" name="bankname" rules={[{ required: true, message: 'Vui lòng nhập vào tên!' }]}>
+                        <Form.Item label="Tên" name="reponame" rules={[{ required: true, message: 'Hãy nhập vào tên!' }]}>
                             <Input />
                         </Form.Item>
-                        {/* <Form.Item label="Trạng thái" name="bankstatus" rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}>
-                            <Select>
-                                <Select.Option value={1}>Công khai</Select.Option>
-                                <Select.Option value={0}>Riêng tư</Select.Option>
-                            </Select>
-                        </Form.Item> */}
                     </Form>
                 </Modal>
             </div>
-
         </div>
     );
 };
 
-export default SystemBank;
+export default AdminRepository;
