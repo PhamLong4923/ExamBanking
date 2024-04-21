@@ -306,9 +306,24 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "data",
-        "Type": "System.Collections.Generic.List\u00601[[ExamBanking.DTO.ExamDto.ExamQuestion, ExamBanking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": true
+        "Name": "repoIds",
+        "Type": "System.Collections.Generic.List\u00601[[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "recognizeCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "understandCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "applyCount",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

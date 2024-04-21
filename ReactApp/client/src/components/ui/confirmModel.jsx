@@ -13,7 +13,7 @@ const ConfirmationModal = ({ title, isvisible, onOk, onCancel }) => {
             cancelText="Cancel"
             centered
         >
-            <p>Are you sure you want to proceed with this action?</p>
+            <p>Bạn có chắc chắn thực hiện hành động này ?</p>
         </Modal>
     );
 };

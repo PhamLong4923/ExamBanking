@@ -3,6 +3,9 @@ using ExamBanking.Models;
 using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ExamBanking.Utils;
+using AutoMapper;
+using ExamBanking.Repositories;
 
 namespace ExamBanking.Controllers
 {
@@ -12,9 +15,34 @@ namespace ExamBanking.Controllers
     public class TicketController : ControllerBase
     {
         private readonly ExamBankingContext _context;
-        public TicketController(ExamBankingContext context)
+        private readonly IMapper _mapper;
+        public TicketController(ExamBankingContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+        [HttpGet("kitnewbie")]
+        public async Task<IActionResult> kitNewBie()
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.FirstOrDefault(u => u.Email == userId);
+            if (user.Isnewbie == 1)
+            {
+
+                Ticket tk1 = new Ticket { Expire = 90, Ticketmode = 1, Accid = user.Accid, Ticketname = TicketNameGen.GenTicketNameFunc(userId) };
+                Ticket tk2 = new Ticket { Expire = 90, Ticketmode = 2, Accid = user.Accid, Ticketname = TicketNameGen.GenTicketNameFunc(userId) };
+
+                _context.Tickets.Add(tk1);
+                _context.Tickets.Add(tk2);
+                _context.SaveChanges();
+
+                var responseTickets = _mapper.Map<List<ResponseTIcket>>(new List<Ticket>{tk1, tk2});
+
+                return Ok(responseTickets);
+            }
+
+            return Ok("Not new user");
+
         }
 
         [HttpPost("createTicket")]
@@ -23,23 +51,28 @@ namespace ExamBanking.Controllers
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
-            DateTime Expire;
             if (user == null)
             {
                 return Ok("User not found or token is invalid.");
             }
+
+     
             var ticket = new Ticket
             {
+                Ticketname = TicketNameGen.GenTicketNameFunc(user.Email),
                 Bankid = request.Bankid,
                 Accid = user.Accid,
                 Expire = request.Expire,
                 Ticketmode = request.Ticketmode
             };
 
+            _context.Tickets.Add(ticket);
+            _context.SaveChanges();
+
             return Ok(ticket);
         }
         [HttpDelete("deleteTicket")]
-        public async Task<IActionResult> DeleteTicket(DeleteTicketRequest request)
+        public async Task<IActionResult> DeleteTicket(int tkid)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
@@ -47,7 +80,7 @@ namespace ExamBanking.Controllers
             {
                 return Ok("User not found or token is invalid.");
             }
-            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == request.Ticketid);
+            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == tkid);
             if (ticket == null)
             {
                 return Ok("Ticket not found.");
@@ -60,7 +93,7 @@ namespace ExamBanking.Controllers
             await _context.SaveChangesAsync();
             return Ok("Ticket deleted.");
         }
-        [HttpGet("ListAll")]
+        [HttpGet("ListAviableTicket")]
         public async Task<IActionResult> findTickets()
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
@@ -72,6 +105,21 @@ namespace ExamBanking.Controllers
             var tickets = _context.Tickets.Where(t => t.Accid == user.Accid && t.Bankid == null).ToList();
             return Ok(tickets);
         }
+
+        [HttpGet("ListAllTicket")]
+        public async Task<IActionResult> listAllTickets()
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            if (user == null)
+            {
+                return Ok("User not found or token is invalid.");
+            }
+            var tickets = _context.Tickets.Where(t => t.Accid == user.Accid).ToList();
+            var responseTickets = _mapper.Map<List<ResponseTIcket>>(tickets);
+            return Ok(responseTickets);
+        }
+
         [HttpPut]
         public async Task<IActionResult> AproveTicket(int BankId, int ticketId)
         {

@@ -37,6 +37,10 @@ export const configExam = (ids) => {
 
 export const exportExam = (data) => Http.post("/Exam/CreateExam", data);
 
+export const getallTicket = () => Http.get("/Ticket/ListAllTicket");
+
+export const getkit = () => Http.get("Ticket/kitnewbie");
+
 
 
 //create-api

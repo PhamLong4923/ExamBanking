@@ -15,7 +15,6 @@ namespace ExamBanking.Models
         public string? Secname { get; set; }
         public int? Repoid { get; set; }
 
-        [JsonIgnore]
         public virtual Repo? Repo { get; set; }
         [JsonIgnore]
         public virtual ICollection<Question> Questions { get; set; }

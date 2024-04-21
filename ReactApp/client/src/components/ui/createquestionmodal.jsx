@@ -171,17 +171,17 @@ const QuestionModal = ({ open, onCancel, onSave, secid }) => {
                 >
                     {questionType === '0' ? (
                         <>
-                            <Option value="1">Nhận biết</Option>
-                            <Option value="2">Thông hiểu</Option>
-                            <Option value="3">Vận dụng</Option>
-                            <Option value="4">Vận dụng cao</Option>
+                            <Option value="0">Nhận biết</Option>
+                            <Option value="1">Thông hiểu</Option>
+                            <Option value="2">Vận dụng</Option>
+                            <Option value="3">Vận dụng cao</Option>
                         </>
                     ) : questionType === '1' ? (
                         <>
-                            <Option value="5">Dễ</Option>
-                            <Option value="6">Trung bình</Option>
-                            <Option value="7">Khó</Option>
-                            <Option value="8">Nâng cao</Option>
+                            <Option value="4">Dễ</Option>
+                            <Option value="5">Trung bình</Option>
+                            <Option value="6">Khó</Option>
+                            <Option value="7">Nâng cao</Option>
                         </>
                     ) : <></>}
                 </Select>
