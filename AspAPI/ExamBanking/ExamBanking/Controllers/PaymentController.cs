@@ -72,6 +72,28 @@ namespace ExamBanking.Controllers
             var payments = _context.Payments.ToList();
             return Ok(payments);
         }
+
+        [HttpPost("accept_bill")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Accept_bill(int payid)
+        {
+            var payment = _context.Payments.SingleOrDefault(p => p.Payid == payid);
+            if (payment == null)
+            {
+                return Ok("Payment not found.");
+            }
+
+            if (payment.Status == 1)
+            {
+                payment.Status = 0;
+            }
+            else
+            {
+                payment.Status = 1;
+            }
+            _context.SaveChanges();
+            return Ok(payment.Payid);
+        }
         
 
     }

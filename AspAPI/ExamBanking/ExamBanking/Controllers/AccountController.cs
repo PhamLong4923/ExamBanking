@@ -3,6 +3,7 @@ using ExamBanking.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamBanking.Controllers
 {
@@ -82,7 +83,29 @@ namespace ExamBanking.Controllers
             return Ok(edit.Bankmode);
         }
 
+        [HttpPost("manager_user")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> manager_user(int accid)
+        {
+           var user = _context.Accounts.SingleOrDefault(u => u.Accid == accid);
 
+            if (user == null)
+            {
+                return Ok("user not found.");
+            }
+            if (user.Accmode == 0)
+            {
+                user.Accmode = 1;
+            }
+            else
+            {
+                user.Accmode = 0;
+            }
+            _context.SaveChangesAsync();
+            return Ok(user.Accid);
+
+            
+        }
 
     }
 }
