@@ -39,8 +39,8 @@ const SystemQuestion = ({
     };
 
     return (
-        <div onClick={() => handleSelectQuestion(question.id)}>
-            {editingQuestionId === question.id && (
+        <div onClick={() => handleSelectQuestion(question.quesid)}>
+            {editingQuestionId === question.quesid && (
                 <Modal
                     title="Chỉnh sửa câu hỏi"
                     open={modalIsOpen}
@@ -53,7 +53,7 @@ const SystemQuestion = ({
                             <Select
                                 className='cursor-icon'
                                 value={"" + question.type}
-                                onChange={(value) => handleQuestionTypeChange(question.id, value)}
+                                onChange={(value) => handleQuestionTypeChange(question.quesid, value)}
                             >
                                 <Option value="1">Trắc nghiệm</Option>
                                 <Option value="2">Tự luận</Option>
@@ -61,8 +61,8 @@ const SystemQuestion = ({
                         )}
                         <Select
                             className='cursor-icon'
-                            value={"" + question.mode}
-                            onChange={(value) => handleQuestionModeChange(question.id, value)}
+                            value={"" + question.modeid}
+                            onChange={(value) => handleQuestionModeChange(question.quesid, value)}
                         >
                             {question.type === "1" ? (
                                 <>
@@ -83,9 +83,9 @@ const SystemQuestion = ({
                     </div>
                     <div className='editquestion-head'>
                         <div className='editquestion-title'>
-                            <label htmlFor={`editTitle_${question.id}`}>Đề:</label>
+                            <label htmlFor={`editTitle_${question.quesid}`}>Đề:</label>
                             <div className='myeditor-ck'>
-                                <MyEditor type="title" quesid={question.id} ansid="" value={question.title} onChange={handleEditorDataChange} />
+                                <MyEditor type="title" quesid={question.quesid} ansid="" value={question.quescontent} onChange={handleEditorDataChange} />
                             </div>
                         </div>
                     </div>
@@ -100,14 +100,14 @@ const SystemQuestion = ({
                                 </thead>
                                 <tbody>
                                     {question.answers.map((answer, index2) => (
-                                        <tr key={answer.id}>
+                                        <tr key={answer.quesid}>
                                             <th>Đáp án {index2 + 1}</th>
                                             <td>
                                                 <div className='editanswer-each'>
                                                     <div className='myeditor-ck'>
-                                                        <MyEditor type="answer" quesid={question.id} ansid={index2} value={answer.content} onChange={handleEditorDataChange} />
+                                                        <MyEditor type="answer" quesid={question.quesid} ansid={index2} value={answer.anscontent} onChange={handleEditorDataChange} />
                                                     </div>
-                                                    <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.id, answer.id)}><FaTrash className='cursor-icon'></FaTrash></i>
+                                                    <i className="deleteanswer-icon" onClick={() => deleteAnswer(question.quesid, answer.ansid)}><FaTrash className='cursor-icon'></FaTrash></i>
                                                 </div>
                                             </td>
                                         </tr>
@@ -119,14 +119,14 @@ const SystemQuestion = ({
                             <th>Hướng dẫn giải</th>
                             <td>
                                 <div className='myeditor-ck'>
-                                    <MyEditor type="solution" quesid={question.id} ansid="" value={question.solution} onChange={handleEditorDataChange} />
+                                    <MyEditor type="solution" quesid={question.quesid} ansid="" value={question.solution} onChange={handleEditorDataChange} />
                                 </div>
                             </td>
                         </tr>
                     </table>
                     <div className='addquestion-savebutton'>
                         {question.type === '1' && (
-                            <Button onClick={() => addAnswer(question.id)}>Thêm đáp án</Button>
+                            <Button onClick={() => addAnswer(question.quesid)}>Thêm đáp án</Button>
                         )}
                         <Button type="primary" onClick={() => handleSaveEdit()}>
                             Lưu
@@ -138,24 +138,24 @@ const SystemQuestion = ({
             <table className={`addquestion-table ${isSelected ? 'selected' : ''}`}>
                 <thead>
                     <td className="row-head">
-                        <span className="left-row">Câu hỏi {question.id} - {question.type === '1' ? 'Trắc nghiệm' : 'Tự luận'}</span>
+                        <span className="left-row">Câu hỏi {question.quesid} - {question.type === '1' ? 'Trắc nghiệm' : 'Tự luận'}</span>
                         {bankType === '0' ? (<></>) : (<span className="right-row">
-                            <Button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.id)} icon={<EditOutlined />}>Chỉnh sửa</Button>
+                            <Button title="Chỉnh sửa" onClick={() => handleEditQuestion(question.quesid)} icon={<EditOutlined />}>Chỉnh sửa</Button>
                         </span>)}
                     </td>
                 </thead>
                 <tr>
                     <td className='ckeditor-result'>
-                        <label htmlFor={question.title}>Đề: </label>
-                        <ConvertTextTagToHTML htmlContent={question.title}></ConvertTextTagToHTML>
+                        <label htmlFor={question.quescontent}>Đề: </label>
+                        <ConvertTextTagToHTML htmlContent={question.quescontent}></ConvertTextTagToHTML>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         {question.answers.map((answer, answerIndex) => (
-                            <div className='ckeditor-result' key={answer.id}>
+                            <div className='ckeditor-result' key={answer.ansid}>
                                 <label htmlFor={`answer${answerIndex + 1}`}>Đáp án {answerIndex + 1}: </label>
-                                <ConvertTextTagToHTML htmlContent={answer.content} />
+                                <ConvertTextTagToHTML htmlContent={answer.anscontent} />
                             </div>
                         ))}
                     </td>

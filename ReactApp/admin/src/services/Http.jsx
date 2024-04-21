@@ -1,22 +1,21 @@
 import axios from "axios";
-import { BASE_API } from "../share/constrants/urlbase.jsx";
-import { getLocalStorageItem } from "./LocalStorage.jsx";
+import store from "../redux-setup/store";
+import { BASE_API_LOCAL } from "../share/urlbase";
 
 const Http = axios.create({
-  baseURL: BASE_API,
+  baseURL: BASE_API_LOCAL,
 });
 
+
 Http.interceptors.request.use(
-  (config) => {
-    const token = getLocalStorageItem('token');
+  async (config) => {
+    const token = store.getState().token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export default Http;

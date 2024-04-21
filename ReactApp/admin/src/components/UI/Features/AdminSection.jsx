@@ -1,8 +1,9 @@
 import { CloseCircleOutlined, DeleteOutlined, FileExcelOutlined, FileWordOutlined, PlusOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, Menu, Modal, Popconfirm, Select, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { addSection, delSection, getSection, updateSection } from '../../../services/Api';
 import SystemQuestion from '../../common/SystemQuestion';
 
 const { Option } = Select;
@@ -10,7 +11,7 @@ const { Option } = Select;
 const AdminSection = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
-    const [isToastOpen, setIsToastOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [selectedSectionId, setSelectedSectionId] = useState();
     const [isSelecting, setIsSelecting] = useState(false);
@@ -39,47 +40,67 @@ const AdminSection = () => {
         // }
     ]);
     const [sections, setSections] = useState([
-        {
-            key: 1,
-            name: "bài 1: phương trình đa thức bậc hai",
-            repoId: 1,
-        },
-        {
-            key: 2,
-            name: "bài 2: phương trình bậc nhất hai ẩn",
-            repoId: 1,
-        },
-        {
-            key: 3,
-            name: "bài 1: cơ bản về đồ thị",
-            repoId: 2,
-        },
-        {
-            key: 4,
-            name: "bài 2: đồ thị hàm số của phương trình bậc hai",
-            repoId: 2,
-        },
-        {
-            key: 5,
-            name: "Lession 1: how many peoples in your family?",
-            repoId: 3,
-        },
-        {
-            key: 6,
-            name: "Lession 2: external family members",
-            repoId: 3,
-        },
-        {
-            key: 7,
-            name: "Lession 1: world",
-            repoId: 4,
-        },
-        {
-            key: 8,
-            name: "Lession 2: languages",
-            repoId: 4,
-        },
+        // {
+        //     secid: 1,
+        //     secname: "bài 1: phương trình đa thức bậc hai",
+        //     repoid: 1,
+        // },
+        // {
+        //     secid: 2,
+        //     secname: "bài 2: phương trình bậc nhất hai ẩn",
+        //     repoid: 1,
+        // },
+        // {
+        //     secid: 3,
+        //     secname: "bài 1: cơ bản về đồ thị",
+        //     repoid: 2,
+        // },
+        // {
+        //     secid: 4,
+        //     secname: "bài 2: đồ thị hàm số của phương trình bậc hai",
+        //     repoid: 2,
+        // },
+        // {
+        //     secid: 5,
+        //     secname: "Lession 1: how many peoples in your family?",
+        //     repoid: 3,
+        // },
+        // {
+        //     secid: 6,
+        //     secname: "Lession 2: external family members",
+        //     repoid: 3,
+        // },
+        // {
+        //     secid: 7,
+        //     secname: "Lession 1: world",
+        //     repoid: 4,
+        // },
+        // {
+        //     secid: 8,
+        //     secname: "Lession 2: languages",
+        //     repoid: 4,
+        // },
     ])
+
+    useEffect(() => {
+        const loadRepos = async () => {
+            try {
+                const response = await getSection(parseInt(repoId));
+                setSections(response.data);
+                setLoading(false);
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    setSections([]);
+                    setLoading(false);
+                    // errors("Nguyễn Ngọc Việt", 2);
+                } else {
+                    // errors(SYSTEM_ERROR_MESSAGE, 2);
+                    console.log(error);
+                }
+            }
+        };
+        loadRepos();
+    }, []);
 
     const showModal = () => {
         form.resetFields();
@@ -111,37 +132,47 @@ const AdminSection = () => {
         setSelectedQuestions([]);
     };
 
-    const handleOk = () => {
-        form
-            .validateFields()
-            .then((values) => {
-                form.resetFields();
-                if (editingSectionId !== "" && editingSectionId !== null) { // Nếu đang chỉnh sửa
-                    const newData = [...sections];
-                    const index = newData.findIndex((item) => editingSectionId === item.key);
-                    if (index > -1) {
-                        const item = newData[index];
-                        newData.splice(index, 1, { ...item, ...values });
-                        setSections(newData);
-                        setEditingSectionId(null);
-                        setVisible(false);
+    const handleOk = async () => {
+        try {
+            form
+                .validateFields()
+                .then((values) => {
+                    form.resetFields();
+                    if (editingSectionId !== "" && editingSectionId !== null) { // Nếu đang chỉnh sửa
+                        const newData = [...sections];
+                        const index = newData.findIndex((item) => editingSectionId === item.secid);
+                        if (index > -1) {
+                            const fakeData = async () => {
+                                const item = newData[index];
+                                const res = await updateSection(editingSectionId, values.secname);
+                                newData.splice(index, 1, { ...item, ...values });
+                                setSections(newData);
+                                setEditingSectionId('');
+                                setVisible(false);
+                            }
+                            fakeData();
+                        }
+                    } else { // Nếu thêm 
+                        let newid;
+                        const fakeData = async () => {
+                            const res = await addSection({ secname: values.secname, repoid: repoId });
+                            newid = res.data;
+                            setSections([...sections, { ...values, secid: newid, repoid: repoId }]);
+                            setVisible(false);
+                        }
+                        fakeData();
+                        // const newItem = sections.find(item => item.secid == newid);
+                        // if (newItem && !sections.some(item => item.repoid == newItem.repoid)) {
+                        //     setSelectedSectionId(parseInt(newid));
+                        // }
                     }
-                } else { // Nếu thêm mới
-                    const newSection = {
-                        key: sections.length + 1,
-                        name: values.name,
-                        repoId: repoId,
-                    };
-                    setSections([...sections, newSection]);
-                    setVisible(false);
-                    if (sections.every(item => item.repoId !== newSection.repoId)) {
-                        setSelectedSectionId(newSection.key);
-                    }
-                }
-            })
-            .catch((info) => {
-                console.log('Validate Failed:', info);
-            });
+                })
+                .catch((info) => {
+                    console.log('Validate Failed:', info);
+                });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleCancel = () => {
@@ -157,31 +188,16 @@ const AdminSection = () => {
     };
 
 
-    const handleDelete = (keyToDelete) => {
-        const newData = sections.filter(item => item.key !== keyToDelete);
-        const newQuestion = questions.filter(item => item.sectionId !== keyToDelete);
-        for (let i = 0; i < newData.length; i++) {
-            if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
-                for (let j = 0; j < newQuestion.length; j++) {
-                    if (parseInt(newQuestion[j].sectionId) === parseInt(newData[i].key)) {
-                        newQuestion[j].sectionId = (parseInt(newData[i].key) - 1);
-                    }
-                }
-                newData[i].key = (parseInt(newData[i].key) - 1);
-            }
+    const handleDelete = async (keyToDelete) => {
+        try {
+            const res = await delSection(keyToDelete);
+            const did = res.data;
+            const newData = sections.filter(item => item.secid !== keyToDelete);
+            setSections(newData);
+            setSelectedSectionId(null);
+        } catch (error) {
+            console.error(error);
         }
-
-        if (newQuestion.length > 1) {
-            for (let i = 0; i < newQuestion.length; i++) {
-                newQuestion[i].id = "" + (i + 1);
-            }
-        } else if (newQuestion.length === 1) {
-            newQuestion[0].id = "1";
-        }
-        setSections(newData);
-        setQuestions(newQuestion);
-        setIsToastOpen(false);
-        setSelectedSectionId(null);
     };
 
     const handleEditorDataChange = (data, type, quesid, ansid) => {
@@ -201,31 +217,37 @@ const AdminSection = () => {
         }
     };
 
-    const handleAddQuestion = () => {
-        if (!sections.some(item => parseInt(item.repoId) === parseInt(repoId))) {
-            toast.error("vui lòng tạo bài");
-        } else if (typeof selectedSectionId !== "number") {
-            toast.error("vui lòng chọn bài để add")
-        }
-        else {
-            const newId = (questions.length + 1).toString();
-            const newQuestion = {
-                id: newId,
-                title: '',
-                answers: [
-                    { id: 'answer1', content: '' },
-                ],
-                type: "1",
-                solution: 'hướng dẫn giải',
-                mode: "1",
-                sectionId: selectedSectionId,
-            };
+    const handleAddQuestion = async () => {
+        try {
+            if (!sections.some(item => parseInt(item.repoid) === parseInt(repoId))) {
+                toast.error("vui lòng tạo bài");
+            } else if (typeof selectedSectionId !== "number") {
+                toast.error("vui lòng chọn bài để add")
+            }
+            else {
+                // const res = await
+                // const newid = res.data
+                const newId = (questions.length + 1).toString();
+                const newQuestion = {
+                    quesid: newId,
+                    quescontent: '',
+                    answers: [
+                        { ansid: 1, anscontent: '' },
+                    ],
+                    type: "1",
+                    solution: 'hướng dẫn giải',
+                    modeid: "1",
+                    sectionId: selectedSectionId,
+                };
 
-            setQuestions([...questions, newQuestion]);
+                setQuestions([...questions, newQuestion]);
 
-            setEditingQuestionId(newId);
-            setModalIsOpen(true);
-            setIsAddQuestion(true);
+                setEditingQuestionId(newId);
+                setModalIsOpen(true);
+                setIsAddQuestion(true);
+            }
+        } catch (error) {
+            console.error(error)
         }
     };
 
@@ -240,10 +262,10 @@ const AdminSection = () => {
     const handleEditAnswer = (questionId, answerIndex, newAnswer) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ?
+                question.quesid === questionId ?
                     {
                         ...question, answers: question.answers.map((answer, index) =>
-                            index === answerIndex ? { ...answer, content: newAnswer } : answer
+                            index === answerIndex ? { ...answer, anscontent: newAnswer } : answer
                         )
                     } : question
             )
@@ -261,7 +283,7 @@ const AdminSection = () => {
     const handleEditTitle = (questionId, newTitle) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, title: newTitle } : question
+                question.quesid === questionId ? { ...question, quescontent: newTitle } : question
             )
         );
     };
@@ -269,7 +291,7 @@ const AdminSection = () => {
     const handleEditSolution = (questionId, newSolution) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, solution: newSolution } : question
+                question.quesid === questionId ? { ...question, solution: newSolution } : question
             )
         );
     };
@@ -277,39 +299,22 @@ const AdminSection = () => {
     const handleQuestionModeChange = (questionId, newMode) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, mode: newMode } : question
+                question.quesid === questionId ? { ...question, modeid: newMode } : question
             )
         );
     };
 
     const handleDeleteQuestion = (questionId) => {
-        const updatedQuestions = questions.filter((question) => question.id !== questionId);
+        const updatedQuestions = questions.filter((question) => question.quesid !== questionId);
         setQuestions(updatedQuestions);
         setEditingQuestionId(null);
-    };
-
-
-    const close1 = () => {
-        setShowModal1(false);
-    };
-
-    const open1 = () => {
-        setShowModal1(true);
-    };
-
-    const close2 = () => {
-        setShowModal2(false);
-    };
-
-    const open2 = () => {
-        setShowModal2(true);
     };
 
     const deleteAnswer = (questionId, answerId) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId
-                    ? { ...question, answers: question.answers.filter((answer) => answer.id !== answerId) }
+                question.quesid === questionId
+                    ? { ...question, answers: question.answers.filter((answer) => answer.quesid !== answerId) }
                     : question
             )
         );
@@ -318,8 +323,8 @@ const AdminSection = () => {
     const addAnswer = (questionId) => {
         setQuestions(() =>
             questions.map((question) =>
-                question.id === questionId
-                    ? { ...question, answers: [...question.answers, { id: `answer${question.answers.length}`, content: '' }] }
+                question.quesid === questionId
+                    ? { ...question, answers: [...question.answers, { ansid: question.answers.length, anscontent: '' }] }
                     : question
             )
         );
@@ -329,13 +334,13 @@ const AdminSection = () => {
     const handleQuestionTypeChange = (questionId, selectedType) => {
         setQuestions((prevQuestions) =>
             prevQuestions.map((question) =>
-                question.id === questionId ? { ...question, type: selectedType, mode: "1" } : question
+                question.quesid === questionId ? { ...question, type: selectedType, modeid: "1" } : question
             )
         );
         if (selectedType === "2") {
             setQuestions((prevQuestions) =>
                 prevQuestions.map((question) =>
-                    question.id === questionId ? { ...question, answers: [], mode: "5" } : question //cho mảng question thành null
+                    question.quesid === questionId ? { ...question, answers: [], modeid: "5" } : question //cho mảng question thành null
                 )
             );
         }
@@ -360,11 +365,13 @@ const AdminSection = () => {
                         </Button>
                     </Flex>
                 </Space>
-                <Menu onClick={({ key }) => handleClick(key)}>
-                    {sections.filter(item => parseInt(item.repoId) === parseInt(repoId)).map(section => (
-                        <Menu.Item key={section.key}>
+                <Menu
+                    onClick={({ key }) => handleClick(key)}
+                >
+                    {sections.filter(item => parseInt(item.repoid) === parseInt(repoId)).map(section => (
+                        <Menu.Item key={section.secid}>
                             <span style={{ flex: 1 }}>
-                                {section.name}
+                                {section.secname}
                             </span>
                         </Menu.Item>
                     ))}
@@ -378,7 +385,7 @@ const AdminSection = () => {
                 onCancel={handleCancel}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item label="Tên" name="name" rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}>
+                    <Form.Item label="Tên" name="secname" rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}>
                         <Input />
                     </Form.Item>
                 </Form>
@@ -434,7 +441,7 @@ const AdminSection = () => {
                             isAddQuestion={isAddQuestion}
                             handleQuestionModeChange={handleQuestionModeChange}
                             handleSelectQuestion={handleSelectQuestion}
-                            isSelected={selectedQuestions.includes(question.id)}
+                            isSelected={selectedQuestions.includes(question.quesid)}
                         />
                     ))
                 }
