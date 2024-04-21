@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Checkbox } from "antd";
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { BASE_QR_QUICKLINK, ACCOUNT_NAME } from "../../share/constrains";
+import { paymentCreate } from "../../services/api";
 
 const VietQrPaymentModal = ({ start, amount, content, setClose, description }) => {
     const [step, setStep] = useState(1);
@@ -13,7 +14,10 @@ const VietQrPaymentModal = ({ start, amount, content, setClose, description }) =
         setStep(2);
     };
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
+        const date = Date.now.toString();
+        const response = await paymentCreate({ paycontent: content, money: amount });
+        console.log(response.data);
         setStep(3);
         setTimeout(() => {
             setClose(false);

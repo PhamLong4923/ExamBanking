@@ -57,7 +57,7 @@ export const addQuestion = (data) => Http.post("Question/CreateQuestion", data);
 
 export const addAnswer = (data) => Http.post("/Answers/CreateAnswer", data);
 
-export const paymentCreate = (data) => Http.post("");
+export const paymentCreate = (data) => Http.post("/Payment/createPayment", data);
 
 //delete-api
 
