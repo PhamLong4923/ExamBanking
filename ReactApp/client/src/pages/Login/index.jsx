@@ -53,10 +53,13 @@ const LoginAndRegister = () => {
                                 onSuccess={responseGoogle}
                                 onFailure={responseGoogle}
                                 cookiePolicy={'single_host_origin'}
+
                                 render={(renderProps) => (
+
                                     <Button type="default" icon={<GoogleOutlined />} style={{ width: '100%', marginBottom: '10px' }}>Đăng nhập bằng Google</Button>
                                 )}
                             />
+
 
                             <p style={{ textAlign: 'center' }}>Bạn chưa có tài khoản? <Button type="link" onClick={toggleForm} style={{ color: '#f0f0f0' }}>Đăng kí ngay</Button></p>
                         </>
@@ -70,7 +73,17 @@ const LoginAndRegister = () => {
                             <Input.Password placeholder="Xác nhận mật khẩu" style={{ marginBottom: '10px' }} />
                             <Button type="primary" style={{ width: '100%', marginBottom: '10px' }}>Đăng kí</Button>
                             <p style={{ textAlign: 'center', marginBottom: '10px' }}>hoặc</p>
-                            <Button type="default" icon={<GoogleOutlined />} style={{ width: '100%', marginBottom: '10px' }}>Đăng kí bằng Google</Button>
+                            <GoogleLogin
+                                buttonText="Đăng nhập bằng Google"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+
+                                render={(renderProps) => (
+
+                                    <Button type="default" icon={<GoogleOutlined />} style={{ width: '100%', marginBottom: '10px' }}>Đăng nhập bằng Google</Button>
+                                )}
+                            />
                             <p style={{ textAlign: 'center' }}>Đã có tài khoản? <Button type="link" onClick={toggleForm} style={{ color: '#f0f0f0' }}>Đăng nhập ngay</Button></p>
                         </>
                     )}

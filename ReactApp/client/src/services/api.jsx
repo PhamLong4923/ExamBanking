@@ -41,6 +41,8 @@ export const getallTicket = () => Http.get("/Ticket/ListAllTicket");
 
 export const getkit = () => Http.get("Ticket/kitnewbie");
 
+export const getaviableticket = (tm) => Http.get(`Ticket/listaviableticket?ticketmode=${tm}`);
+
 
 
 //create-api
@@ -86,6 +88,8 @@ export const updateSolution = (question, solution) => Http.put(`/Question/EditSo
 export const updateQMode = (qid, mode) => Http.put(`/Question/EditQuestion?question=${qid}&modeid=${mode}`);
 
 export const updateAns = (aid, content) => Http.put(`/Answers/EditAnswer?aid=${aid}&content=${content}`);
+
+export const applyTicket = (tkid, bid) => Http.put(`/Ticket/applyticket?bankid=${bid}&ticketid=${tkid}`);
 
 //
 

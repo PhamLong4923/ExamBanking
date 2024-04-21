@@ -2,7 +2,7 @@
 {
     public class TicketNameGen
     {
-        public static string GenTicketNameFunc(string email)
+        public static string GenTicketNameFunc(string email, string type)
         {
             DateTime today = DateTime.Today;
 
@@ -13,7 +13,7 @@
 
             Random random = new Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, 10)
+            return type + new string(Enumerable.Repeat(chars, 10)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }

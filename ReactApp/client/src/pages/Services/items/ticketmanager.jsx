@@ -149,7 +149,7 @@ const TicketManager = () => {
             <TicketRenewPaymentModal start={openrenew} setClose={() => setOpenRenew(false)} tid={tid}></TicketRenewPaymentModal>
             {isnewbie ? (<Button style={{ marginBottom: '5px' }} onClick={() => handleOpenKit()} type="primary" icon={<GiftOutlined />}>Nhận kit cho người mới</Button>)
                 :
-                (<Button style={{ marginBottom: '5px' }} type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
+                (<Button disabled={load} style={{ marginBottom: '5px' }} type="primary" icon={<PlusOutlined />} onClick={handleOpenPayMethod}>Thêm Ticket</Button>)}
             <KitNewbie visible={visible} onCancel={handleCloseKit} onApply={handleAcceptKit}></KitNewbie>
             <Table dataSource={tickets} pagination={false} loading={load}>
                 <Column title="Tên Ticket" dataIndex="ticketname" key="Ticketname" />

@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Table } from 'antd';
+import { getaviableticket } from '../../services/api';
+import { useSelector } from 'react-redux';
 
 const TicketApprove = ({ visible, onCancel, onApply, bankid }) => {
     const [selectedRows, setSelectedRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const tickmode = useSelector(state => state.exBankType);
 
 
-    const ticketdata = [
-        {
-            ticketid: 1,
-            ticketname: 'ex4'
-        },
-        {
-            ticketid: 2,
-            ticketname: 'ex5'
-        }
-    ];
+    const [ticketdata, setTicketdate] = useState([]);
+
+    useEffect(() => {
+        const fetchdata = async () => {
+            try {
+                const response = await getaviableticket(parseInt(tickmode));
+                setTicketdate(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchdata();
+    }, []);
 
     const handleTicketSelectChange = (selectedRowKeys, selectedRows) => {
         setSelectedRows(selectedRows);

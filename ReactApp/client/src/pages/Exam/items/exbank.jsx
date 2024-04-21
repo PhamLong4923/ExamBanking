@@ -5,7 +5,7 @@ import ExMyBreadCrumb from '../../../components/ui/exbreadcrumb';
 import TicketApprove from '../../../components/ui/ticketapprove';
 import { setExBank } from '../../../redux-setup/action';
 import { useDispatch } from 'react-redux';
-import { getExBank } from '../../../services/api';
+import { applyTicket, getExBank } from '../../../services/api';
 import { errors, success, warning } from '../../../components/ui/notifications';
 import { SYSTEM_ERROR_MESSAGE } from '../../../share/constrains';
 
@@ -29,32 +29,6 @@ const ExBank = () => {
                 errors(SYSTEM_ERROR_MESSAGE, 2);
             }
 
-            // const testData = [
-            //     {
-            //         id: 1,
-            //         name: 'example',
-            //         ticket: {
-            //             id: 2,
-            //             name: 'example ticket',
-            //             status: true,
-            //         }
-            //     },
-            //     {
-            //         id: 2,
-            //         name: 'example2',
-            //         ticket: {
-            //             id: 3,
-            //             name: 'example ticket 2',
-            //             status: false,
-            //         }
-            //     },
-            //     {
-            //         id: 3,
-            //         name: 'example2',
-            //         ticket: null
-            //     }
-            // ];
-
         };
 
         loadTestData();
@@ -67,30 +41,34 @@ const ExBank = () => {
     };
 
 
-    const handleApplyTicket = (tid, bid) => {
-        // Tìm kiếm ngân hàng có id tương ứng
-        const bankIndex = banks.findIndex(bank => bank.id === bid);
+    const handleApplyTicket = async (tid, bid) => {
 
-        // Nếu không tìm thấy ngân hàng có id tương ứng, không làm gì cả
-        if (bankIndex === -1) {
-            return;
+        try {
+            const response = await applyTicket(tid, bid);
+            const bankIndex = banks.findIndex(bank => bank.id === bid);
+
+
+            if (bankIndex === -1) {
+                return;
+            }
+
+            const updatedBanks = [...banks];
+
+            updatedBanks[bankIndex] = {
+                ...updatedBanks[bankIndex],
+                ticket: {
+                    id: tid,
+                    name: 'new ticket name',
+                    status: true,
+                }
+            };
+
+            setBanks(updatedBanks);
+            setVisible(false);
+        } catch (error) {
+            console.log(error);
         }
 
-        // Sao chép mảng banks để tránh thay đổi trực tiếp trên state
-        const updatedBanks = [...banks];
-
-        // Thay thế dữ liệu ticket của ngân hàng có id tương ứng
-        updatedBanks[bankIndex] = {
-            ...updatedBanks[bankIndex],
-            ticket: {
-                id: tid,
-                name: 'new ticket name',
-                status: true,
-            }
-        };
-
-        setBanks(updatedBanks);
-        setVisible(false);
     };
 
 
