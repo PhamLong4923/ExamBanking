@@ -10,7 +10,7 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User")]
+    
     public class PaymentController : ControllerBase
     {
         private readonly ExamBankingContext _context;
@@ -18,7 +18,9 @@ namespace ExamBanking.Controllers
         {
             _context = context;
         }
+
         [HttpPost("createPayment")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> CreatePayment(CreatePaymentRequest request)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
@@ -47,6 +49,30 @@ namespace ExamBanking.Controllers
 
             return Ok(payment.Payid);
         }
+
+        [HttpGet("Historical_payment")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Historical_payment()
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            if (user == null)
+            {
+                return Ok("User not found or token is invalid.");
+            }
+
+            var payments = _context.Payments.Where(p => p.Accid == user.Accid).ToList();
+            return Ok(payments);
+        }
+
+        [HttpGet("historical_admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Historical_admin()
+        {
+            var payments = _context.Payments.ToList();
+            return Ok(payments);
+        }
+        
 
     }
 }
