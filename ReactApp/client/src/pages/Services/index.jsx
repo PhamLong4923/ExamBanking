@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Typography, Button } from 'antd';
-import { BankOutlined, SolutionOutlined, LockOutlined, ReloadOutlined } from '@ant-design/icons';
+import { BankOutlined, SolutionOutlined, LockOutlined, ReloadOutlined, TransactionOutlined } from '@ant-design/icons';
 import BankManager from './items/bankmanager';
 import TicketManager from './items/ticketmanager';
 import AccessManager from './items/accessmanager';
+import PaymentManager from './items/paymentmanager';
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ const Services = () => {
         { icon: <BankOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ngân hàng', component: <BankManager></BankManager> },
         { icon: <SolutionOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí ticket', component: <TicketManager></TicketManager> },
         { icon: <LockOutlined style={{ fontSize: '24px' }} />, name: 'Quản lí truy cập', component: AccessManager },
+        { icon: <TransactionOutlined style={{ fontSize: '24px' }} />, name: 'Lịch sử giao dịch', component: <PaymentManager></PaymentManager> },
     ];
 
     const handleServiceClick = (Component) => {
