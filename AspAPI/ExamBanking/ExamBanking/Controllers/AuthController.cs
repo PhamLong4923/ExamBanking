@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -67,12 +68,15 @@ namespace ExamBanking.Controllers
             //{
             //    return BadRequest("Wrong password.");
             //}
+            string role = account.Roleid == 0 ? "User" : "Admin";
+
             var refreshToken = GenerateRefreshToken();
 
             SetRefreshToken(refreshToken);
-            string token = CreateJWTToken(account);
+            string token = CreateJWTToken(account, role);
 
             return Ok(token);
+
         }
 
         [HttpPost("refresh-token")]
@@ -80,6 +84,7 @@ namespace ExamBanking.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
             var account = await _context.Accounts.SingleOrDefaultAsync(a => a.VerificationToken == refreshToken);
+            string role = account.Roleid == 0 ? "User" : "Admin";
             if (account == null)
             {
                 return BadRequest("Invalid token");
@@ -90,7 +95,7 @@ namespace ExamBanking.Controllers
             }
             var newRefreshToken = GenerateRefreshToken();
             SetRefreshToken(newRefreshToken);
-            string token = CreateJWTToken(account);
+            string token = CreateJWTToken(account, role);
             return Ok(token);
         }
 
@@ -174,13 +179,13 @@ namespace ExamBanking.Controllers
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
-        private string CreateJWTToken(Account user)
+        private string CreateJWTToken(Account user, string role)
         {
             List<Claim> claims = new List<Claim> {
                 new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", user.Email),
-                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User"),
-                new Claim("bankmode", "1")
-            };
+                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", role),
+                
+        };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSetting:Token").Value!));
@@ -188,16 +193,16 @@ namespace ExamBanking.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
-
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: creds
-                );
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds
+            );
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
         }
+
 
     }
 }

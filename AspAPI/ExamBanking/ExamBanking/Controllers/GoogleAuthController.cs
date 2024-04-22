@@ -9,6 +9,7 @@ using ExamBanking.Models;
 using System.IdentityModel.Tokens.Jwt;
 using ExamBanking.DTO.AccountDto;
 using ExamBanking.Utils;
+using System.Xml.Linq;
 
 namespace ExamBanking.Controllers
 {
@@ -18,7 +19,7 @@ namespace ExamBanking.Controllers
     {
         private readonly ExamBankingContext _context;
         private readonly Jwt _jwt;
-        public GoogleAuthController(ExamBankingContext context,Jwt jwt)
+        public GoogleAuthController(ExamBankingContext context, Jwt jwt)
         {
             _context = context;
             _jwt = jwt;
@@ -26,6 +27,8 @@ namespace ExamBanking.Controllers
         [HttpPost("save-jwt-data")]
         public IActionResult SaveJwtData([FromBody] TokenRequest request)
         {
+
+
             if (request == null || string.IsNullOrEmpty(request.Jwt))
             {
                 return BadRequest(new { message = "JWT not provided" });
@@ -42,17 +45,18 @@ namespace ExamBanking.Controllers
                     Accname = jsonToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value,
                     Email = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
                     Datejoin = DateTime.Now
-                   
+
                 };
 
                 // Thêm logic để kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
                 var checkExist = _context.Accounts.FirstOrDefault(a => a.Email == account.Email);
+                string role = checkExist.Roleid == 0 ? "User" : "Admin";
                 if (checkExist != null)
                 {
-                    string tokenExist = _jwt.CreateJWTToken(account);
+                    string tokenExist = _jwt.CreateJWTToken(account, role);
                     return Ok(tokenExist);
                 }
-                var token = _jwt.CreateJWTToken(account);
+                var token = _jwt.CreateJWTToken(account, role);
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
 

@@ -9,20 +9,23 @@ import {
   UserOutlined,
   VideoCameraOutlined
 } from '@ant-design/icons';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Layout, Menu, theme } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AccessManagement from './components/UI/Features/AccessManagement';
 import AccountManagement from './components/UI/Features/AccountManagement';
 import Home from './components/UI/Features/AdminHome';
+import AdminRepository from './components/UI/Features/AdminRepository';
 import AdminSection from './components/UI/Features/AdminSection';
 import Analysis from './components/UI/Features/Analysis';
 import Payment from './components/UI/Features/Payment';
-import AdminRepository from './components/UI/Features/Repository';
 import SystemBank from './components/UI/Features/SystemBank';
+import { default as Login } from './components/UI/Login/index';
 import Profile from './components/UI/Users/profile';
+import store from './redux-setup/store';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -80,7 +83,7 @@ const items = [
     icon: <UserAddOutlined />,
     label: 'Access Management',
     link: '/system_bank/:bankId/access_management'
-  }
+  },
 ];
 
 const App = () => {
@@ -120,53 +123,56 @@ const App = () => {
   };
 
   return (
-    <Layout hasSider>
-      <Sider
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['0']}
-          selectedKeys={[selectedMenu]} // Pass selectedMenu state as selectedKeys
-          onClick={handleMenuClick}
-        >
-          {items.map((item) => (
-            (item.key < 6) && (
-              <Menu.Item key={item.key} icon={item.icon}>
-                <NavLink to={item.link}>{item.label}</NavLink>
-              </Menu.Item>
-            )
-          ))}
-        </Menu>
-      </Sider>
-      <Layout
-        style={{
-          marginLeft: 200,
-        }}
-      >
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-            font: 'caption',
-            fontSize: '30px',
-            paddingLeft: '1%',
-            paddingTop: '1%'
-          }}
-        >
-          {
-            selectedMenu < 6 && items[selectedMenu].label
-          }
-          {/* {
+    <GoogleOAuthProvider clientId="961165515652-b6pd4d1492do15fspi8ssa268o4h1ce6.apps.googleusercontent.com">
+      <Provider store={store}>
+        <Layout hasSider>
+          <Sider
+            style={{
+              overflow: 'auto',
+              height: '100vh',
+              position: 'fixed',
+              left: 0,
+              top: 0,
+              bottom: 0,
+            }}
+          >
+            <div className="demo-logo-vertical" />
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={['0']}
+              selectedKeys={[selectedMenu]} // Pass selectedMenu state as selectedKeys
+              onClick={handleMenuClick}
+            >
+              {items.map((item) => (
+                (item.key < 6) && (
+                  <Menu.Item key={item.key} icon={item.icon}>
+                    <NavLink to={item.link}>{item.label}</NavLink>
+                  </Menu.Item>
+                )
+              ))}
+            </Menu>
+            <Login />
+          </Sider>
+          <Layout
+            style={{
+              marginLeft: 200,
+            }}
+          >
+            <Header
+              style={{
+                padding: 0,
+                background: colorBgContainer,
+                font: 'caption',
+                fontSize: '30px',
+                paddingLeft: '1%',
+                paddingTop: '1%'
+              }}
+            >
+              {
+                selectedMenu < 6 && items[selectedMenu].label
+              }
+              {/* {
             selectedMenu == 6 && "Ngân hàng chủ - kho"
           }
           {
@@ -175,21 +181,21 @@ const App = () => {
           {
             selectedMenu == 8 && "Ngân hàng chủ - quyền"
           } */}
-        </Header>
-        <Content
-          style={{
-            margin: '24px 16px 0',
-            overflow: 'initial',
-          }}
-        >
-          <div
-            style={{
-              padding: 24,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {/* {selectedMenu === '0' && <Home />}
+            </Header>
+            <Content
+              style={{
+                margin: '24px 16px 0',
+                overflow: 'initial',
+              }}
+            >
+              <div
+                style={{
+                  padding: 24,
+                  background: colorBgContainer,
+                  borderRadius: borderRadiusLG,
+                }}
+              >
+                {/* {selectedMenu === '0' && <Home />}
               {selectedMenu === '1' && <Profile />}
               {selectedMenu === '2' && <Analysis />}
               {selectedMenu === '3' && <SystemBank />}
@@ -197,32 +203,30 @@ const App = () => {
               {selectedMenu === '5' && <Payment />}
               {selectedMenu === '6' && null}
               {selectedMenu === '7' && null} */}
-            <Routes>
-              <Route path="/home" element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/analysis" element={<Analysis />} />
-              <Route path="/system_bank" element={<SystemBank />} />
-              <Route path="/account_management" element={<AccountManagement />} />
-              <Route path="/payment_management" element={<Payment />} />
-              <Route path="/system_bank/:bankId/system_repo" element={<AdminRepository />} />
-              <Route path="/system_bank/:bankId/system_repo/:repoId/system_section" element={<AdminSection />} />
-              <Route path="/system_bank/:bankId/access_management" element={<AccessManagement />} />
-            </Routes>
-            <ToastContainer
-              position="bottom-right"
-              autoClose={3000}
-            />
-          </div>
-        </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          {/* ASP .NET Core API sẽ không tha cho bạn */}
-        </Footer>
-      </Layout>
-    </Layout>
+                <Routes>
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/analysis" element={<Analysis />} />
+                  <Route path="/system_bank" element={<SystemBank />} />
+                  <Route path="/account_management" element={<AccountManagement />} />
+                  <Route path="/payment_management" element={<Payment />} />
+                  <Route path="/system_bank/:bankId/system_repo" element={<AdminRepository />} />
+                  <Route path="/system_bank/:bankId/system_repo/:repoId/system_section" element={<AdminSection />} />
+                  <Route path="/system_bank/:bankId/access_management" element={<AccessManagement />} />
+                </Routes>
+              </div>
+            </Content>
+            <Footer
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              {/* ASP .NET Core API sẽ không tha cho bạn */}
+            </Footer>
+          </Layout>
+        </Layout>
+      </Provider>
+    </GoogleOAuthProvider >
   );
 };
 

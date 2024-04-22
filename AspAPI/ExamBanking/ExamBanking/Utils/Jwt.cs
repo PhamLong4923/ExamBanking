@@ -45,11 +45,11 @@ namespace ExamBanking.Utils
             return Jwt.GetUserId(token);
         }
 
-        public string CreateJWTToken(Account user)
+        public string CreateJWTToken(Account user, string role)
         {
             List<Claim> claims = new List<Claim> {
                 new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress", user.Email),
-                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "User"),
+                new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", role),
                 new Claim("bankmode", user.Bankmode.ToString())
             };
 
@@ -69,6 +69,7 @@ namespace ExamBanking.Utils
 
             return jwt;
         }
+       
 
     }
 }
