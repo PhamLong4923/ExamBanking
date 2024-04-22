@@ -198,7 +198,6 @@ namespace ExamBanking.Controllers
             _context.SaveChanges();
             return Ok(payid);
         }
-
     }
 }
 
