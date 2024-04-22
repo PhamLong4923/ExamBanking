@@ -11,6 +11,22 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.AccountController",
+    "Method": "manager_user",
+    "RelativePath": "api/Account/manager_user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "accid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.AccountController",
     "Method": "getIsnewbie",
     "RelativePath": "api/Account/NewBie",
     "HttpMethod": "GET",
@@ -347,6 +363,27 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.PaymentController",
+    "Method": "Accept_bill",
+    "RelativePath": "api/Payment/accept_bill",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "payid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "bankid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.PaymentController",
     "Method": "CreatePayment",
     "RelativePath": "api/Payment/createPayment",
     "HttpMethod": "POST",
@@ -379,6 +416,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.PaymentController",
+    "Method": "Test2",
+    "RelativePath": "api/Payment/test2",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
