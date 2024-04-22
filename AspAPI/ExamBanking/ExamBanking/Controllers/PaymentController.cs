@@ -20,7 +20,7 @@ namespace ExamBanking.Controllers
         }
 
         [HttpPost("createPayment")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> CreatePayment(CreatePaymentRequest request)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
