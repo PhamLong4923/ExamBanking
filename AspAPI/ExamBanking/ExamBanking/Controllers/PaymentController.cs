@@ -10,7 +10,7 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class PaymentController : ControllerBase
     {
         private readonly ExamBankingContext _context;
@@ -41,7 +41,7 @@ namespace ExamBanking.Controllers
                 Accid = user.Accid,
                 Paydate = DateTime.Now,
                 Status = 0,
-                Paycontent = request.Paycontent + "_" + emailClaim.Value,
+                Paycontent = request.Paycontent,
             };
 
             _context.Payments.Add(payment);
@@ -72,11 +72,62 @@ namespace ExamBanking.Controllers
             var payments = _context.Payments.ToList();
             return Ok(payments);
         }
+
+
+        //[HttpGet("test")]
+        //public async Task<IActionResult> Test()
+        //{
+        //    var payment = _context.Payments.SingleOrDefault(p => p.Payid == 11);
+        //    var contentParts = payment.Paycontent.Split('_');
+        //    var first = contentParts[3];
+
+        //    return Ok(first);
+        //}
+        [HttpGet("test2")]
+        public async Task<IActionResult> Test2(int id)
+        {
+            var payment = _context.Payments.SingleOrDefault(p => p.Payid == id);
+            var contentParts = payment.Paycontent.Split('_');
+
+            if (contentParts.Length < 4)
+            {
+                return Ok("Invalid content format.");
+            }
+
+            var fourth = contentParts[3];
+            var days = contentParts[4];
+
+            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == Convert.ToInt32(fourth));
+
+            if (ticket == null)
+            {
+                return Ok("Ticket not found.");
+            }
+
+            if (DateTime.Now - ticket.Startdate > TimeSpan.FromDays(Convert.ToDouble(ticket.Expire)))
+            {
+                ticket.Expire += Convert.ToInt32(days);
+                return Ok("Greater than");
+            }
+            else if (DateTime.Now - ticket.Startdate < TimeSpan.FromDays(Convert.ToDouble(ticket.Expire)))
+            {
+                ticket.Expire = Convert.ToInt32(days);
+                return Ok("Less than");
+            }
+            else
+            {
+                return Ok("Equal");
+            }
+        }
+
+
         [HttpPost("accept_bill")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Accept_bill(int payid)
+
+        public async Task<IActionResult> Accept_bill(int payid, int bankid)
         {
             var payment = _context.Payments.SingleOrDefault(p => p.Payid == payid);
+            var bank = _context.Banks.SingleOrDefault(b => b.Bankid == bankid);
+
             if (payment == null)
             {
                 return Ok("Payment not found.");
@@ -88,42 +139,65 @@ namespace ExamBanking.Controllers
             }
             else
             {
-                var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketname == payment.Paycontent);
-                if (ticket != null)
+                var contentParts = payment.Paycontent.Split('_');
+
+                if (contentParts.Length < 3)
                 {
-                    var bank = _context.Banks.SingleOrDefault(b => b.Bankid == ticket.Bankid);
-                    if (ticket.Ticketname.StartsWith("EBSBM"))
+                    return Ok("Invalid content format.");
+                }
+
+                var first = contentParts[0];
+                var second = contentParts[1];
+                var third = contentParts[2];
+                var fourth = contentParts[3];
+
+
+                if (first == "EBS")
+                {
+                    if (second == "TK")
                     {
-                        bank.Bankmode = 2;
-                    }
-                    else if (ticket.Ticketname.StartsWith("EBSTKU"))
-                    {
-                        // Cập nhật ticket
-                        var ticketId = int.Parse(ticket.Ticketname.Substring(5, 1)); 
-                        var updatedTicket = _context.Tickets.SingleOrDefault(t => t.Ticketid == ticketId);
-                        if (updatedTicket != null)
+                        if (third == "C")
                         {
-                            updatedTicket.Expire += 30; 
+                            var newTicket = new Ticket
+                            {
+                                Accid = payment.Accid,
+                                Bankid = bankid,
+                                Startdate = DateTime.Now,
+                                Expire = Convert.ToInt32(fourth)
+                            };
+                            _context.Tickets.Add(newTicket);
+
+                        }
+                        else if (third == "U")
+                        {
+                            var days = contentParts[4];
+                            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == Convert.ToInt32(fourth));
+
+                            if (ticket.Startdate - DateTime.Now > TimeSpan.FromDays(Convert.ToInt32(ticket.Expire)))
+                            {
+
+                                var currentExpire = ticket.Expire;
+                                ticket.Expire = currentExpire + Convert.ToInt32(days);
+                                ticket.Startdate = DateTime.Now;
+
+                            }
+                            else if (ticket.Startdate - DateTime.Now < TimeSpan.FromDays(Convert.ToInt32(ticket.Expire)))
+                            {
+                                ticket.Expire = Convert.ToInt32(days);
+                            }
                         }
                     }
-                    else if (ticket.Ticketname.StartsWith("EBSTKC"))
+                    else if (second == "BM" && third == "U")
                     {
-                       
-                        var newTicket = new Ticket
-                        {
-                            Expire = 90                         
-                        };
-                        _context.Tickets.Add(newTicket);
+                        bank.Bankmode = Convert.ToInt32(fourth);
                     }
                 }
-                payment.Status = 1;
             }
 
+            payment.Status = 1;
             _context.SaveChanges();
-            return Ok(payment.Payid);
+            return Ok(payid);
         }
-
-
 
     }
 }
