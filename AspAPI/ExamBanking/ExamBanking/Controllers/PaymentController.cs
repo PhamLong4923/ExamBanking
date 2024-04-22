@@ -20,7 +20,7 @@ namespace ExamBanking.Controllers
         }
 
         [HttpPost("createPayment")]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         public async Task<IActionResult> CreatePayment(CreatePaymentRequest request)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
@@ -72,7 +72,6 @@ namespace ExamBanking.Controllers
             var payments = _context.Payments.ToList();
             return Ok(payments);
         }
-
         [HttpPost("accept_bill")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Accept_bill(int payid)
@@ -89,12 +88,42 @@ namespace ExamBanking.Controllers
             }
             else
             {
+                var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketname == payment.Paycontent);
+                if (ticket != null)
+                {
+                    var bank = _context.Banks.SingleOrDefault(b => b.Bankid == ticket.Bankid);
+                    if (ticket.Ticketname.StartsWith("EBSBM"))
+                    {
+                        bank.Bankmode = 2;
+                    }
+                    else if (ticket.Ticketname.StartsWith("EBSTKU"))
+                    {
+                        // Cập nhật ticket
+                        var ticketId = int.Parse(ticket.Ticketname.Substring(5, 1)); 
+                        var updatedTicket = _context.Tickets.SingleOrDefault(t => t.Ticketid == ticketId);
+                        if (updatedTicket != null)
+                        {
+                            updatedTicket.Expire += 30; 
+                        }
+                    }
+                    else if (ticket.Ticketname.StartsWith("EBSTKC"))
+                    {
+                       
+                        var newTicket = new Ticket
+                        {
+                            Expire = 90                         
+                        };
+                        _context.Tickets.Add(newTicket);
+                    }
+                }
                 payment.Status = 1;
             }
+
             _context.SaveChanges();
             return Ok(payment.Payid);
         }
-        
+
+
 
     }
 }

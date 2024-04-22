@@ -10,7 +10,7 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "User,Admin")]
     public class BankController : ControllerBase
     {
         
