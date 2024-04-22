@@ -8,7 +8,7 @@ const SystemBank = () => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [editingKey, setEditingKey] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [dataSource, setDataSource] = useState([
         //          {
         //     "bankid": 1,

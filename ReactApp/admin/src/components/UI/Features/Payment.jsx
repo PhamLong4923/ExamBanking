@@ -1,56 +1,89 @@
 import { Button, DatePicker, Flex, Form, Input, Modal, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { getPayment } from '../../../services/Api';
 
 const { RangePicker } = DatePicker;
 
 const Payment = () => {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState("all");
-  const listData = [
-    {
-      payid: '1',
-      accid: '1',
-      paycontent: 'INV-001',
-      paydate: "25/03/2024",
-      money: 100,
-      status: null,
-    },
-    {
-      payid: '2',
-      accid: '1',
-      paycontent: 'INV-002',
-      paydate: "25/03/2024",
-      money: 150,
-      status: null,
-    },
-    {
-      payid: '3',
-      accid: '1',
-      paycontent: 'INV-003',
-      paydate: "25/03/2024",
-      money: 100,
-      status: 0,
-    },
-    {
-      payid: '4',
-      accid: '1',
-      paycontent: 'INV-004',
-      paydate: "25/03/2024",
-      money: 150,
-      status: 1,
-    },
-  ]
+  const [loading, setLoading] = useState(true);
+  const [listData, setListData] = useState([
+    // {
+    //   payid: '1',
+    //   accid: '1',
+    //   paycontent: 'INV-001',
+    //   paydate: "25/03/2024",
+    //   money: 100,
+    //   status: null,
+    // },
+    // {
+    //   payid: '2',
+    //   accid: '1',
+    //   paycontent: 'INV-002',
+    //   paydate: "25/03/2024",
+    //   money: 150,
+    //   status: null,
+    // },
+    // {
+    //   payid: '3',
+    //   accid: '1',
+    //   paycontent: 'INV-003',
+    //   paydate: "25/03/2024",
+    //   money: 100,
+    //   status: 0,
+    // },
+    // {
+    //   payid: '4',
+    //   accid: '1',
+    //   paycontent: 'INV-004',
+    //   paydate: "25/03/2024",
+    //   money: 150,
+    //   status: 1,
+    // },
+  ]);
+
   const [dataSource, setDataSource] = useState([]);
 
-  // const fetchData = async (status) => {
-  //   try {
-  //     const response = await fetch(`your_api_endpoint/${status}`);
-  //     const data = await response.json();
-  //     setDataSource(data);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getPayment();
+        setListData(response.data);
+        setDataSource(response.data);
+        setLoading(false);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          setListData([]);
+          setLoading(false);
+          // errors("Nguyễn Ngọc Việt", 2);
+        } else {
+          // errors(SYSTEM_ERROR_MESSAGE, 2);
+          console.log(error);
+        }
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    switch (currentPage) {
+      case "all":
+        setDataSource(listData);
+        break;
+      case "pending":
+        setDataSource(listData.filter(item => item.status === null));
+        break;
+      case "approved":
+        setDataSource(listData.filter(item => item.status === 1));
+        break;
+      case "cancelled":
+        setDataSource(listData.filter(item => item.status === 0));
+        break;
+      default:
+        setDataSource(listData);
+    }
+  }, [currentPage]);
 
   const columns = [
     {
@@ -108,27 +141,7 @@ const Payment = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    // fetchData(page);
   };
-
-  useEffect(() => {
-    switch (currentPage) {
-      case "all":
-        setDataSource(listData);
-        break;
-      case "pending":
-        setDataSource(listData.filter(item => item.status === null));
-        break;
-      case "approved":
-        setDataSource(listData.filter(item => item.status === 1));
-        break;
-      case "cancelled":
-        setDataSource(listData.filter(item => item.status === 0));
-        break;
-      default:
-        setDataSource([]);
-    }
-  }, [currentPage]);
 
   return (
     <div>
@@ -139,7 +152,7 @@ const Payment = () => {
         <Button type={currentPage === "cancelled" ? "primary" : "default"} onClick={() => handlePageChange("cancelled")}>Bị hủy</Button>
       </div>
 
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} loading={loading} />
 
       <Modal
         title="Add Payment"

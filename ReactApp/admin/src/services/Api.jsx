@@ -35,6 +35,8 @@ export const configExam = (ids) => {
     return Http.get(`/Exam/ShowExam?${queryParams}`);
 }
 
+export const getPayment = () => Http.get("/Payment/historical_admin");
+
 
 
 //create-api
