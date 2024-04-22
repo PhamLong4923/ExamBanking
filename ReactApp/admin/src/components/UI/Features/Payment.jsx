@@ -1,49 +1,88 @@
-import { Button, DatePicker, Form, Input, Modal, Table } from 'antd';
-import React, { useState } from 'react';
+import { Button, DatePicker, Flex, Form, Input, Modal, Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
 
 const { RangePicker } = DatePicker;
 
 const Payment = () => {
   const [visible, setVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState("all");
+  const listData = [
+    {
+      payid: '1',
+      accid: '1',
+      paycontent: 'INV-001',
+      paydate: "25/03/2024",
+      money: 100,
+      status: null,
+    },
+    {
+      payid: '2',
+      accid: '1',
+      paycontent: 'INV-002',
+      paydate: "25/03/2024",
+      money: 150,
+      status: null,
+    },
+    {
+      payid: '3',
+      accid: '1',
+      paycontent: 'INV-003',
+      paydate: "25/03/2024",
+      money: 100,
+      status: 0,
+    },
+    {
+      payid: '4',
+      accid: '1',
+      paycontent: 'INV-004',
+      paydate: "25/03/2024",
+      money: 150,
+      status: 1,
+    },
+  ]
+  const [dataSource, setDataSource] = useState([]);
 
-  const [dataSource, setDataSource] = useState([
-    {
-      key: '1',
-      invoice: 'INV-001',
-      amount: 100,
-      status: 'chưa xử lý',
-    },
-    {
-      key: '2',
-      invoice: 'INV-002',
-      amount: 150,
-      status: 'chưa xử lý',
-    },
-    // More payments...
-  ]);
+  // const fetchData = async (status) => {
+  //   try {
+  //     const response = await fetch(`your_api_endpoint/${status}`);
+  //     const data = await response.json();
+  //     setDataSource(data);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
   const columns = [
     {
       title: 'Mã hóa đơn',
-      dataIndex: 'invoice',
-      key: 'invoice',
+      dataIndex: 'paycontent',
+      key: 'paycontent',
     },
     {
       title: 'Số tiền',
-      dataIndex: 'amount',
-      key: 'amount',
+      dataIndex: 'money',
+      key: 'money',
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
+      title: 'Ngày',
+      dataIndex: 'paydate',
+      key: 'paydate',
     },
     {
-      title: 'Hành động',
+      title: currentPage === "pending" ? 'Hành động' : 'Trạng thái',
       key: 'action',
       render: (text, record) => (
-        <Button onClick={() => handleDelete(record.key)}>Duyệt</Button>
-      ),
+        record.status === null ? (
+          <Flex gap="middle">
+            <Button onClick={() => handleApprove(record.key)}>Duyệt</Button>
+            <Button onClick={() => handleCancel(record.key)}>Hủy</Button>
+          </Flex>
+        ) : record.status === 1 ? (
+          <Tag color="green">Đã duyệt</Tag>
+        ) : (
+          <Tag color="red">Đã hủy</Tag>
+        )
+      )
     },
   ];
 
@@ -51,34 +90,62 @@ const Payment = () => {
     setVisible(true);
   };
 
-  const handleDelete = (keyToDelete) => {
-    const newData = dataSource.filter(item => item.key !== keyToDelete);
-    // Giảm key của các phần tử sau phần tử được xóa
-    for (let i = 0; i < newData.length; i++) {
-      if (parseInt(newData[i].key) > parseInt(keyToDelete)) {
-        newData[i].key = (parseInt(newData[i].key) - 1).toString();
-      }
-    }
-    setDataSource(newData);
+  const handleApprove = (keyToApprove) => {
+    // Logic to approve payment...
+  };
+
+  const handleCancel = (keyToCancel) => {
+    // Logic to cancel payment...
   };
 
   const handleOk = () => {
     setVisible(false);
   };
 
-  const handleCancel = () => {
+  const handleCancelModal = () => {
     setVisible(false);
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // fetchData(page);
+  };
+
+  useEffect(() => {
+    switch (currentPage) {
+      case "all":
+        setDataSource(listData);
+        break;
+      case "pending":
+        setDataSource(listData.filter(item => item.status === null));
+        break;
+      case "approved":
+        setDataSource(listData.filter(item => item.status === 1));
+        break;
+      case "cancelled":
+        setDataSource(listData.filter(item => item.status === 0));
+        break;
+      default:
+        setDataSource([]);
+    }
+  }, [currentPage]);
+
   return (
     <div>
+      <div style={{ marginBottom: '16px' }}>
+        <Button type={currentPage === "all" ? "primary" : "default"} onClick={() => handlePageChange("all")}>Tất cả</Button>
+        <Button type={currentPage === "pending" ? "primary" : "default"} onClick={() => handlePageChange("pending")}>Chờ duyệt</Button>
+        <Button type={currentPage === "approved" ? "primary" : "default"} onClick={() => handlePageChange("approved")}>Đã duyệt</Button>
+        <Button type={currentPage === "cancelled" ? "primary" : "default"} onClick={() => handlePageChange("cancelled")}>Bị hủy</Button>
+      </div>
+
       <Table dataSource={dataSource} columns={columns} />
 
       <Modal
         title="Add Payment"
-        open={visible}
+        visible={visible}
         onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={handleCancelModal}
       >
         <Form layout="vertical">
           <Form.Item label="Invoice">
