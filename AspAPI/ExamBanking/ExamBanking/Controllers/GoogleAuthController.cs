@@ -44,6 +44,7 @@ namespace ExamBanking.Controllers
                 {
                     Accname = jsonToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value,
                     Email = jsonToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value,
+                    Roleid = 0,
                     Datejoin = DateTime.Now
 
                 };

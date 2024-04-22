@@ -16,7 +16,7 @@ namespace ExamBanking.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("NewBie")]
         public async Task<IActionResult> getIsnewbie()
         {
