@@ -74,124 +74,85 @@ namespace ExamBanking.Controllers
         }
 
 
-        //[HttpGet("test")]
-        //public async Task<IActionResult> Test()
-        //{
-        //    var payment = _context.Payments.SingleOrDefault(p => p.Payid == 11);
-        //    var contentParts = payment.Paycontent.Split('_');
-        //    var first = contentParts[3];
-
-        //    return Ok(first);
-        //}
-        [HttpGet("test2")]
-        public async Task<IActionResult> Test2(int id)
-        {
-            var payment = _context.Payments.SingleOrDefault(p => p.Payid == id);
-            var contentParts = payment.Paycontent.Split('_');
-
-            if (contentParts.Length < 4)
-            {
-                return Ok("Invalid content format.");
-            }
-
-            var fourth = contentParts[3];
-            var days = contentParts[4];
-
-            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == Convert.ToInt32(fourth));
-
-            if (ticket == null)
-            {
-                return Ok("Ticket not found.");
-            }
-
-            if (DateTime.Now - ticket.Startdate > TimeSpan.FromDays(Convert.ToDouble(ticket.Expire)))
-            {
-                ticket.Expire += Convert.ToInt32(days);
-                return Ok("Greater than");
-            }
-            else if (DateTime.Now - ticket.Startdate < TimeSpan.FromDays(Convert.ToDouble(ticket.Expire)))
-            {
-                ticket.Expire = Convert.ToInt32(days);
-                return Ok("Less than");
-            }
-            else
-            {
-                return Ok("Equal");
-            }
-        }
-
+        //EBS_TK_C_30_1
 
         [HttpPost("accept_bill")]
 
-        public async Task<IActionResult> Accept_bill(int payid, int bankid)
+        public async Task<IActionResult> Accept_bill(int payid)
         {
             var payment = _context.Payments.SingleOrDefault(p => p.Payid == payid);
-            var bank = _context.Banks.SingleOrDefault(b => b.Bankid == bankid);
+            var acc = _context.Accounts.SingleOrDefault(a => a.Accid == payment.Accid);
 
             if (payment == null)
             {
                 return Ok("Payment not found.");
             }
 
-            if (payment.Status == 1)
+
+            var contentParts = payment.Paycontent.Split('_');
+
+            if (contentParts.Length < 3)
             {
-                payment.Status = 0;
+                return Ok("Invalid content format.");
             }
-            else
+
+            var first = contentParts[0];
+            var second = contentParts[1];
+            var third = contentParts[2];
+            var fourth = contentParts[3];
+
+
+            if (first == "EBS")
             {
-                var contentParts = payment.Paycontent.Split('_');
-
-                if (contentParts.Length < 3)
+                if (second == "TK")
                 {
-                    return Ok("Invalid content format.");
-                }
-
-                var first = contentParts[0];
-                var second = contentParts[1];
-                var third = contentParts[2];
-                var fourth = contentParts[3];
-
-
-                if (first == "EBS")
-                {
-                    if (second == "TK")
+                    if (third == "C")
                     {
-                        if (third == "C")
+                        var tm = Convert.ToInt32(contentParts[4]);
+                        var newTicket = new Ticket
                         {
-                            var newTicket = new Ticket
-                            {
-                                Accid = payment.Accid,
-                                Bankid = bankid,
-                                Startdate = DateTime.Now,
-                                Expire = Convert.ToInt32(fourth)
-                            };
-                            _context.Tickets.Add(newTicket);
+                            Ticketname = TicketNameGen.GenTicketNameFunc(acc.Email, tm == 1 ? "ps" : "tk"),
+                            Ticketmode = tm,
+                            Accid = payment.Accid,
+                            Bankid = null,
+                            Startdate = null,
+                            Expire = Convert.ToInt32(fourth)
+                        };
+                        _context.Tickets.Add(newTicket);
 
+                    }
+                    else if (third == "U")
+                    {
+                        var days = contentParts[4];
+                        var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == Convert.ToInt32(fourth));
+                        var time = DateTime.Now - ticket.Startdate;
+                        if (ticket.Bankid == null)
+                        {
+                            ticket.Expire += Convert.ToInt32(days);
                         }
-                        else if (third == "U")
+                        else
                         {
-                            var days = contentParts[4];
-                            var ticket = _context.Tickets.SingleOrDefault(t => t.Ticketid == Convert.ToInt32(fourth));
-
-                            if (ticket.Startdate - DateTime.Now > TimeSpan.FromDays(Convert.ToInt32(ticket.Expire)))
+                            var remainDays = ticket.Expire - time.Value.Days;
+                            if (remainDays > 0)
                             {
-
-                                var currentExpire = ticket.Expire;
-                                ticket.Expire = currentExpire + Convert.ToInt32(days);
+                                ticket.Expire = remainDays + Convert.ToInt32(days);
                                 ticket.Startdate = DateTime.Now;
-
                             }
-                            else if (ticket.Startdate - DateTime.Now < TimeSpan.FromDays(Convert.ToInt32(ticket.Expire)))
+                            else
                             {
                                 ticket.Expire = Convert.ToInt32(days);
+                                ticket.Startdate = DateTime.Now;
                             }
                         }
-                    }
-                    else if (second == "BM" && third == "U")
-                    {
-                        bank.Bankmode = Convert.ToInt32(fourth);
+
                     }
                 }
+                else if (second == "BM" && third == "U")
+                {
+                    
+                    acc.Bankmode = Convert.ToInt32(fourth);
+                }
+
             }
 
             payment.Status = 1;
