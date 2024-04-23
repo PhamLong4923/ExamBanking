@@ -373,11 +373,6 @@
         "Name": "payid",
         "Type": "System.Int32",
         "IsRequired": false
-      },
-      {
-        "Name": "bankid",
-        "Type": "System.Int32",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []
