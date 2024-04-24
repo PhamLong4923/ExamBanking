@@ -169,7 +169,7 @@ const Bank = () => {
     };
 
     return (
-        <div>
+        <div style={{ height: '90vh', overflow: 'auto' }}>
             <MyBreadCrumb path={1}></MyBreadCrumb>
 
             <Button disabled={isallow} onClick={() => handleOpenModel(islimit)} type="primary" icon={<PlusOutlined />} style={{ marginBottom: '16px', float: 'left' }}>

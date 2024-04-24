@@ -43,7 +43,7 @@ export const getkit = () => Http.get("Ticket/kitnewbie");
 
 export const getaviableticket = (tm) => Http.get(`Ticket/listaviableticket?ticketmode=${tm}`);
 
-
+export const gethistorypayment = () => Http.get(`Payment/Historical_payment`);
 
 //create-api
 

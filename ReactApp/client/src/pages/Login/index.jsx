@@ -35,19 +35,19 @@ const LoginAndRegister = () => {
     };
 
     return (
-        <div style={{ backgroundColor: '#303030', color: '#f0f0f0', height: '100%', width: '40%', margin: 'auto', padding: 'auto' }}>
+        <div style={{ backgroundColor: '#303030', color: '#f0f0f0', height: '100%', width: '40%', margin: 'auto', padding: 'auto', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
             <Row justify="center">
                 <Col span={12}>
                     {showLogin ? (
-                        <>
-                            <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                        <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', flexDirection: 'column' }} >
+                            {/* <div style={{ textAlign: 'center', marginBottom: '30px' }}>
                                 <h2>Đăng nhập</h2>
                             </div>
                             <Input placeholder="Email" style={{ marginBottom: '10px' }} />
                             <Input.Password placeholder="Mật khẩu" style={{ marginBottom: '10px' }} />
                             <Checkbox style={{ marginBottom: '10px', color: '#f0f0f0' }}>Ghi nhớ đăng nhập</Checkbox>
-                            <Button type="primary" style={{ width: '100%', marginBottom: '10px' }}>Login</Button>
-                            <p style={{ textAlign: 'center', marginBottom: '10px' }}>hoặc</p>
+                            <Button type="primary" style={{ width: '100%', marginBottom: '10px' }}>Login</Button> */}
+                            <p style={{ width: '120%', textAlign: 'center', marginBottom: '10px' }}>Hãy bắt đầu với tài khoản google của bạn</p>
                             <GoogleLogin
                                 buttonText="Đăng nhập bằng Google"
                                 onSuccess={responseGoogle}
@@ -56,13 +56,13 @@ const LoginAndRegister = () => {
 
                                 render={(renderProps) => (
 
-                                    <Button type="default" icon={<GoogleOutlined />} style={{ width: '100%', marginBottom: '10px' }}>Đăng nhập bằng Google</Button>
+                                    <Button type="default" icon={<GoogleOutlined />} >Đăng nhập bằng Google</Button>
                                 )}
                             />
 
 
-                            <p style={{ textAlign: 'center' }}>Bạn chưa có tài khoản? <Button type="link" onClick={toggleForm} style={{ color: '#f0f0f0' }}>Đăng kí ngay</Button></p>
-                        </>
+                            {/* <p style={{ textAlign: 'center' }}>Bạn chưa có tài khoản? <Button type="link" onClick={toggleForm} style={{ color: '#f0f0f0' }}>Đăng kí ngay</Button></p> */}
+                        </div>
                     ) : (
                         <>
                             <div style={{ textAlign: 'center', marginBottom: '30px' }}>

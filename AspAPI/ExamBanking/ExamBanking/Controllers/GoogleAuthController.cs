@@ -51,7 +51,7 @@ namespace ExamBanking.Controllers
 
                 // Thêm logic để kiểm tra xem người dùng đã tồn tại trong cơ sở dữ liệu chưa
                 var checkExist = _context.Accounts.FirstOrDefault(a => a.Email == account.Email);
-                string role = checkExist.Roleid == 0 ? "User" : "Admin";
+                string role = checkExist.Roleid == 1 ? "User" : "Admin";
                 if (checkExist != null)
                 {
                     string tokenExist = _jwt.CreateJWTToken(account, role);
