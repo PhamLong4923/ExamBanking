@@ -1,12 +1,10 @@
 
-const ContentGenerator = ({ type, value, action }) => {
+const ContentGenerator = ({ type, value, action, email }) => {
 
-    return ('EBS' + type + action + value);
-
+    // Tạo chuỗi content dựa trên các thông tin đã có
+    const ct = 'EBS_' + type + "_" + action + "_" + value + "_" + email;
+    console.log(ct);
+    return ct;
 }
 
 export default ContentGenerator;
-//type TM
-//action U/C
-//EBSBMU01
-//EBSTKCSB, EBSTKCPB, EBSTKU{id}A{n}

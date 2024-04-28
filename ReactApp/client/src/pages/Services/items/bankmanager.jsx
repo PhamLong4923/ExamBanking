@@ -3,6 +3,8 @@ import { Card, Button, Space, Typography } from "antd";
 import { ShoppingOutlined } from "@ant-design/icons";
 import ContentGenerator from "../../../ultils/paymentcontentcreator";
 import VietQrPaymentModal from "../../../components/payment/vietqr";
+import { useSelector } from "react-redux";
+import { jwtDecode } from 'jwt-decode'
 
 const { Meta } = Card;
 const { Title, Paragraph } = Typography;
@@ -11,7 +13,7 @@ const BankManager = () => {
     const limit = {
         bankMode: {
             "0": {
-                "id": "00",
+                "id": "0",
                 "name": "System",
                 "bankLimit": null,
                 "repoLimit": null,
@@ -20,7 +22,7 @@ const BankManager = () => {
                 "price:": 0
             },
             "1": {
-                "id": "01",
+                "id": "1",
                 "name": "Free",
                 "bankLimit": 1,
                 "repoLimit": 5,
@@ -29,7 +31,7 @@ const BankManager = () => {
                 "price:": '0'
             },
             "2": {
-                "id": "02",
+                "id": "2",
                 "name": "Standard",
                 "description": "Gói ngân hàng loại 2",
                 "bankLimit": 1,
@@ -39,7 +41,7 @@ const BankManager = () => {
                 "price:": 199000
             },
             "3": {
-                "id": "03",
+                "id": "3",
                 "name": "Premium",
                 "description": "Gói ngân hàng loại 3",
                 "bankLimit": 2,
@@ -59,8 +61,17 @@ const BankManager = () => {
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
 
+    const token = useSelector(state => state.token);
+
+    // Giải mã token để lấy thông tin trong phần payload
+    const decodedToken = jwtDecode(token);
+
+    // Lấy email từ thông tin giải mã
+    const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+
+
     const handleOpenPayMethod = (price, bankmode, description) => {
-        const content = ContentGenerator({ type: 'BM', value: bankmode, action: 'U' });
+        const content = ContentGenerator({ type: 'BM', value: bankmode, action: 'U', email: email });
         console.log(content);
         setContent(content);
         setPrice(price);
