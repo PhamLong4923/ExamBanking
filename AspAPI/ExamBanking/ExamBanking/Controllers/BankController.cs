@@ -17,12 +17,14 @@ namespace ExamBanking.Controllers
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
+        private readonly RTicket _rTicket;
     
-        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount)
+        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount,RTicket rTicket)
         {
             _context = context;
             _rRepositories = rRepositories;
-            _rAccount = rAccount;          
+            _rAccount = rAccount;    
+            _rTicket = rTicket;
         }
 
         [Authorize(Roles = "User,Admin")]
@@ -95,10 +97,12 @@ namespace ExamBanking.Controllers
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
             var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
+            
             if (remove == null)
             {
                 return BadRequest();
             }
+            _rTicket.DeleteAllTickets(bankid);
             _rRepositories.DeleteAllRepo(bankid);
             _context.Banks.Remove(remove);
             await _context.SaveChangesAsync();
