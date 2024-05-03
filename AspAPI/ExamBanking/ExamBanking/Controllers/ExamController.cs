@@ -103,7 +103,7 @@ namespace ExamBanking.Controllers
         {
             // Lọc câu hỏi theo modeId
 
-            var filteredQuestions = _context.Questions.Where(x => x.Secid == secid && x.Modeid == modeId && x.Type == typeId).
+            var filteredQuestions = _context.Questions.Where(x => x.Secid == secid && x.Modeid == modeId && x.Type == typeId).Include(x => x.Answers).
                 OrderByDescending(x => Guid.NewGuid()).Take(count).ToList();
 
 

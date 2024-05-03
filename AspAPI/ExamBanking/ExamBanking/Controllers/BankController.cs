@@ -102,7 +102,7 @@ namespace ExamBanking.Controllers
             {
                 return BadRequest();
             }
-            _rTicket.DeleteAllTickets(bankid);
+            _rTicket.ReplaceAllTicketsNull(bankid);
             _rRepositories.DeleteAllRepo(bankid);
             _context.Banks.Remove(remove);
             await _context.SaveChangesAsync();
@@ -111,7 +111,7 @@ namespace ExamBanking.Controllers
 
         //[Authorize(Roles = "User")]
         [HttpPost]
-        public async Task<IActionResult> acceptAccessUser()
+        public async Task<IActionResult> acceptAccessUser(int uid,int bankid)
         {
             var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);

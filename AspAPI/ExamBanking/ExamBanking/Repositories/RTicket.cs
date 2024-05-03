@@ -36,10 +36,13 @@ namespace ExamBanking.Repositories
         }
 
         // delete all tickets which have banbkid = bankid
-        public void DeleteAllTickets(int bankId)
+        public void ReplaceAllTicketsNull(int bankId)
         {
             var tickets = _context.Tickets.Where(t => t.Bankid == bankId).ToList();
-            _context.Tickets.RemoveRange(tickets);
+            foreach (var ticket in tickets)
+            {
+                ticket.Bankid = null;
+            }
             _context.SaveChanges();
         }
     }
