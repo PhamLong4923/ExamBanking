@@ -29,13 +29,14 @@ namespace ExamBanking.Controllers
             {
                 var selectedSections = new List<object>();
                 var repo = _context.Repos.FirstOrDefault(r => r.Repoid == repoId);
+                var allModes = _context.Modes.ToList(); // Execute immediately to close the DataReader
 
                 if (repo == null)
                 {
                     continue;
                 }
 
-                var sections = _context.Sections.ToList();
+                var sections = _context.Sections.Where(sc => sc.Repoid == repo.Repoid).ToList(); // Execute immediately
 
                 foreach (var sec in sections)
                 {
@@ -47,15 +48,12 @@ namespace ExamBanking.Controllers
                         multi = new List<object>()
                     };
 
-                    var allModes = _context.Modes.ToList();
-
                     foreach (var mode in allModes)
                     {
                         var questionCount = _context.Questions.Count(q => q.Secid == sec.Secid && q.Modeid == mode.Modeid);
 
                         // Tạo modeObject dựa trên giá trị của modeid
                         var modeObject = new { modename = mode.Qmode, count = questionCount };
-
 
                         if (mode.Modeid <= 3)
                         {
@@ -80,6 +78,7 @@ namespace ExamBanking.Controllers
 
             return Ok(selectedRepos);
         }
+
 
 
 

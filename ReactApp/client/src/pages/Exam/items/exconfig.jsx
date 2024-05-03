@@ -8,6 +8,7 @@ import { configExam, exportExam } from "../../../services/api";
 
 export default function ExamConfig({ selectedIds }) {
     const [data, setData] = useState([]);
+    const [qdata, setQdata] = useState();
     const [dataConfig, setDataConfig] = useState([]);
     const [rowSpanArr, setRowSpanArr] = useState([]);
     const [submit, setSubmit] = useState(false);
@@ -54,6 +55,8 @@ export default function ExamConfig({ selectedIds }) {
         try {
             console.log(dataConfig);
             const response = await exportExam(dataConfig);
+            setQdata(response.data);
+            setSubmit(true);
             console.log(response.data);
         } catch (error) {
             console.log(error);
@@ -242,7 +245,7 @@ export default function ExamConfig({ selectedIds }) {
     if (submit) {
         return (
             <div style={{ overflow: 'auto', height: '99%' }}>
-                <Export></Export>
+                <Export qdata={qdata}></Export>
             </div>
 
         )
