@@ -252,6 +252,16 @@
   },
   {
     "ContainingType": "ExamBanking.Controllers.BankController",
+    "Method": "acceptAccessUser",
+    "RelativePath": "api/Bank",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ExamBanking.Controllers.BankController",
     "Method": "CreateBank",
     "RelativePath": "api/Bank/CreateBank",
     "HttpMethod": "POST",
@@ -411,22 +421,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ExamBanking.Controllers.PaymentController",
-    "Method": "Test2",
-    "RelativePath": "api/Payment/test2",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
     "ReturnTypes": []
   },
   {
