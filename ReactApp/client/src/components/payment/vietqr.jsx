@@ -15,7 +15,6 @@ const VietQrPaymentModal = ({ start, amount, content, setClose, description }) =
     };
 
     const handleComplete = async () => {
-        const date = Date.now.toString();
         const response = await paymentCreate({ paycontent: content, money: amount });
         console.log(response.data);
         setStep(3);

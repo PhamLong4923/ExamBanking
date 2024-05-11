@@ -3809,11 +3809,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\intern 9promax\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+      "projectUniqueName": "D:\\hoc\\ki_6\\v30\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
       "projectName": "ExamBanking",
-      "projectPath": "C:\\Users\\ADMIN\\Desktop\\intern 9promax\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
-      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ADMIN\\Desktop\\intern 9promax\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
+      "projectPath": "D:\\hoc\\ki_6\\v30\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\ExamBanking.csproj",
+      "packagesPath": "C:\\Users\\viet2\\.nuget\\packages\\",
+      "outputPath": "D:\\hoc\\ki_6\\v30\\ExamBanking\\AspAPI\\ExamBanking\\ExamBanking\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",

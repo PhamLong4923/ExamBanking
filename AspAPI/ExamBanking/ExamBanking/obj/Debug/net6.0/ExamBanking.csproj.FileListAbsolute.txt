@@ -1270,87 +1270,88 @@ D:\hoc\ki_6\v29\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\refi
 D:\hoc\ki_6\v29\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.pdb
 D:\hoc\ki_6\v29\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.genruntimeconfig.cache
 D:\hoc\ki_6\v29\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\ExamBanking.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\appsettings.Development.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\appsettings.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.exe
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.deps.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.runtimeconfig.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.pdb
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\BCrypt.Net-Next.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Auth.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Core.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Humanizer.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Identity.Client.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.OpenApi.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Newtonsoft.Json.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Scrutor.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.CodeDom.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Drawing.Common.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Management.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Runtime.Caching.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Permissions.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Windows.Extensions.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Management.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.csproj.AssemblyReference.cache
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.AssemblyInfoInputs.cache
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.AssemblyInfo.cs
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.csproj.CoreCompileInputs.cache
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.ExamBanking.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.build.ExamBanking.props
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ExamBanking.props
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ExamBanking.props
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.pack.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.build.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.development.json
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\scopedcss\bundle\ExamBanking.styles.css
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.csproj.CopyComplete
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\refint\ExamBanking.dll
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.pdb
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.genruntimeconfig.cache
-C:\Users\ADMIN\Desktop\intern 9promax\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\ExamBanking.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\appsettings.Development.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\appsettings.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.exe
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.deps.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.runtimeconfig.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\ExamBanking.pdb
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Auth.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Google.Apis.Core.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Humanizer.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Identity.Client.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Scrutor.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.CodeDom.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Management.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Runtime.Caching.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Security.Permissions.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\System.Windows.Extensions.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Management.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.csproj.AssemblyReference.cache
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.GeneratedMSBuildEditorConfig.editorconfig
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.AssemblyInfoInputs.cache
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.AssemblyInfo.cs
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.csproj.CoreCompileInputs.cache
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.MvcApplicationPartsAssemblyInfo.cs
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.MvcApplicationPartsAssemblyInfo.cache
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.sourcelink.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.build.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.development.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.ExamBanking.Microsoft.AspNetCore.StaticWebAssets.props
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.build.ExamBanking.props
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ExamBanking.props
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ExamBanking.props
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\staticwebassets.pack.json
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\scopedcss\bundle\ExamBanking.styles.css
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBank.1171A441.Up2Date
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\refint\ExamBanking.dll
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.pdb
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ExamBanking.genruntimeconfig.cache
+D:\hoc\ki_6\v30\ExamBanking\AspAPI\ExamBanking\ExamBanking\obj\Debug\net6.0\ref\ExamBanking.dll

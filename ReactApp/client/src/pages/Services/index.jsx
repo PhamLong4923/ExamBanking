@@ -33,7 +33,7 @@ const Services = () => {
 
     if (currentPage) {
         return (
-            <div>
+            <div style={{ height: '90vh', overflow: 'auto' }}>
                 <Button onClick={handleBack}>Back</Button>
                 <Button onClick={handleReload} style={{ marginLeft: '10px' }} icon={<ReloadOutlined />}>Reload</Button>
                 {currentPage}
@@ -42,7 +42,7 @@ const Services = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '10px' }}>
             <Title level={3}>ExamBanking's Services</Title>
             <Row gutter={[16, 16]}>
                 {services.map((service, index) => (

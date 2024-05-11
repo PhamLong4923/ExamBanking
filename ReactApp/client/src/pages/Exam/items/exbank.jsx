@@ -117,10 +117,10 @@ const ExBank = () => {
     ];
 
     return (
-        <div>
+        <div style={{ height: '90vh', overflow: 'auto' }}>
             <ExMyBreadCrumb path={1}></ExMyBreadCrumb>
 
-            <div style={{ position: 'relative', marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
+            {/* <div style={{ position: 'relative', marginBottom: '16px', display: 'flex', justifyContent: 'flex-end' }}>
                 <div style={{ position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '-8px', left: '-8px' }}>
                         <Badge count={banks.length} style={{ backgroundColor: 'red', boxShadow: 'none' }} />
@@ -130,7 +130,7 @@ const ExBank = () => {
                         Ticket
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <Table
                 dataSource={banks}

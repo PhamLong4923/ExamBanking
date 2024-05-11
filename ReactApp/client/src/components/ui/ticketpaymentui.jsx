@@ -4,6 +4,9 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import ticket from "../../share/ticket";
 import ContentGenerator from "../../ultils/paymentcontentcreator";
 import { BASE_QR_QUICKLINK, ACCOUNT_NAME } from "../../share/constrains";
+import { paymentCreate } from "../../services/api";
+import { useSelector } from "react-redux";
+import { jwtDecode } from 'jwt-decode'
 
 const { Option } = Select;
 const TicketPaymentModal = ({ start, setClose }) => {
@@ -13,6 +16,14 @@ const TicketPaymentModal = ({ start, setClose }) => {
     const [content, setContent] = useState('');
     const [amount, setAmount] = useState(0);
 
+    const token = useSelector(state => state.token);
+
+    // Giải mã token để lấy thông tin trong phần payload
+    const decodedToken = jwtDecode(token);
+
+    // Lấy email từ thông tin giải mã
+    const email = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+
     const qrimg = `${BASE_QR_QUICKLINK}amount=${amount}&addInfo=${content}&accountName=${ACCOUNT_NAME}`;
 
     // Hàm để lấy giá của duration từ đối tượng ticket
@@ -21,7 +32,7 @@ const TicketPaymentModal = ({ start, setClose }) => {
     };
 
     const handleContinue = () => {
-        let ct = ContentGenerator({ type: 'TK', value: duration, action: 'C' });
+        let ct = ContentGenerator({ type: 'TK', value: duration, action: 'C', email: email });
         setContent(ct);
         // Cập nhật giá trị amount khi duration được chọn
         const price = getPriceForDuration(duration);
@@ -29,7 +40,9 @@ const TicketPaymentModal = ({ start, setClose }) => {
         setStep(2);
     };
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
+        const response = await paymentCreate({ paycontent: content, money: amount });
+        console.log(response.data);
         setStep(3);
         setTimeout(() => {
             handleClose();

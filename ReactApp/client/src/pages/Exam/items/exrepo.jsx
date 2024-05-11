@@ -67,7 +67,7 @@ const ExRepo = () => {
     return (
         <>
             <ExMyBreadCrumb path={2}></ExMyBreadCrumb>
-            <div style={{ padding: '20px' }}>
+            <div style={{ padding: '20px', height: '90vh', overflow: 'auto' }}>
                 {/* Thanh tool */}
                 <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #d9d9d9', borderRadius: '5px', padding: '5px' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>

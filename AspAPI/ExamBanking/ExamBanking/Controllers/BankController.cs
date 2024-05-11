@@ -10,22 +10,24 @@ namespace ExamBanking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User,Admin")]
+    
     public class BankController : ControllerBase
     {
         
         private readonly ExamBankingContext _context;
         private readonly RRepositories _rRepositories;
         private readonly RAccount _rAccount;
+        private readonly RTicket _rTicket;
     
-        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount)
+        public BankController(ExamBankingContext context, RRepositories rRepositories, RAccount rAccount,RTicket rTicket)
         {
             _context = context;
             _rRepositories = rRepositories;
-            _rAccount = rAccount;          
+            _rAccount = rAccount;    
+            _rTicket = rTicket;
         }
 
-
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("GetBank")]
         public async Task<IActionResult> viewBankList()
         {
@@ -47,7 +49,7 @@ namespace ExamBanking.Controllers
         }
 
 
-
+        [Authorize(Roles = "User,Admin")]
         [HttpPost("CreateBank")]
         public async Task<IActionResult> CreateBank(CreateBankRequest request)
         {
@@ -69,6 +71,7 @@ namespace ExamBanking.Controllers
             await _context.SaveChangesAsync();
             return Ok(bank.Bankid);
         }
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("EditBank")]
         public async Task<IActionResult> EditBank(int bankid, string newname)
         {
@@ -85,7 +88,7 @@ namespace ExamBanking.Controllers
             _context.SaveChangesAsync();
             return Ok(edit.Bankid);
         }
-        
+        [Authorize(Roles = "User,Admin")]
         [HttpDelete("DeleteBank")]
         public async Task<IActionResult> DeleteBank(int bankid)
         {
@@ -94,16 +97,33 @@ namespace ExamBanking.Controllers
             var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
 
             var remove = _context.Banks.FirstOrDefault(a => a.Accid == user.Accid && a.Bankid == bankid);
+            
             if (remove == null)
             {
                 return BadRequest();
             }
+            _rTicket.ReplaceAllTicketsNull(bankid);
             _rRepositories.DeleteAllRepo(bankid);
             _context.Banks.Remove(remove);
             await _context.SaveChangesAsync();
             return Ok(remove.Bankid);
         }
 
+        //[Authorize(Roles = "User")]
+        [HttpPost]
+        public async Task<IActionResult> acceptAccessUser(int uid,int bankid)
+        {
+            var userId = Jwt.GetUserIdFromToken(Request.Headers["Authorization"]);
+            var user = _context.Accounts.SingleOrDefault(u => u.Email == userId);
+            var bank = _context.Banks.SingleOrDefault(b => b.Accid == user.Accid);
+            if (user == null)
+            {
+                return Ok("User not found or token is invalid.");
+            }
+            var listBank = _context.Banks.Where(a => a.Bankmode == 1 && a.Accid == user.Accid).ToList();
+
+            return Ok("Admin accept access user");
+        }
        
     }
 }
