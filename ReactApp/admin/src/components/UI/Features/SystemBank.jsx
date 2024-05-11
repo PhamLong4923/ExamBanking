@@ -173,7 +173,7 @@ const SystemBank = () => {
                     Thêm ngân hàng
                 </Button>
                 <br /><br />
-                <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 8 }} loading={loading} />
+                <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 7 }} loading={loading} />
 
                 <Modal
                     title={typeof editingKey == "number" ? "Thêm ngân hàng" : "Chỉnh sửa ngân hàng"}

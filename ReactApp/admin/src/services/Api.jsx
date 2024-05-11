@@ -83,6 +83,10 @@ export const updateQMode = (qid, mode) => Http.put(`/Question/EditQuestion?quest
 
 export const updateAns = (aid, content) => Http.put(`/Answers/EditAnswer?aid=${aid}&content=${content}`);
 
+export const acceptPayment = (pid) => Http.put(`/Payment/accept_bill?payid=${pid}`);
+
+export const deniedPayment = (pid) => Http.put(`/Payment/denied_bill?payid=${pid}`);
+
 //
 
 

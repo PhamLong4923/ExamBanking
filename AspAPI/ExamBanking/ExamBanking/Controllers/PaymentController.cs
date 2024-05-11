@@ -76,22 +76,19 @@ namespace ExamBanking.Controllers
 
         //EBS_TK_C_30_1
 
-        [HttpPost("accept_bill")]
-
+        [HttpPut("accept_bill")]
         public async Task<IActionResult> Accept_bill(int payid)
         {
             var payment = _context.Payments.SingleOrDefault(p => p.Payid == payid);
-            var acc = _context.Accounts.SingleOrDefault(a => a.Accid == payment.Accid);
-
             if (payment == null)
             {
                 return Ok("Payment not found.");
             }
-
+            var acc = _context.Accounts.SingleOrDefault(a => a.Accid == payment.Accid);
 
             var contentParts = payment.Paycontent.Split('_');
 
-            if (contentParts.Length < 3)
+            if (contentParts.Length < 3 && contentParts[0] == "EBS")
             {
                 return Ok("Invalid content format.");
             }
@@ -156,6 +153,19 @@ namespace ExamBanking.Controllers
             }
 
             payment.Status = 1;
+            _context.SaveChanges();
+            return Ok(payid);
+        }
+
+        [HttpPut("denied_bill")]
+        public async Task<IActionResult> Denied(int payid)
+        {
+            var payment = _context.Payments.SingleOrDefault(p => p.Payid == payid);
+            if (payment == null)
+            {
+                return Ok("Payment not found.");
+            }
+            payment.Status = 0;
             _context.SaveChanges();
             return Ok(payid);
         }

@@ -160,7 +160,7 @@ const AdminRepository = () => {
                 <Table
                     dataSource={dataSource.filter(item => parseInt(item.bankid) === parseInt(bankId))}
                     columns={columns}
-                    pagination={{ pageSize: 8 }}
+                    pagination={{ pageSize: 7 }}
                 />
 
                 <Modal

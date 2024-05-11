@@ -10,22 +10,41 @@ const AccountManagement = () => {
   const [form] = Form.useForm();
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [dataSource, setDataSource] = useState([
-    {
-      key: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
-      role: 'admin',
-      locked: false,
-    },
-    {
-      key: '2',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      role: 'user',
-      locked: false,
-    },
-    // More users...
+    // {
+    //   key: '1',
+    //   name: 'John Doe',
+    //   email: 'john@example.com',
+    //   role: 'admin',
+    //   locked: false,
+    // },
+    // {
+    //   key: '2',
+    //   name: 'Jane Smith',
+    //   email: 'jane@example.com',
+    //   role: 'user',
+    //   locked: false,
+    // },
   ]);
+
+//   useEffect(() => {
+//     const loadAccounts = async () => {
+//         try {
+//             const response = await getBank();
+//             setDataSource(response.data);
+//             setLoading(false);
+//         } catch (error) {
+//             if (error.response && error.response.status === 401) {
+//                 setDataSource([]);
+//                 setLoading(false);
+//                 // errors("Nguyễn Ngọc Việt", 2);
+//             } else {
+//                 // errors(SYSTEM_ERROR_MESSAGE, 2);
+//                 console.log(error);
+//             }
+//         }
+//     };
+//     loadBanks();
+// }, []);
 
   const columns = [
     {
