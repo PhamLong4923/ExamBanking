@@ -1,6 +1,6 @@
 import { Button, DatePicker, Flex, Form, Input, Modal, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { getPayment } from '../../../services/Api';
+import { acceptPayment, deniedPayment, getPayment } from '../../../services/Api';
 
 const { RangePicker } = DatePicker;
 
@@ -83,7 +83,7 @@ const Payment = () => {
       default:
         setDataSource(listData);
     }
-  }, [currentPage]);
+  }, [currentPage, listData]);
 
   const columns = [
     {
@@ -107,8 +107,8 @@ const Payment = () => {
       render: (text, record) => (
         record.status === null ? (
           <Flex gap="middle">
-            <Button onClick={() => handleApprove(record.key)}>Duyệt</Button>
-            <Button onClick={() => handleCancel(record.key)}>Hủy</Button>
+            <Button onClick={() => handleApprove(record.payid)}>Duyệt</Button>
+            <Button onClick={() => handleCancel(record.payid)}>Hủy</Button>
           </Flex>
         ) : record.status === 1 ? (
           <Tag color="green">Đã duyệt</Tag>
@@ -123,12 +123,43 @@ const Payment = () => {
     setVisible(true);
   };
 
-  const handleApprove = (keyToApprove) => {
-    // Logic to approve payment...
+  const handleApprove = async (keyToApprove) => {
+    try {
+      const response = await acceptPayment(keyToApprove);
+      const approvedPayId = response.data;
+      console.log(response.data);
+  
+      const updatedListData = listData.map(item => {
+        if (item.payid === approvedPayId) {
+          return { ...item, status: 1 };
+        }
+        return item;
+      });
+  
+      setListData(updatedListData);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
-  const handleCancel = (keyToCancel) => {
-    // Logic to cancel payment...
+  const handleCancel = async (keyToCancel) => {
+    try {
+      const response = await deniedPayment(keyToCancel);
+      const approvedPayId = response.data;
+      console.log(response.data);
+  
+      const updatedListData = listData.map(item => {
+        if (item.payid === approvedPayId) {
+          return { ...item, status: 0 };
+        }
+        return item;
+      });
+  
+      setListData(updatedListData);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleOk = () => {
@@ -152,7 +183,7 @@ const Payment = () => {
         <Button type={currentPage === "cancelled" ? "primary" : "default"} onClick={() => handlePageChange("cancelled")}>Bị hủy</Button>
       </div>
 
-      <Table dataSource={dataSource} columns={columns} loading={loading} />
+      <Table dataSource={dataSource} columns={columns} loading={loading} pagination={{pageSize: 7}}/>
 
       <Modal
         title="Add Payment"
